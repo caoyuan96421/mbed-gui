@@ -1,0 +1,11 @@
+Converting images
+Compiling gui/src/screen2_screen/Screen2View.cpp
+Compiling gui/src/screen2_screen/Screen2Presenter.cpp
+Compiling gui/src/screen1_screen/Screen1Presenter.cpp
+Compiling gui/src/screen1_screen/Screen1View.cpp
+Compiling gui/src/common/FrontendApplication.cpp
+Compiling generated/gui_generated/src/screen2_screen/Screen2ViewBase.cpp
+Compiling generated/gui_generated/src/screen1_screen/Screen1ViewBase.cpp
+Compiling generated/gui_generated/src/common/FrontendApplicationBase.cpp
+Compiling simulator/main.cpp
+Linking build/bin/simulator.exe
