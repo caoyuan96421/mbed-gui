@@ -29,7 +29,32 @@ void *TelescopeConfiguration::getConfiguration(const char* configName) {
 		return &peDATA;
 	}
 	else{
-		fprintf(stderr, "ERROR: Configuration %s not defined.", configName);
+		error("ERROR: Configuration %s not defined.\r\n", configName);
 		return NULL;
+	}
+}
+
+PinName TelescopeConfiguration::getPin(const char* configName) {
+	if (strcmp(configName, "MotorSPIMOSI") == 0){
+		return D11;
+	}
+	else if(strcmp(configName, "MotorSPIMISO") == 0){
+		return D12;
+	}
+	else if(strcmp(configName, "MotorSPISCLK") == 0){
+		return D13;
+	}
+	else if(strcmp(configName, "RAMotorSPICS") == 0){
+		return D10;
+	}
+	else if(strcmp(configName, "RAMotorStep") == 0){
+		return D9;
+	}
+	else if(strcmp(configName, "RAMotorDir") == 0){
+		return D8;
+	}
+	else{
+		error("ERROR: Configuration %s not defined.\r\n", configName);
+		return NC;
 	}
 }

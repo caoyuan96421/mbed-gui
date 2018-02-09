@@ -5,7 +5,7 @@
  *      Author: caoyuan9642
  */
 
-#ifndef TELESCOPE_HARDWARE_OMRONE6CPDRIVER_H_
+#ifndef TELESCOPE_DRIVER_OMRONE6CPDRIVER_H_
 #define TELESCOPE_HARDWARE_OMRONE6CPDRIVER_H_
 
 #include <telescope/GrayAbsEncoder.h>
@@ -23,4 +23,4 @@ private:
 	uint32_t readPosGray();
 };
 
-#endif /* TELESCOPE_HARDWARE_OMRONE6CPDRIVER_H_ */
+#endif /* TELESCOPE_DRIVER_OMRONE6CPDRIVER_H_ */

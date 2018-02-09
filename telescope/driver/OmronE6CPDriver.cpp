@@ -5,8 +5,8 @@
  *      Author: caoyuan9642
  */
 
-#include <telescope/hardware/OmronE6CPDriver.h>
 #include "mbed.h"
+#include <driver/OmronE6CPDriver.h>
 
 OmronE6CPDriver::OmronE6CPDriver(DigitalOut *c, DigitalOut *l, DigitalIn *d) :
 		GrayAbsEncoder(8), clk(c), load(l), data(d) {
