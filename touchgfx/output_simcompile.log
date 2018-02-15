@@ -1,11 +1,45 @@
 Converting images
-Compiling gui/src/screen2_screen/Screen2View.cpp
-Compiling gui/src/screen2_screen/Screen2Presenter.cpp
-Compiling gui/src/screen1_screen/Screen1Presenter.cpp
-Compiling gui/src/screen1_screen/Screen1View.cpp
-Compiling gui/src/common/FrontendApplication.cpp
-Compiling generated/gui_generated/src/screen2_screen/Screen2ViewBase.cpp
-Compiling generated/gui_generated/src/screen1_screen/Screen1ViewBase.cpp
+Compiling gui/src/homescreen_screen/HomeScreenView.cpp
+Compiling gui/src/homescreen_screen/HomeScreenPresenter.cpp
+Compiling gui/src/model/Model.cpp
 Compiling generated/gui_generated/src/common/FrontendApplicationBase.cpp
-Compiling simulator/main.cpp
-Linking build/bin/simulator.exe
+Compiling generated/fonts/src/Table_verdana_10_4bpp.cpp
+Compiling generated/fonts/src/Kerning_verdana_20_4bpp.cpp
+Compiling generated/fonts/src/Font_verdana_10_4bpp.cpp
+Compiling generated/fonts/src/Table_verdana_40_4bpp.cpp
+Compiling generated/fonts/src/Table_verdana_20_4bpp.cpp
+Compiling generated/fonts/src/ApplicationFontProvider.cpp
+In file included from gui/src/homescreen_screen/HomeScreenView.cpp:1:0:
+gui/include/gui/homescreen_screen/HomeScreenView.hpp:6:38: fatal error: gui/widgets/MotorDisplay.h: No such file or directory
+ #include <gui/widgets/MotorDisplay.h>
+                                      ^
+compilation terminated.
+simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/homescreen_screen/HomeScreenView.o' failed
+make[2]: *** [build/MINGW32_NT-6.2/gui/src/homescreen_screen/HomeScreenView.o] Error 1
+make[2]: *** Waiting for unfinished jobs....
+gui/src/model/Model.cpp:3:26: fatal error: RotationAxis.h: No such file or directory
+ #include <RotationAxis.h>
+                          ^
+compilation terminated.
+simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/model/Model.o' failed
+make[2]: *** [build/MINGW32_NT-6.2/gui/src/model/Model.o] Error 1
+In file included from gui/src/homescreen_screen/HomeScreenPresenter.cpp:1:0:
+gui/include/gui/homescreen_screen/HomeScreenView.hpp:6:38: fatal error: gui/widgets/MotorDisplay.h: No such file or directory
+ #include <gui/widgets/MotorDisplay.h>
+                                      ^
+compilation terminated.
+In file included from generated/gui_generated/include/gui_generated/common/FrontendHeapBase.hpp:14:0,
+                 from gui/include/gui/common/FrontendHeap.hpp:4,
+                 from generated/gui_generated/src/common/FrontendApplicationBase.cpp:6:
+gui/include/gui/homescreen_screen/HomeScreenView.hpp:6:38: fatal error: gui/widgets/MotorDisplay.h: No such file or directory
+ #include <gui/widgets/MotorDisplay.h>
+                                      ^
+compilation terminated.
+simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/homescreen_screen/HomeScreenPresenter.o' failed
+make[2]: *** [build/MINGW32_NT-6.2/gui/src/homescreen_screen/HomeScreenPresenter.o] Error 1
+simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/generated/gui_generated/src/common/FrontendApplicationBase.o' failed
+make[2]: *** [build/MINGW32_NT-6.2/generated/gui_generated/src/common/FrontendApplicationBase.o] Error 1
+simulator/gcc/Makefile:173: recipe for target 'generate_assets' failed
+make[1]: *** [generate_assets] Error 2
+simulator/gcc/Makefile:31: recipe for target 'all' failed
+make: *** [all] Error 2

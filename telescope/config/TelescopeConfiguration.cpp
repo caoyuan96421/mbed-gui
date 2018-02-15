@@ -5,7 +5,7 @@
  *      Author: caoyuan9642
  */
 
-#include <telescope/config/TelescopeConfiguration.h>
+#include <TelescopeConfiguration.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -15,45 +15,64 @@
  * Default configurations for the telescope. Can be overriden for
  *
  */
-void *TelescopeConfiguration::getConfiguration(const char* configName) {
-	if(strcmp(configName, "PECEncoderCLK") == 0){
-		static DigitalOut peCLK = DigitalOut(D6);
-		return &peCLK;
-	}
-	else if(strcmp(configName, "PECEncoderLD") == 0){
-		static DigitalOut peLD = DigitalOut(D4);
-		return &peLD;
-	}
-	else if(strcmp(configName, "PECEncoderDATA") == 0){
-		static DigitalIn peDATA = DigitalIn(D5);
-		return &peDATA;
-	}
-	else{
-		error("ERROR: Configuration %s not defined.\r\n", configName);
-		return NULL;
-	}
+void *TelescopeConfiguration::getConfiguration(const char* configName)
+{
+	error("ERROR: Configuration %s not defined.\r\n", configName);
+	return NULL;
 }
 
-PinName TelescopeConfiguration::getPin(const char* configName) {
-	if (strcmp(configName, "MotorSPIMOSI") == 0){
+PinName TelescopeConfiguration::getPin(const char* configName)
+{
+	if (strcmp(configName, "MotorSPIMOSI") == 0)
+	{
 		return D11;
 	}
-	else if(strcmp(configName, "MotorSPIMISO") == 0){
+	else if (strcmp(configName, "MotorSPIMISO") == 0)
+	{
 		return D12;
 	}
-	else if(strcmp(configName, "MotorSPISCLK") == 0){
+	else if (strcmp(configName, "MotorSPISCLK") == 0)
+	{
 		return D13;
 	}
-	else if(strcmp(configName, "RAMotorSPICS") == 0){
+	else if (strcmp(configName, "RAMotorSPICS") == 0)
+	{
 		return D10;
 	}
-	else if(strcmp(configName, "RAMotorStep") == 0){
+	else if (strcmp(configName, "RAMotorStep") == 0)
+	{
 		return D9;
 	}
-	else if(strcmp(configName, "RAMotorDir") == 0){
+	else if (strcmp(configName, "RAMotorDir") == 0)
+	{
 		return D8;
 	}
-	else{
+	else if (strcmp(configName, "PECEncoderCLK") == 0)
+	{
+		return D6;
+	}
+	else if (strcmp(configName, "PECEncoderLD") == 0)
+	{
+		return D4;
+	}
+	else if (strcmp(configName, "PECEncoderDATA") == 0)
+	{
+		return D5;
+	}
+	else if (strcmp(configName, "RAEncoderCLK") == 0)
+	{
+		return A3;
+	}
+	else if (strcmp(configName, "RAEncoderLD") == 0)
+	{
+		return A1;
+	}
+	else if (strcmp(configName, "RAEncoderDATA") == 0)
+	{
+		return A0;
+	}
+	else
+	{
 		error("ERROR: Configuration %s not defined.\r\n", configName);
 		return NC;
 	}

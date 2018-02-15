@@ -160,7 +160,7 @@ void STM32F4HAL_DSI::endFrame()
 	core_util_critical_section_exit();
 }
 
-void DSI_IRQHandler(void)
+extern "C" void DSI_IRQHandler(void)
 {
 	if (__HAL_DSI_GET_IT_SOURCE(&hdsi_eval, DSI_IT_TE) && __HAL_DSI_GET_FLAG(&hdsi_eval, DSI_FLAG_TE))
 	{
@@ -213,7 +213,7 @@ void DSI_IRQHandler(void)
 	}
 }
 
-void DMA2D_IRQHandler(void)
+extern "C" void DMA2D_IRQHandler(void)
 {
 	if (DMA2D->ISR & 2)
 	{

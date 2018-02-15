@@ -5,66 +5,9 @@
         "Components": [
           {
             "Color": {
-              "Red": 139,
-              "Green": 188,
-              "Blue": 230
-            },
-            "Alpha": 255,
-            "Name": "box1",
-            "X": 0,
-            "Y": 0,
-            "Width": 480,
-            "Height": 800,
-            "Type": "Box",
-            "Visible": true,
-            "Draggable": false,
-            "Clickable": false,
-            "Fadeable": false,
-            "Moveable": false
-          },
-          {
-            "Pressed": "__designer\\blue_buttons_round_edge_small_pressed.png",
-            "Released": "__designer\\blue_buttons_round_edge_small.png",
-            "Alpha": 255,
-            "Style": "Style4",
-            "Name": "button1",
-            "X": 310,
-            "Y": 740,
-            "Width": 170,
-            "Height": 60,
-            "Type": "Button",
-            "Visible": true,
-            "Draggable": false,
-            "Clickable": false,
-            "Fadeable": false,
-            "Moveable": false
-          }
-        ],
-        "Interactions": [
-          {
-            "InteractionName": "Interaction1",
-            "HasCompletedTrigger": false,
-            "Trigger": {
-              "TriggerComponent": "button1",
-              "Type": "TriggerClicked"
-            },
-            "Action": {
-              "ScreenTransitionType": "ScreenTransitionSlide",
-              "ScreenTransitionDirection": "South",
-              "ActionComponent": "Screen2",
-              "Type": "ActionGotoScreen"
-            }
-          }
-        ],
-        "Name": "Screen1"
-      },
-      {
-        "Components": [
-          {
-            "Color": {
               "Red": 255,
-              "Green": 8,
-              "Blue": 8
+              "Green": 255,
+              "Blue": 255
             },
             "Alpha": 255,
             "Name": "box1",
@@ -80,16 +23,32 @@
             "Moveable": false
           },
           {
-            "Pressed": "__designer\\blue_buttons_round_edge_small_pressed.png",
-            "Released": "__designer\\blue_buttons_round_edge_small.png",
+            "TextId": "SingleUseId1",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 0,
+              "Green": 0,
+              "Blue": 0
+            },
             "Alpha": 255,
-            "Style": "Style4",
-            "Name": "button1",
-            "X": 310,
-            "Y": 740,
-            "Width": 170,
-            "Height": 60,
-            "Type": "Button",
+            "AutoSize": false,
+            "LineSpacing": 0,
+            "Wildcard1": {
+              "TextId": "SingleUseId2",
+              "UseBuffer": true,
+              "BufferSize": 20
+            },
+            "Wildcard2": {
+              "TextId": "SingleUseId3",
+              "UseBuffer": true,
+              "BufferSize": 20
+            },
+            "Name": "textArea1",
+            "X": 124,
+            "Y": 388,
+            "Width": 140,
+            "Height": 25,
+            "Type": "TextArea",
             "Visible": true,
             "Draggable": false,
             "Clickable": false,
@@ -97,33 +56,36 @@
             "Moveable": false
           }
         ],
-        "Interactions": [
-          {
-            "InteractionName": "Interaction1",
-            "HasCompletedTrigger": false,
-            "Trigger": {
-              "TriggerComponent": "button1",
-              "Type": "TriggerClicked"
-            },
-            "Action": {
-              "ScreenTransitionType": "ScreenTransitionSlide",
-              "ScreenTransitionDirection": "South",
-              "ActionComponent": "Screen1",
-              "Type": "ActionGotoScreen"
-            }
-          }
-        ],
-        "Name": "Screen2"
+        "Interactions": [],
+        "Name": "HomeScreen"
       }
     ],
     "CustomContainerDefinitions": [],
+    "TextEntries": [
+      {
+        "TextEntryId": "SingleUseId1",
+        "IsResource": false
+      },
+      {
+        "TextEntryId": "ResourceId1",
+        "IsResource": true
+      },
+      {
+        "TextEntryId": "SingleUseId2",
+        "IsResource": false
+      },
+      {
+        "TextEntryId": "SingleUseId3",
+        "IsResource": false
+      }
+    ],
     "Name": "touchgfx",
     "Resolution": {
       "Width": 480,
       "Height": 800
     },
     "SelectedColorDepth": 24,
-    "StartupScreenName": "Screen1",
+    "StartupScreenName": "HomeScreen",
     "SelectedStartupLanguage": "GB",
     "Skin": "Blue",
     "TouchGfxPath": "touchgfx",

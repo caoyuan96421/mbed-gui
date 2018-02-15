@@ -47,10 +47,15 @@ LCD24bpp display;
 const uint16_t bitDepth = 24;
 
 #define FBSIZE (800*480*3)>>2
+#define CANVAS_BUFFER_SIZE 16384
 
 // Allocate the frame buffer
 __attribute__((section (".sdram")))
   uint32_t frameBuf0[FBSIZE];
+
+// Allocate buffer for Canvas widgets
+__attribute__((section (".sdram")))
+  uint8_t canvasBuffer[CANVAS_BUFFER_SIZE];
 
 uint8_t pCol[] = { 0x00, 0x00, 0x01, 0xDF }; /* 0->479 */
 
@@ -59,9 +64,6 @@ uint8_t pPage[] = { 0x00, 0x00, 0x03, 0x1F }; /*   0 -> 799 */
 static void LTDC_Init();
 static uint8_t LCD_Init(void);
 static void LCD_LayerInit(uint16_t LayerIndex, uint32_t *Address);
-
-extern void DSI_IRQHandler(void);
-extern void DMA2D_IRQHandler(void);
 
 /**
  * Request TE at column 570.
@@ -86,8 +88,6 @@ OTM8009TouchController tc;
 CortexMMCUInstrumentation mcuInstr;
 
 void hw_init() {
-	NVIC_SetVector(DSI_IRQn, (uint32_t) DSI_IRQHandler);
-	NVIC_SetVector(DMA2D_IRQn, (uint32_t) DMA2D_IRQHandler);
 
 	LCD_Init();
 
@@ -147,6 +147,9 @@ void touchgfx_init() {
 	hal->enableMCULoadCalculation(true);
 
 	hal->enableInterrupts(); // Turn on the interrupts
+
+	// Initialize Canvas buffer
+	CanvasWidgetRenderer::setupBuffer(canvasBuffer, CANVAS_BUFFER_SIZE);
 }
 }
 /**

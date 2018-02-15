@@ -27,6 +27,9 @@ public:
     {
         model = m;
     }
+
+    virtual void setAngle(float angle){
+    }
 protected:
     Model* model;
 };

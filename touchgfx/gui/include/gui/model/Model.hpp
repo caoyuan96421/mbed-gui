@@ -35,11 +35,19 @@ public:
      * the ModelListener interface.
      */
     void tick();
+
+	float getMotorangle() const
+	{
+		return motorangle;
+	}
+
 protected:
     /**
      * Pointer to the currently active presenter.
      */
+
     ModelListener* modelListener;
+    float motorangle;
 };
 
 #endif /* MODEL_HPP */

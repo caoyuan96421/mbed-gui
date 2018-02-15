@@ -5,12 +5,9 @@
 .o
 .d
 .log
-.touchgfx
 /.mbedignore
-/touchgfx/assets
 /touchgfx/build
 /touchgfx/config
-/touchgfx/generated
 /touchgfx/simulator
 /touchgfx/target
 /touchgfx/touchgfx

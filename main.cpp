@@ -1,4 +1,3 @@
-#include <driver/OmronE6CPDriver.h>
 #include <driver/AMIS30543StepperDriver.h>
 #include "mbed.h"
 #include "rtos.h"
@@ -9,23 +8,26 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdlib.h>
-#include <telescope/config/TelescopeConfiguration.h>
 #include "stm32f4xx.h"
 #include "stm32f4xx_hal_dsi.h"
+#include "StepOut.h"
 
-DigitalOut led1(LED1);
-DigitalOut led2(LED2);
+DigitalOut led(LED1);
+StepOut led2(PB_1);
 Thread th;
 Thread printer_th(osPriorityNormal, 2048, NULL, "Printer Thread");
 
-void blinker(DigitalOut *led) {
-	while (1) {
-		*led = !(*led);
-		wait(0.1);
+void blinker()
+{
+	while (1)
+	{
+		led = !led;
+		wait(0.2);
 	}
 }
 
-void board_init() {
+void board_init()
+{
 	BSP_SDRAM_Init();
 	BSP_QSPI_Init();
 	BSP_QSPI_EnableMemoryMappedMode();
@@ -33,21 +35,25 @@ void board_init() {
 
 Thread th_tgfx(osPriorityNormal, 16384, NULL, "GUI Thread");
 
-void gui_thread() {
+void gui_thread()
+{
 	touchgfx::HAL::getInstance()->taskEntry();
 }
 
 /* Mail */
-typedef struct {
-	char msg[64];
+typedef struct
+{
+	char msg[128];
 } mail_t;
 
 typedef Mail<mail_t, 256> MB_t;
 MB_t mbox;
 
 Timer tim;
-void printer(MB_t *mbox) {
-	while (true) {
+void printer(MB_t *mbox)
+{
+	while (true)
+	{
 		mail_t *m = (mail_t *) mbox->get().value.p;
 		printf("%s\r\n", m->msg);
 		mbox->free(m);
@@ -57,58 +63,25 @@ void printer(MB_t *mbox) {
 /**
  * Printf for debugging use. Takes about 20us for each call. Can be called from any context
  */
-void xprintf(const char* format, ...) {
+void xprintf(const char* format, ...)
+{
 	uint16_t len;
 	va_list argptr;
 	va_start(argptr, format);
 
 	mail_t *m = mbox.alloc();
 	len = sprintf(m->msg, "%6d>", tim.read_ms());
-	vsprintf(&m->msg[len], format, argptr);
+	len += vsprintf(&m->msg[len], format, argptr);
 	mbox.put(m);
 
 	va_end(argptr);
 }
 
-TelescopeConfiguration config;
-OmronE6CPDriver omron((DigitalOut*) config.getConfiguration("PECEncoderCLK"),
-		(DigitalOut*) config.getConfiguration("PECEncoderLD"),
-		(DigitalIn*) config.getConfiguration("PECEncoderDATA"));
-Thread encoderThread;
-
-void encoder_task() {
-//	omron.init();
-	while (true) {
-		uint32_t pos = omron.readPos();
-
-		xprintf("Current encoder position: %d", pos);
-
-		Thread::wait(1000);
-	}
-}
-
-AMIS30543StepperDriver stepper_driver(config.getPin("MotorSPIMOSI"),
-		config.getPin("MotorSPIMISO"), config.getPin("MotorSPISCLK"),
-		config.getPin("RAMotorStep"), config.getPin("RAMotorSPICS"),
-		config.getPin("RAMotorDir"));
-GenericStepperMotor *stepper = &stepper_driver;
-Thread stepperThread;
-
-void stepper_task() {
-	uint32_t i=0;
-	while (true) {
-		stepper->step();
-		if (i++ > 200 * 128) {
-			stepper->setStepDirection(!stepper->getStepDirection());
-			i = 0;
-		}
-		wait_us(100);
-//		Thread::wait(1);
-	}
-}
+extern void test_stepper();
 
 // main() runs in its own thread in the OS
-int main() {
+int main()
+{
 	/*Power up wait*/
 
 	Thread::wait(100);
@@ -121,17 +94,15 @@ int main() {
 
 	th_tgfx.start(gui_thread);
 
-	/* Start another blinker */
-	th.start(callback(blinker, &led2));
+	th.start(blinker);
 	printer_th.start(callback(printer, &mbox));
 
 	xprintf("System initialized");
 
-	/* Start encoder readout */
-	encoderThread.start(encoder_task);
+	led2.setPeriod(1);
+	led2.start();
 
-	/* Start stepper thread */
-	stepperThread.start(stepper_task);
+	test_stepper();
 
 	Thread::yield();
 }
