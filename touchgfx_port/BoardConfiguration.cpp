@@ -46,20 +46,22 @@ static RCC_PeriphCLKInitTypeDef PeriphClkInitStruct;
 LCD24bpp display;
 const uint16_t bitDepth = 24;
 
-#define FBSIZE (800*480*3)>>2
+#define FBSIZE (800*480*3)>>1
 #define CANVAS_BUFFER_SIZE 16384
 
 // Allocate the frame buffer
 __attribute__((section (".sdram")))
-  uint32_t frameBuf0[FBSIZE];
+     uint32_t frameBuf0[FBSIZE];
 
 // Allocate buffer for Canvas widgets
 __attribute__((section (".sdram")))
-  uint8_t canvasBuffer[CANVAS_BUFFER_SIZE];
+     uint8_t canvasBuffer[CANVAS_BUFFER_SIZE];
 
-uint8_t pCol[] = { 0x00, 0x00, 0x01, 0xDF }; /* 0->479 */
+uint8_t pCol[] =
+{ 0x00, 0x00, 0x01, 0xDF }; /* 0->479 */
 
-uint8_t pPage[] = { 0x00, 0x00, 0x03, 0x1F }; /*   0 -> 799 */
+uint8_t pPage[] =
+{ 0x00, 0x00, 0x03, 0x1F }; /*   0 -> 799 */
 
 static void LTDC_Init();
 static uint8_t LCD_Init(void);
@@ -68,7 +70,8 @@ static void LCD_LayerInit(uint16_t LayerIndex, uint32_t *Address);
 /**
  * Request TE at column 570.
  */
-void LCD_ReqTear(void) {
+void LCD_ReqTear(void)
+{
 	static uint8_t ScanLineParams[2];
 
 	static const uint16_t scanline = 570;
@@ -81,13 +84,15 @@ void LCD_ReqTear(void) {
 	HAL_DSI_ShortWrite(&hdsi_eval, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x35, 0x00);
 }
 
-namespace touchgfx {
+namespace touchgfx
+{
 
 STM32F4DMA dma;
 OTM8009TouchController tc;
 CortexMMCUInstrumentation mcuInstr;
 
-void hw_init() {
+void hw_init()
+{
 
 	LCD_Init();
 
@@ -96,21 +101,26 @@ void hw_init() {
 	BSP_LCD_SelectLayer(0);
 
 	HAL_DSI_LongWrite(&hdsi_eval, 0, DSI_DCS_LONG_PKT_WRITE, 4,
-			OTM8009A_CMD_CASET, pCol);
+	OTM8009A_CMD_CASET, pCol);
 
 	HAL_DSI_LongWrite(&hdsi_eval, 0, DSI_DCS_LONG_PKT_WRITE, 4,
 	OTM8009A_CMD_PASET, pPage);
+
+	HAL_DSI_ShortWrite(&hdsi_eval, 0, DSI_DCS_SHORT_PKT_WRITE_P0,
+	OTM8009A_CMD_DISPOFF, 0);
 
 	GPIO::init();
 
 	tc.init();
 }
 
-static unsigned int xsize() {
+static unsigned int xsize()
+{
 	return BSP_LCD_GetYSize();
 }
 
-static unsigned int ysize() {
+static unsigned int ysize()
+{
 	return BSP_LCD_GetXSize();
 }
 
@@ -118,7 +128,8 @@ static unsigned int ysize() {
 
 HAL *hal;
 
-void touchgfx_init() {
+void touchgfx_init()
+{
 	uint16_t dispWidth = xsize();
 	uint16_t dispHeight = ysize();
 	hal = &touchgfx_generic_init<STM32F4HAL_DSI>(dma, display, tc, dispWidth,
@@ -150,6 +161,8 @@ void touchgfx_init() {
 
 	// Initialize Canvas buffer
 	CanvasWidgetRenderer::setupBuffer(canvasBuffer, CANVAS_BUFFER_SIZE);
+
+
 }
 }
 /**
@@ -162,7 +175,8 @@ void touchgfx_init() {
  * @param  None
  * @retval LCD state
  */
-static uint8_t LCD_Init(void) {
+static uint8_t LCD_Init(void)
+{
 
 	GPIO_InitTypeDef GPIO_Init_Structure;
 
@@ -181,6 +195,10 @@ static uint8_t LCD_Init(void) {
 	/*Disable interrupts for now*/
 	NVIC_DisableIRQ(DMA2D_IRQn);
 	NVIC_DisableIRQ(DSI_IRQn);
+
+
+	NVIC_SetPriority(DMA2D_IRQn, 0);
+	NVIC_SetPriority(DSI_IRQn, 1);
 
 	/* LCD clock configuration */
 	PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_LTDC
@@ -289,7 +307,8 @@ static uint8_t LCD_Init(void) {
  * @param  None
  * @retval None
  */
-static void LTDC_Init(void) {
+static void LTDC_Init(void)
+{
 	/* DeInit */
 	HAL_LTDC_DeInit(&hltdc_eval);
 
@@ -325,7 +344,8 @@ static void LTDC_Init(void) {
  * @param  FB_Address: Layer frame buffer
  * @retval None
  */
-static void LCD_LayerInit(uint16_t LayerIndex, uint32_t *Address) {
+static void LCD_LayerInit(uint16_t LayerIndex, uint32_t *Address)
+{
 	LCD_LayerCfgTypeDef Layercfg;
 
 	/* Layer Init */

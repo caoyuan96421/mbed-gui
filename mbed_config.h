@@ -46,11 +46,12 @@
 #define MBED_CONF_PPP_CELL_IFACE_AT_PARSER_BUFFER_SIZE    256                          // set by library:ppp-cell-iface
 #define MBED_CONF_TARGET_LSE_AVAILABLE                    1                            // set by target:FAMILY_STM32
 #define MBED_CONF_NSAPI_PRESENT                           1                            // set by library:nsapi
-#define MBED_CONF_PLATFORM_STDIO_BAUD_RATE                115200                         // set by library:platform
+#define MBED_CONF_PLATFORM_STDIO_BAUD_RATE                115200                       // set by application[*]
 #define CLOCK_SOURCE                                      USE_PLL_HSE_XTAL|USE_PLL_HSI // set by target:DISCO_F469NI
 #define MBED_CONF_EVENTS_SHARED_HIGHPRIO_STACKSIZE        1024                         // set by library:events
 #define MBED_CONF_EVENTS_SHARED_HIGHPRIO_EVENTSIZE        256                          // set by library:events
 // Macros
+#define USB_BPP                                           24                           // defined by application
 #define UNITY_INCLUDE_CONFIG_H                                                         // defined by library:utest
 
 #endif

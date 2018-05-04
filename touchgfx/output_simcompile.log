@@ -1,44 +1,100 @@
 Converting images
+Compiling gui/src/settingscreen_screen/SettingScreenPresenter.cpp
+Compiling gui/src/settingscreen_screen/SettingScreenView.cpp
+Compiling gui/src/containers/ConfigPopup.cpp
 Compiling gui/src/homescreen_screen/HomeScreenView.cpp
 Compiling gui/src/homescreen_screen/HomeScreenPresenter.cpp
-Compiling gui/src/model/Model.cpp
-Compiling generated/gui_generated/src/common/FrontendApplicationBase.cpp
-Compiling generated/fonts/src/Table_verdana_10_4bpp.cpp
-Compiling generated/fonts/src/Kerning_verdana_20_4bpp.cpp
-Compiling generated/fonts/src/Font_verdana_10_4bpp.cpp
-Compiling generated/fonts/src/Table_verdana_40_4bpp.cpp
-Compiling generated/fonts/src/Table_verdana_20_4bpp.cpp
-Compiling generated/fonts/src/ApplicationFontProvider.cpp
-In file included from gui/src/homescreen_screen/HomeScreenView.cpp:1:0:
-gui/include/gui/homescreen_screen/HomeScreenView.hpp:6:38: fatal error: gui/widgets/MotorDisplay.h: No such file or directory
- #include <gui/widgets/MotorDisplay.h>
-                                      ^
+Compiling gui/src/basescreen_screen/BaseScreenView.cpp
+Compiling gui/src/starmapscreen_screen/StarMapScreenPresenter.cpp
+Compiling gui/src/mountscreen_screen/MountScreenView.cpp
+Compiling gui/src/mountscreen_screen/MountScreenPresenter.cpp
+Compiling gui/src/starmapscreen_screen/StarMapScreenView.cpp
+In file included from generated/gui_generated/include/gui_generated/homescreen_screen/HomeScreenViewBase.hpp:9:0,
+                 from gui/include/gui/homescreen_screen/HomeScreenView.hpp:4,
+                 from gui/src/homescreen_screen/HomeScreenView.cpp:1:
+gui/include/gui/homescreen_screen/HomeScreenPresenter.hpp:5:69: fatal error: gui/include/gui/basescreen_screen/BaseScreenPresenter.hpp: No such file or directory
+ #include <gui/include/gui/basescreen_screen/BaseScreenPresenter.hpp>
+                                                                     ^
+compilation terminated.
+In file included from gui/src/containers/ConfigPopup.cpp:1:0:
+gui/include/gui/containers/ConfigPopup.hpp:5:30: fatal error: TelescopeBackend.h: No such file or directory
+ #include "TelescopeBackend.h"
+                              ^
+compilation terminated.
+In file included from generated/gui_generated/include/gui_generated/settingscreen_screen/SettingScreenViewBase.hpp:9:0,
+                 from gui/include/gui/settingscreen_screen/SettingScreenView.hpp:4,
+                 from gui/src/settingscreen_screen/SettingScreenPresenter.cpp:1:
+gui/include/gui/settingscreen_screen/SettingScreenPresenter.hpp:5:69: fatal error: gui/include/gui/basescreen_screen/BaseScreenPresenter.hpp: No such file or directory
+ #include <gui/include/gui/basescreen_screen/BaseScreenPresenter.hpp>
+                                                                     ^
 compilation terminated.
 simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/homescreen_screen/HomeScreenView.o' failed
 make[2]: *** [build/MINGW32_NT-6.2/gui/src/homescreen_screen/HomeScreenView.o] Error 1
 make[2]: *** Waiting for unfinished jobs....
-gui/src/model/Model.cpp:3:26: fatal error: RotationAxis.h: No such file or directory
- #include <RotationAxis.h>
-                          ^
+In file included from generated/gui_generated/include/gui_generated/homescreen_screen/HomeScreenViewBase.hpp:9:0,
+                 from gui/include/gui/homescreen_screen/HomeScreenView.hpp:4,
+                 from gui/src/homescreen_screen/HomeScreenPresenter.cpp:1:
+gui/include/gui/homescreen_screen/HomeScreenPresenter.hpp:5:69: fatal error: gui/include/gui/basescreen_screen/BaseScreenPresenter.hpp: No such file or directory
+ #include <gui/include/gui/basescreen_screen/BaseScreenPresenter.hpp>
+                                                                     ^
 compilation terminated.
-simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/model/Model.o' failed
-make[2]: *** [build/MINGW32_NT-6.2/gui/src/model/Model.o] Error 1
-In file included from gui/src/homescreen_screen/HomeScreenPresenter.cpp:1:0:
-gui/include/gui/homescreen_screen/HomeScreenView.hpp:6:38: fatal error: gui/widgets/MotorDisplay.h: No such file or directory
- #include <gui/widgets/MotorDisplay.h>
-                                      ^
+In file included from generated/gui_generated/include/gui_generated/settingscreen_screen/SettingScreenViewBase.hpp:9:0,
+                 from gui/include/gui/settingscreen_screen/SettingScreenView.hpp:4,
+                 from gui/src/settingscreen_screen/SettingScreenView.cpp:1:
+gui/include/gui/settingscreen_screen/SettingScreenPresenter.hpp:5:69: fatal error: gui/include/gui/basescreen_screen/BaseScreenPresenter.hpp: No such file or directory
+ #include <gui/include/gui/basescreen_screen/BaseScreenPresenter.hpp>
+                                                                     ^
 compilation terminated.
-In file included from generated/gui_generated/include/gui_generated/common/FrontendHeapBase.hpp:14:0,
-                 from gui/include/gui/common/FrontendHeap.hpp:4,
-                 from generated/gui_generated/src/common/FrontendApplicationBase.cpp:6:
-gui/include/gui/homescreen_screen/HomeScreenView.hpp:6:38: fatal error: gui/widgets/MotorDisplay.h: No such file or directory
- #include <gui/widgets/MotorDisplay.h>
-                                      ^
-compilation terminated.
+simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/containers/ConfigPopup.o' failed
+make[2]: *** [build/MINGW32_NT-6.2/gui/src/containers/ConfigPopup.o] Error 1
+simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/settingscreen_screen/SettingScreenPresenter.o' failed
+make[2]: *** [build/MINGW32_NT-6.2/gui/src/settingscreen_screen/SettingScreenPresenter.o] Error 1
 simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/homescreen_screen/HomeScreenPresenter.o' failed
 make[2]: *** [build/MINGW32_NT-6.2/gui/src/homescreen_screen/HomeScreenPresenter.o] Error 1
-simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/generated/gui_generated/src/common/FrontendApplicationBase.o' failed
-make[2]: *** [build/MINGW32_NT-6.2/generated/gui_generated/src/common/FrontendApplicationBase.o] Error 1
+simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/settingscreen_screen/SettingScreenView.o' failed
+make[2]: *** [build/MINGW32_NT-6.2/gui/src/settingscreen_screen/SettingScreenView.o] Error 1
+In file included from generated/gui_generated/include/gui_generated/starmapscreen_screen/StarMapScreenViewBase.hpp:9:0,
+                 from gui/include/gui/starmapscreen_screen/StarMapScreenView.hpp:4,
+                 from gui/src/starmapscreen_screen/StarMapScreenView.cpp:1:
+gui/include/gui/starmapscreen_screen/StarMapScreenPresenter.hpp:6:69: fatal error: gui/include/gui/basescreen_screen/BaseScreenPresenter.hpp: No such file or directory
+ #include <gui/include/gui/basescreen_screen/BaseScreenPresenter.hpp>
+                                                                     ^
+compilation terminated.
+In file included from generated/gui_generated/include/gui_generated/mountscreen_screen/MountScreenViewBase.hpp:9:0,
+                 from gui/include/gui/mountscreen_screen/MountScreenView.hpp:4,
+                 from gui/src/mountscreen_screen/MountScreenView.cpp:1:
+gui/include/gui/mountscreen_screen/MountScreenPresenter.hpp:5:69: fatal error: gui/include/gui/basescreen_screen/BaseScreenPresenter.hpp: No such file or directory
+ #include <gui/include/gui/basescreen_screen/BaseScreenPresenter.hpp>
+                                                                     ^
+compilation terminated.
+In file included from generated/gui_generated/include/gui_generated/starmapscreen_screen/StarMapScreenViewBase.hpp:9:0,
+                 from gui/include/gui/starmapscreen_screen/StarMapScreenView.hpp:4,
+                 from gui/src/starmapscreen_screen/StarMapScreenPresenter.cpp:1:
+gui/include/gui/starmapscreen_screen/StarMapScreenPresenter.hpp:6:69: fatal error: gui/include/gui/basescreen_screen/BaseScreenPresenter.hpp: No such file or directory
+ #include <gui/include/gui/basescreen_screen/BaseScreenPresenter.hpp>
+                                                                     ^
+In file included from generated/gui_generated/include/gui_generated/mountscreen_screen/MountScreenViewBase.hpp:9:0,
+                 from gui/include/gui/mountscreen_screen/MountScreenView.hpp:4,
+                 from gui/src/mountscreen_screen/MountScreenPresenter.cpp:1:
+gui/include/gui/mountscreen_screen/MountScreenPresenter.hpp:5:69: fatal error: gui/include/gui/basescreen_screen/BaseScreenPresenter.hpp: No such file or directory
+ #include <gui/include/gui/basescreen_screen/BaseScreenPresenter.hpp>
+                                                                     ^
+compilation terminated.
+compilation terminated.
+simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/starmapscreen_screen/StarMapScreenView.o' failed
+make[2]: *** [build/MINGW32_NT-6.2/gui/src/starmapscreen_screen/StarMapScreenView.o] Error 1
+simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/mountscreen_screen/MountScreenView.o' failed
+make[2]: *** [build/MINGW32_NT-6.2/gui/src/mountscreen_screen/MountScreenView.o] Error 1
+simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/mountscreen_screen/MountScreenPresenter.o' failed
+make[2]: *** [build/MINGW32_NT-6.2/gui/src/mountscreen_screen/MountScreenPresenter.o] Error 1
+simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/starmapscreen_screen/StarMapScreenPresenter.o' failed
+make[2]: *** [build/MINGW32_NT-6.2/gui/src/starmapscreen_screen/StarMapScreenPresenter.o] Error 1
+gui/src/basescreen_screen/BaseScreenView.cpp: In member function 'void BaseScreenView::setTime(time_t)':
+gui/src/basescreen_screen/BaseScreenView.cpp:35:26: error: 'gmtime_r' was not declared in this scope
+  gmtime_r(&timestamp, &ts);
+                          ^
+simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/basescreen_screen/BaseScreenView.o' failed
+make[2]: *** [build/MINGW32_NT-6.2/gui/src/basescreen_screen/BaseScreenView.o] Error 1
 simulator/gcc/Makefile:173: recipe for target 'generate_assets' failed
 make[1]: *** [generate_assets] Error 2
 simulator/gcc/Makefile:31: recipe for target 'all' failed

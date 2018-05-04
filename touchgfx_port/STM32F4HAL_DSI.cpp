@@ -48,6 +48,7 @@
 #include "stm32f4xx_hal_dsi.h"
 #include "stm32f4xx_hal_ltdc.h"
 #include "stm32f4xx_hal_gpio.h"
+#include "otm8009a.h"
 #include "mbed.h"
 #include "rtos.h"
 
@@ -72,97 +73,113 @@ static bool doubleBufferingEnabled = false;
 static uint16_t* currFbBase = 0;
 static uint16_t bitDepth = 0;
 static const uint16_t gesture_thhd = 50;
+static bool firstframe = true;
 
-STM32F4HAL_DSI::STM32F4HAL_DSI(touchgfx::DMA_Interface& dma, touchgfx::LCD& display, touchgfx::TouchController& tc, uint16_t width, uint16_t height) : touchgfx::HAL(dma, display, tc, width, height){
+STM32F4HAL_DSI::STM32F4HAL_DSI(touchgfx::DMA_Interface& dma,
+		touchgfx::LCD& display, touchgfx::TouchController& tc, uint16_t width,
+		uint16_t height) :
+		touchgfx::HAL(dma, display, tc, width, height)
+{
 	gestures.setDragThreshold(gesture_thhd);
+	firstframe = true;
 }
 
 uint16_t* STM32F4HAL_DSI::getTFTFrameBuffer() const
 {
-    return currFbBase;
+	return currFbBase;
 }
 
-void STM32F4HAL_DSI::setFrameBufferStartAddress(void* adr, uint16_t depth, bool useDoubleBuffering, bool useAnimationStorage)
+void STM32F4HAL_DSI::setFrameBufferStartAddress(void* adr, uint16_t depth,
+		bool useDoubleBuffering, bool useAnimationStorage)
 {
-    // Make note of whether we are using double buffering.
-    doubleBufferingEnabled = useDoubleBuffering;
-    currFbBase = (uint16_t*)adr;
-    bitDepth = depth;
-    HAL::setFrameBufferStartAddress(adr, depth, useDoubleBuffering, useAnimationStorage);
+	// Make note of whether we are using double buffering.
+	doubleBufferingEnabled = useDoubleBuffering;
+	currFbBase = (uint16_t*) adr;
+	bitDepth = depth;
+	HAL::setFrameBufferStartAddress(adr, depth, useDoubleBuffering,
+			useAnimationStorage);
 }
 
 void STM32F4HAL_DSI::setTFTFrameBuffer(uint16_t* adr)
 {
-    if (doubleBufferingEnabled)
-    {
-        __HAL_DSI_WRAPPER_DISABLE(&hdsi_eval);
-        LTDC_Layer1->CFBAR = (uint32_t)adr;
-        LTDC->SRCR |= LTDC_SRCR_IMR;
-        currFbBase = adr;
-        __HAL_DSI_WRAPPER_ENABLE(&hdsi_eval);
-    }
+	if (doubleBufferingEnabled)
+	{
+		__HAL_DSI_WRAPPER_DISABLE(&hdsi_eval);
+		LTDC_Layer1->CFBAR = (uint32_t) adr;
+		LTDC->SRCR |= LTDC_SRCR_IMR;
+		currFbBase = adr;
+		__HAL_DSI_WRAPPER_ENABLE(&hdsi_eval);
+	}
 }
 
 void STM32F4HAL_DSI::configureInterrupts()
 {
-    // These two priorities MUST be EQUAL, and MUST be functionally lower than RTOS scheduler interrupts.
-    NVIC_SetPriority(DMA2D_IRQn, 7);
-    NVIC_SetPriority(DSI_IRQn, 7);
+	// These two priorities MUST be EQUAL, and MUST be functionally lower than RTOS scheduler interrupts.
+	NVIC_SetPriority(DMA2D_IRQn, 7);
+	NVIC_SetPriority(DSI_IRQn, 7);
 }
 
 /* Enable LCD line interrupt, when entering video (active) area */
 void STM32F4HAL_DSI::enableLCDControllerInterrupt()
 {
-    LCD_ReqTear();
+	LCD_ReqTear();
 
-    __HAL_DSI_CLEAR_FLAG(&hdsi_eval, DSI_IT_ER);
-    __HAL_DSI_CLEAR_FLAG(&hdsi_eval, DSI_IT_TE);
-    __HAL_DSI_ENABLE_IT(&hdsi_eval, DSI_IT_TE);
-    __HAL_DSI_ENABLE_IT(&hdsi_eval, DSI_IT_ER);
+	__HAL_DSI_CLEAR_FLAG(&hdsi_eval, DSI_IT_ER);
+	__HAL_DSI_CLEAR_FLAG(&hdsi_eval, DSI_IT_TE);
+	__HAL_DSI_ENABLE_IT(&hdsi_eval, DSI_IT_TE);
+	__HAL_DSI_ENABLE_IT(&hdsi_eval, DSI_IT_ER);
 
 }
 
 void STM32F4HAL_DSI::disableInterrupts()
 {
-    NVIC_DisableIRQ(DMA2D_IRQn);
-    NVIC_DisableIRQ(DSI_IRQn);
+	NVIC_DisableIRQ(DMA2D_IRQn);
+	NVIC_DisableIRQ(DSI_IRQn);
 }
 
 void STM32F4HAL_DSI::enableInterrupts()
 {
-    NVIC_EnableIRQ(DMA2D_IRQn);
-    NVIC_EnableIRQ(DSI_IRQn);
+	NVIC_EnableIRQ(DMA2D_IRQn);
+	NVIC_EnableIRQ(DSI_IRQn);
 }
 
-uint32_t t=0;
-void STM32F4HAL_DSI::tick(){
+uint32_t t = 0;
+void STM32F4HAL_DSI::tick()
+{
 	HAL::tick();
 	t++;
 }
 
-
 bool STM32F4HAL_DSI::beginFrame()
 {
 	core_util_critical_section_enter();
-    refreshRequested = false;
-    core_util_critical_section_exit();
-    return HAL::beginFrame();
+	refreshRequested = false;
+	core_util_critical_section_exit();
+	return HAL::beginFrame();
 }
+
 
 void STM32F4HAL_DSI::endFrame()
 {
-    HAL::endFrame();
+	HAL::endFrame();
 	core_util_critical_section_enter();
-    if (frameBufferUpdatedThisFrame)
-    {
-        refreshRequested = true;
-    }
+	if (frameBufferUpdatedThisFrame)
+	{
+		refreshRequested = true;
+	}
+	if (firstframe)
+	{
+		HAL_DSI_ShortWrite(&hdsi_eval, 0, DSI_DCS_SHORT_PKT_WRITE_P0,
+		OTM8009A_CMD_DISPON, 0);
+		firstframe = false;
+	}
 	core_util_critical_section_exit();
 }
 
 extern "C" void DSI_IRQHandler(void)
 {
-	if (__HAL_DSI_GET_IT_SOURCE(&hdsi_eval, DSI_IT_TE) && __HAL_DSI_GET_FLAG(&hdsi_eval, DSI_FLAG_TE))
+	if (__HAL_DSI_GET_IT_SOURCE(&hdsi_eval,
+			DSI_IT_TE) && __HAL_DSI_GET_FLAG(&hdsi_eval, DSI_FLAG_TE))
 	{
 		// Tearing effect interrupt. Occurs periodically (every 15.7 ms on 469 eval/disco boards)
 
@@ -196,7 +213,8 @@ extern "C" void DSI_IRQHandler(void)
 			GPIO::clear(GPIO::VSYNC_FREQ);
 		}
 	}
-	if (__HAL_DSI_GET_IT_SOURCE(&hdsi_eval, DSI_IT_ER) && __HAL_DSI_GET_FLAG(&hdsi_eval, DSI_FLAG_ER))
+	if (__HAL_DSI_GET_IT_SOURCE(&hdsi_eval,
+			DSI_IT_ER) && __HAL_DSI_GET_FLAG(&hdsi_eval, DSI_FLAG_ER))
 	{
 		// End-of-refresh interrupt
 		__HAL_DSI_CLEAR_FLAG(&hdsi_eval, DSI_IT_ER);

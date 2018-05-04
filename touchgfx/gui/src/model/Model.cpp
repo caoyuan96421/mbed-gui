@@ -1,17 +1,23 @@
 #include <gui/model/Model.hpp>
 #include <gui/model/ModelListener.hpp>
-#include <RotationAxis.h>
+#include <ctime>
 
 Model::Model() :
-		modelListener(0), motorangle(0)
+		modelListener(0)
 {
 }
 
-extern RotationAxis axis;
-
 void Model::tick()
 {
-	motorangle = axis.getAngleDeg();
+	static int timeupdate = 0;
 	if (modelListener)
-		modelListener->setAngle(motorangle);
+	{
+		if (!(timeupdate--))
+		{
+			// Update time every 10 ticks
+			modelListener->setTime(time(NULL));
+			timeupdate = 10;
+		}
+
+	}
 }

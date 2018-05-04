@@ -2,6 +2,7 @@
 #define MODELLISTENER_HPP
 
 #include <gui/model/Model.hpp>
+#include <ctime>
 
 /**
  * ModelListener is the interface through which the Model can inform the currently
@@ -28,7 +29,7 @@ public:
         model = m;
     }
 
-    virtual void setAngle(float angle){
+    virtual void setTime(time_t timestamp){
     }
 protected:
     Model* model;
