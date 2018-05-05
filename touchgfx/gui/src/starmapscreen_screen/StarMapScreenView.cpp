@@ -1,4 +1,5 @@
 #include <gui/starmapscreen_screen/StarMapScreenView.hpp>
+#include <cstdio>
 
 StarMapScreenView::StarMapScreenView() :
 		buttonCallback(this, &StarMapScreenView::buttonPressed)
@@ -16,6 +17,7 @@ StarMapScreenView::StarMapScreenView() :
 	button_right.setAction(buttonCallback);
 	button_down.setAction(buttonCallback);
 	button_up.setAction(buttonCallback);
+
 }
 
 void StarMapScreenView::setupScreen()
@@ -49,11 +51,12 @@ void StarMapScreenView::buttonPressed(const AbstractButton& src)
 			// Max FOV: 45 deg
 			fov = 45;
 		}
-		if (fov < 1)
+		if (fov < 0.5)
 		{
 			// Min FOV: 1 deg
-			fov = 1;
+			fov = 0.5;
 		}
+		printf("FOV: %f\r\n", fov);
 		starmap.setFOV(fov);
 	}
 	else
@@ -66,18 +69,19 @@ void StarMapScreenView::buttonPressed(const AbstractButton& src)
 		{
 			ra = remainder(ra + fov * 0.2, 360.0);
 		}
-		else if (&src == &button_down)
+		else if (&src == &button_up)
 		{
 			dec = dec + fov * 0.2;
 			if (dec > 90)
 				dec = 90;
 		}
-		else if (&src == &button_up)
+		else if (&src == &button_down)
 		{
 			dec = dec - fov * 0.2;
 			if (dec < -90)
 				dec = -90;
 		}
+		printf("RA: %f, DEC: %f\r\n", ra, dec);
 		starmap.aimAt(ra, dec);
 	}
 }

@@ -137,11 +137,6 @@ int main()
 	board_init();
 	tim.start();
 
-	/* Initialize touchGFX GUI Interface*/
-	touchgfx::hw_init();
-	touchgfx::touchgfx_init();
-
-	th_tgfx.start(gui_thread);
 
 	blinker_thread.start(blinker);
 	printer_th.start(callback(printer, &mbox));
@@ -191,7 +186,12 @@ int main()
 		USBD_Start(&hUSBDDevice);
 	}
 
-//	StarCatalog::getInstance().query_allconstellations(0, 90, 0, 90);
+	StarCatalog::getInstance(); // Initialize Catalog
+
+	/* Initialize touchGFX GUI Interface*/
+	touchgfx::hw_init();
+	touchgfx::touchgfx_init();
+	th_tgfx.start(gui_thread);
 
 //	PwmOut out(D3);
 //	InterruptIn in(D7);

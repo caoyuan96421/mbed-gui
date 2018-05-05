@@ -13,15 +13,15 @@
 #include <cassert>
 #include <cctype>
 
-#define MAX_STAR 3300
+#define MAX_STAR 42000
 
 //const char CATALOG_COMMON[] = "/sdcard/hygcommon.csv";
-const char CATALOG_CONSTELLATION[] = "/sdcard/hygconstellation.csv";
+const char CATALOG_CONSTELLATION[] = "/sdcard/hygmag8.csv";
 const char CATALOG_ALL[] = "/sdcard/hygfull.csv";
 
 // Catalog of constellation stars
 __attribute__((section (".sdram")))
-                 StarItem catalog_constellation[MAX_STAR];
+                        StarItem catalog_constellation[MAX_STAR];
 
 unsigned int size_catalog_constellation;
 
@@ -29,7 +29,7 @@ QuadTree qt_common;
 QuadTree qt_constellation;
 
 __attribute__((section (".sdram")))
-        static QTNode _nodefactory[MAX_STAR];
+               QTNode _nodefactory[MAX_STAR];
 
 static int _nodecount = 0;
 
@@ -113,11 +113,11 @@ void StarCatalog::loadCatalogs()
 		strcpy(star.name, s);
 
 		// Extract RA, convert to degrees relative to 0h0m0s
-		star.RA = remainder(strtod(strtok_ch(NULL, delim, &saveptr), NULL) * 15,
-				360.0);
+		star.RA = remainderf(
+				strtof(strtok_ch(NULL, delim, &saveptr), NULL) * 15.0f, 360.0f);
 
 		// Extract DEC
-		star.DEC = strtod(strtok_ch(NULL, delim, &saveptr), NULL);
+		star.DEC = strtof(strtok_ch(NULL, delim, &saveptr), NULL);
 
 		// Extract Distance
 		star.distance = strtof(strtok_ch(NULL, delim, &saveptr), NULL);
@@ -162,15 +162,97 @@ void StarCatalog::loadCatalogs()
 //	}
 //}
 
-void StarCatalog::query_common(void (*cb)(StarItem *, void *), double ramin,
-		double ramax, double decmin, double decmax, void *arg)
+void StarCatalog::query_common(void (*cb)(StarItem *, void *), float ramin,
+		float ramax, float decmin, float decmax, void *arg, float maxmag)
 {
-	qt_common.query(cb, NULL, ramin, ramax, decmin, decmax, arg);
+	qt_common.query(cb, NULL, ramin, ramax, decmin, decmax, arg, maxmag);
 }
 
-void StarCatalog::query_allconstellations(void (*cb)(StarItem *, void *),
-		double ramin, double ramax, double decmin, double decmax, void *arg)
+void StarCatalog::query_all(void (*cb)(StarItem *, void *), float ramin,
+		float ramax, float decmin, float decmax, void *arg, float maxmag)
 {
-	qt_constellation.query(cb, NULL, ramin, ramax, decmin, decmax, arg);
-	printf("Max depth: %d\r\n", qt_constellation.maxdepth);
+	qt_constellation.query(cb, NULL, ramin, ramax, decmin, decmax, arg, maxmag);
+//	printf("Max depth: %d\r\n", qt_constellation.maxdepth);
+}
+
+bool QuadTree::insert(StarItem* newstar)
+{
+	if (!newstar)
+	{
+		return false;
+	}
+	QTNode *p = &head;
+	while (p->star)
+	{
+		// Find quadrant and dive in
+		p = p->quadrant(newstar->RA, newstar->DEC);
+		if (p == NULL)
+			return false; // Failed
+	}
+
+	p->star = newstar;
+	if (p->depth > maxdepth)
+		maxdepth = p->depth;
+	return true;
+}
+
+void QuadTree::query(void (*cb)(StarItem*, void*), QTNode* p, float ral,
+		float rar, float decl, float decr, void* arg, float maxmag)
+{
+	if (p == NULL)
+	{
+		p = &head;
+	}
+
+	if (p == &head)
+	{
+		// Check
+		ral = remainder(ral, 360.0);
+		rar = remainder(rar, 360.0);
+		if (decl > decr)
+		{
+			double temp = decr;
+			decr = decl;
+			decl = temp;
+		}
+		if (decl < -90.0)
+			decl = -90.0;
+		if (decr > 90.0)
+			decr = 90.0;
+		if (ral > rar)
+		{
+			// Crossing 180/-180 RA, divide into two
+			query(cb, p, rar, 180.0, decl, decr, arg, maxmag);
+			query(cb, p, -180.0, ral, decl, decr, arg, maxmag);
+			return;
+		}
+	}
+
+// Check star at current node
+	if (p->star && p->star->magnitude < maxmag)
+	{
+		if (p->star->RA <= rar && p->star->RA >= ral && p->star->DEC <= decr
+				&& p->star->DEC >= decl)
+		{
+			cb(p->star, arg);
+		}
+	}
+	else{
+		// If current node is below magnitude threshhold, then no more searching
+		// Because its children must be even lower magnitude
+		return;
+	}
+
+// Now check daughters
+	if (!p->isleaf)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			if (p->daughters[i]
+					&& p->daughters[i]->intersects(ral, rar, decl, decr))
+			{
+				query(cb, p->daughters[i], ral, rar, decl, decr, arg, maxmag);
+			}
+		}
+	}
 }

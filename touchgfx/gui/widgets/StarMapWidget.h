@@ -13,6 +13,7 @@
 #include <touchgfx/widgets/canvas/Canvas.hpp>
 #include <touchgfx/Color.hpp>
 #include "StarCatalog.h"
+#include "mbed.h"
 
 using namespace touchgfx;
 
@@ -28,13 +29,24 @@ public:
 
 	void aimAt(double ra, double dec)
 	{
-		ra_ctr = ra;
-		dec_ctr = dec;
+		ra_ctr = remainderf(ra, 360.0f);
+		if (dec > 90.0f)
+			dec_ctr = 90.0f;
+		else if (dec < -90.0f)
+			dec_ctr = -90.0f;
+		else
+			dec_ctr = dec;
 		invalidate();
 	}
 
 	void setFOV(double fov)
 	{
+		if (fov > 45.0f)
+			fov = 45.0f;
+		if (fov < 0.5f)
+		{
+			fov = 0.5f;
+		}
 		fovw = fov;
 		fovh = fov / getWidth() * getHeight();
 		invalidate();
@@ -77,6 +89,9 @@ public:
 		return starpainter.getColor();
 	}
 
+	virtual void handleDragEvent(const DragEvent& evt);
+	virtual void handleClickEvent(const ClickEvent& evt);
+
 protected:
 	float ra_ctr, dec_ctr; // Center of FOV
 	float fovw; // Field of view along the width of the widget
@@ -91,6 +106,12 @@ private:
 	mutable float xp, yp, zp;
 	mutable float xq, yq;
 	mutable float fovr; // Field radius
+
+	bool ispressed;
+	bool isdoubleclick;
+	bool isdrag;
+	bool first;
+	Timer tim;
 
 	static void callback(StarItem*, void*);
 

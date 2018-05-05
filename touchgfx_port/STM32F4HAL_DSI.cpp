@@ -72,7 +72,7 @@ volatile bool refreshRequested = true;
 static bool doubleBufferingEnabled = false;
 static uint16_t* currFbBase = 0;
 static uint16_t bitDepth = 0;
-static const uint16_t gesture_thhd = 50;
+static const uint16_t gesture_thhd = 2;
 static bool firstframe = true;
 
 STM32F4HAL_DSI::STM32F4HAL_DSI(touchgfx::DMA_Interface& dma,

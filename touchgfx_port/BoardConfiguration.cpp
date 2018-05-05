@@ -47,7 +47,7 @@ LCD24bpp display;
 const uint16_t bitDepth = 24;
 
 #define FBSIZE (800*480*3)>>1
-#define CANVAS_BUFFER_SIZE 16384
+#define CANVAS_BUFFER_SIZE 262144
 
 // Allocate the frame buffer
 __attribute__((section (".sdram")))
@@ -146,7 +146,7 @@ void touchgfx_init()
 	hal->setFrameRateCompensation(false);
 //    hal.setButtonController(&btnctrl);
 	hal->setTouchSampleRate(1);
-	hal->setFingerSize(40);
+	hal->setFingerSize(35);
 
 	// This platform can handle simultaneous DMA and TFT accesses to SDRAM, so disable lock to increase performance.
 	hal->lockDMAToFrontPorch(false);

@@ -15,20 +15,20 @@ struct StarItem
 {
 	int id;
 	char BFname[12];
-	double RA;
-	double DEC;
+	float RA;
+	float DEC;
 	char name[20];
 	float distance;
 	float magnitude;
 	float absmagnitude;
 };
 
-inline double min(double x, double y)
+inline float min(float x, float y)
 {
 	return (x < y) ? x : y;
 }
 
-inline double max(double x, double y)
+inline float max(float x, float y)
 {
 	return (x > y) ? x : y;
 }
@@ -37,12 +37,12 @@ struct QTNode
 {
 	StarItem *star;
 	QTNode *daughters[4];
-	double ral, rar;
-	double decl, decr;
+	float ral, rar;
+	float decl, decr;
 	bool isleaf;
 	int depth;
 
-	QTNode(double xl = 0, double xr = 0, double yl = 0, double yr = 0) :
+	QTNode(float xl = 0, float xr = 0, float yl = 0, float yr = 0) :
 			star(NULL), ral(xl), rar(xr), decl(yl), decr(yr), isleaf(true), depth(
 					0)
 	{
@@ -63,15 +63,15 @@ struct QTNode
 
 	QTNode *malloc();
 
-	QTNode *quadrant(double ra, double dec)
+	QTNode *quadrant(float ra, float dec)
 	{
 		if (ra < ral || ra > rar || dec < decl || dec > decr)
 		{
 			// Not found
 			return NULL;
 		}
-		double ram = (ral + rar) / 2;
-		double decm = (decl + decr) / 2;
+		float ram = (ral + rar) * 0.5;
+		float decm = (decl + decr) * 0.5;
 
 		int q;
 		if (dec >= decm)
@@ -97,10 +97,10 @@ struct QTNode
 		{
 			// Create
 			isleaf = false;
-			double rl = (q & 1) ? ral : ram;
-			double rr = (q & 1) ? ram : rar;
-			double dl = (q & 2) ? decl : decm;
-			double dr = (q & 2) ? decm : decr;
+			float rl = (q & 1) ? ral : ram;
+			float rr = (q & 1) ? ram : rar;
+			float dl = (q & 2) ? decl : decm;
+			float dr = (q & 2) ? decm : decr;
 			daughters[q] = this->malloc();
 			*daughters[q] = QTNode(rl, rr, dl, dr);
 			daughters[q]->depth = depth + 1;
@@ -108,7 +108,7 @@ struct QTNode
 		}
 	}
 
-	bool intersects(double rl, double rr, double dl, double dr)
+	bool intersects(float rl, float rr, float dl, float dr)
 	{
 		if (max(rl, rr) <= ral || min(rl, rr) >= rar)
 			return false;
@@ -128,83 +128,9 @@ struct QuadTree
 	{
 	}
 
-	bool insert(StarItem *newstar)
-	{
-		if (!newstar)
-		{
-			return false;
-		}
-		QTNode *p = &head;
-		while (p->star)
-		{
-			// Find quadrant and dive in
-			p = p->quadrant(newstar->RA, newstar->DEC);
-			if (p == NULL)
-				return false; // Failed
-		}
-
-		p->star = newstar;
-		if (p->depth > maxdepth)
-			maxdepth = p->depth;
-		return true;
-	}
-
-	void query(void (*cb)(StarItem *, void *), QTNode *p, double ral,
-			double rar, double decl, double decr, void *arg)
-	{
-		if (p == NULL)
-		{
-			p = &head;
-		}
-
-		if (p == &head)
-		{
-			// Check
-			ral = remainder(ral, 360.0);
-			rar = remainder(rar, 360.0);
-			if (decl > decr)
-			{
-				double temp = decr;
-				decr = decl;
-				decl = temp;
-			}
-			if (decl < -90.0)
-				decl = -90.0;
-			if (decr > 90.0)
-				decr = 90.0;
-			if (ral > rar)
-			{
-				// Crossing 180/-180 RA, divide into two
-				query(cb, p, rar, 180.0, decl, decr, arg);
-				query(cb, p, -180.0, ral, decl, decr, arg);
-				return;
-			}
-		}
-
-		// Check star at current node
-		if (p->star)
-		{
-			if (p->star->RA <= rar && p->star->RA >= ral && p->star->DEC <= decr
-					&& p->star->DEC >= decl)
-			{
-				cb(p->star, arg);
-			}
-		}
-
-		// Now check daughters
-		if (!p->isleaf)
-		{
-			for (int i = 0; i < 4; i++)
-			{
-				if (p->daughters[i]
-						&& p->daughters[i]->intersects(ral, rar, decl, decr))
-				{
-					query(cb, p->daughters[i], ral, rar, decl, decr, arg);
-				}
-			}
-		}
-
-	}
+	bool insert(StarItem *newstar);
+	void query(void (*cb)(StarItem *, void *), QTNode *p, float ral, float rar,
+			float decl, float decr, void *arg, float maxmag);
 };
 
 class StarCatalog
@@ -216,10 +142,10 @@ public:
 		return instance;
 	}
 
-	void query_common(void (*cb)(StarItem *, void *), double ramin,
-			double ramax, double decmin, double decmax, void *arg);
-	void query_allconstellations(void (*cb)(StarItem *, void *), double ramin,
-			double ramax, double decmin, double decmax, void *arg);
+	void query_common(void (*cb)(StarItem *, void *), float ramin, float ramax,
+			float decmin, float decmax, void *arg, float maxmag);
+	void query_all(void (*cb)(StarItem *, void *), float ramin, float ramax,
+			float decmin, float decmax, void *arg, float maxmag);
 
 private:
 	StarCatalog();
