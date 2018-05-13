@@ -12,6 +12,7 @@ extern touchgfx::InternalFlashFont& getFont_trebuc_24_4bpp();
 extern touchgfx::InternalFlashFont& getFont_trebucbd_40_4bpp();
 extern touchgfx::InternalFlashFont& getFont_trebuc_32_4bpp();
 extern touchgfx::InternalFlashFont& getFont_DejaVuSans_Bold_40_4bpp();
+extern touchgfx::InternalFlashFont& getFont_trebuc_16_4bpp();
 
 touchgfx::Font* ApplicationFontProvider::getFont(touchgfx::FontId fontId)
 {
@@ -29,6 +30,9 @@ touchgfx::Font* ApplicationFontProvider::getFont(touchgfx::FontId fontId)
     
     case Typography::SYMBOL:
       return &(getFont_DejaVuSans_Bold_40_4bpp());
+    
+    case Typography::TINY:
+      return &(getFont_trebuc_16_4bpp());
     
     default:
       return 0;

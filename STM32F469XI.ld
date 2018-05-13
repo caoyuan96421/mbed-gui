@@ -158,19 +158,19 @@ SECTIONS
 		. = ALIGN(4);
 		__extflash_start__ = .;
 		*(*FlashSection)
+		*(.extflash*)
 		/**(.gnu.linkonce.r.*)*/
         . = ALIGN(4);
         __extflash_end__ = .;
 	} > EXTFLASH
 	
-    .sdram (NOLOAD):
-    {
-    	. = ALIGN(4);
-    	__sdram_start__ = .;
-    	*(.sdram*)
-    	. = ALIGN(4);
-    	__sdram_end__ = .;
-    	
-    } > SDRAM
-    
+  .sdram (NOLOAD):
+  {
+  	. = ALIGN(4);
+   	__sdram_start__ = .;
+   	*(.sdram*)
+   	. = ALIGN(4);
+   	__sdram_end__ = .;
+
+  } > SDRAM  
 }

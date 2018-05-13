@@ -1,5 +1,4 @@
 #include "mbed.h"
-#include "rtos.h"
 #include "stm32469i_discovery_sdram.h"
 #include "stm32469i_discovery_qspi.h"
 #include "usbd_core.h"
@@ -11,9 +10,10 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdlib.h>
-#include "stm32f4xx.h"
-#include "stm32f4xx_hal_dsi.h"
 #include "StarCatalog.h"
+#include "PlanetMoon.h"
+#include "SDIOBlockDevice.h"
+#include "FATFileSystem.h"
 
 DigitalOut led(LED1);
 Thread blinker_thread;
@@ -32,7 +32,7 @@ void board_init()
 {
 	BSP_SDRAM_Init();
 	BSP_QSPI_Init();
-	BSP_QSPI_EnableMemoryMappedMode();
+	BSP_QSPI_EnableMemoryMappedMode(); // Enable mapping of Flash memory
 }
 
 Thread th_tgfx(osPriorityNormal1, 16384, NULL, "GUI Thread");
@@ -117,8 +117,6 @@ void stprintf(FileHandle &f, const char *fmt, ...)
 	f.write(buf, len);
 }
 
-#include "SDIOBlockDevice.h"
-#include "FATFileSystem.h"
 /**
  * SD card reader hardware configuration
  */
@@ -136,7 +134,6 @@ int main()
 	Thread::wait(100);
 	board_init();
 	tim.start();
-
 
 	blinker_thread.start(blinker);
 	printer_th.start(callback(printer, &mbox));
@@ -189,6 +186,7 @@ int main()
 	StarCatalog::getInstance(); // Initialize Catalog
 
 	/* Initialize touchGFX GUI Interface*/
+
 	touchgfx::hw_init();
 	touchgfx::touchgfx_init();
 	th_tgfx.start(gui_thread);
@@ -200,7 +198,15 @@ int main()
 //	Thread::wait(2000);
 //	out.period_us(2);
 //	out.write(0.5);
+//	set_time(1525757480);
+	EquatorialCoordinates eq = PlanetMoon::calculatePosition(PlanetMoon::MOON, time(NULL), LocationCoordinates(0, 0));
+	printf("MOON: ");
+	eq.print();
 
+	eq = PlanetMoon::calculatePosition(PlanetMoon::MARS, time(NULL), LocationCoordinates(0, 0));
+	printf("MARS: ");
+	eq.print();
+//	printf("MOON: RA=%f, DEC=%f (J2000)\r\n", eq.ra, eq.dec);
 
 	while (1)
 	{

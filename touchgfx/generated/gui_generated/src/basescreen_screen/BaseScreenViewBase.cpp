@@ -33,7 +33,7 @@ BaseScreenViewBase::BaseScreenViewBase()  :
     Unicode::snprintf(timeBuffer, TIME_SIZE, "%s", TypedText(T_SINGLEUSEID8).getText());
     time.setWildcard(timeBuffer);
 
-    date.setPosition(300, 774, 175, 25);
+    date.setPosition(275, 772, 200, 28);
     date.setColor(touchgfx::Color::getColorFrom24BitRGB(255, 0, 0));
     date.setLinespacing(0);
     date.setTypedText(TypedText(T_SINGLEUSEID9));

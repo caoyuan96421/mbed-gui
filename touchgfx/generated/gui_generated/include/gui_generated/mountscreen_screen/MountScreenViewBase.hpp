@@ -49,6 +49,7 @@ protected:
     touchgfx::ButtonWithLabel buttontracksolar;
     touchgfx::ButtonWithLabel buttontrackking;
     touchgfx::TextAreaWithOneWildcard eqcoords_2;
+    touchgfx::Box starmap_bb;
 
 private:
 

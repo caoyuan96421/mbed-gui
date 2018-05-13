@@ -143,7 +143,7 @@ void STM32F4HAL_DSI::enableInterrupts()
 	NVIC_EnableIRQ(DSI_IRQn);
 }
 
-uint32_t t = 0;
+uint64_t t = 0;
 void STM32F4HAL_DSI::tick()
 {
 	HAL::tick();
@@ -167,13 +167,13 @@ void STM32F4HAL_DSI::endFrame()
 	{
 		refreshRequested = true;
 	}
+	core_util_critical_section_exit();
 	if (firstframe)
 	{
 		HAL_DSI_ShortWrite(&hdsi_eval, 0, DSI_DCS_SHORT_PKT_WRITE_P0,
 		OTM8009A_CMD_DISPON, 0);
 		firstframe = false;
 	}
-	core_util_critical_section_exit();
 }
 
 extern "C" void DSI_IRQHandler(void)
@@ -187,7 +187,7 @@ extern "C" void DSI_IRQHandler(void)
 		GPIO::set(GPIO::VSYNC_FREQ);
 		HAL::getInstance()->vSync();
 		OSWrappers::signalVSync();
-		if (!doubleBufferingEnabled && HAL::getInstance())
+		if (/*!doubleBufferingEnabled &&*/ HAL::getInstance())
 		{
 			// In single buffering, only require that the system waits for display update to be finished if we
 			// actually intend to update the display in this frame.

@@ -4,97 +4,122 @@ Compiling gui/src/settingscreen_screen/SettingScreenView.cpp
 Compiling gui/src/containers/ConfigPopup.cpp
 Compiling gui/src/homescreen_screen/HomeScreenView.cpp
 Compiling gui/src/homescreen_screen/HomeScreenPresenter.cpp
+Compiling gui/src/basescreen_screen/BaseScreenPresenter.cpp
 Compiling gui/src/basescreen_screen/BaseScreenView.cpp
 Compiling gui/src/starmapscreen_screen/StarMapScreenPresenter.cpp
 Compiling gui/src/starmapscreen_screen/StarMapScreenView.cpp
 Compiling gui/src/mountscreen_screen/MountScreenPresenter.cpp
-Compiling gui/src/mountscreen_screen/MountScreenView.cpp
-In file included from gui/src/containers/ConfigPopup.cpp:1:0:
-gui/include/gui/containers/ConfigPopup.hpp:5:30: fatal error: TelescopeBackend.h: No such file or directory
- #include "TelescopeBackend.h"
-                              ^
-compilation terminated.
-In file included from generated/gui_generated/include/gui_generated/homescreen_screen/HomeScreenViewBase.hpp:9:0,
-                 from gui/include/gui/homescreen_screen/HomeScreenView.hpp:4,
-                 from gui/src/homescreen_screen/HomeScreenPresenter.cpp:1:
-gui/include/gui/homescreen_screen/HomeScreenPresenter.hpp:5:69: fatal error: gui/include/gui/basescreen_screen/BaseScreenPresenter.hpp: No such file or directory
- #include <gui/include/gui/basescreen_screen/BaseScreenPresenter.hpp>
-                                                                     ^
-compilation terminated.
-In file included from generated/gui_generated/include/gui_generated/mountscreen_screen/MountScreenViewBase.hpp:9:0,
-                 from gui/include/gui/mountscreen_screen/MountScreenView.hpp:4,
-                 from gui/src/mountscreen_screen/MountScreenPresenter.cpp:1:
-gui/include/gui/mountscreen_screen/MountScreenPresenter.hpp:5:69: fatal error: gui/include/gui/basescreen_screen/BaseScreenPresenter.hpp: No such file or directory
- #include <gui/include/gui/basescreen_screen/BaseScreenPresenter.hpp>
-                                                                     ^
-compilation terminated.
-In file included from generated/gui_generated/include/gui_generated/settingscreen_screen/SettingScreenViewBase.hpp:9:0,
-                 from gui/include/gui/settingscreen_screen/SettingScreenView.hpp:4,
-                 from gui/src/settingscreen_screen/SettingScreenView.cpp:1:
-gui/include/gui/settingscreen_screen/SettingScreenPresenter.hpp:5:69: fatal error: gui/include/gui/basescreen_screen/BaseScreenPresenter.hpp: No such file or directory
- #include <gui/include/gui/basescreen_screen/BaseScreenPresenter.hpp>
-                                                                     ^
-compilation terminated.
-In file included from generated/gui_generated/include/gui_generated/settingscreen_screen/SettingScreenViewBase.hpp:9:0,
-                 from gui/include/gui/settingscreen_screen/SettingScreenView.hpp:4,
-                 from gui/src/settingscreen_screen/SettingScreenPresenter.cpp:1:
-gui/include/gui/settingscreen_screen/SettingScreenPresenter.hpp:5:69: fatal error: gui/include/gui/basescreen_screen/BaseScreenPresenter.hpp: No such file or directory
- #include <gui/include/gui/basescreen_screen/BaseScreenPresenter.hpp>
-                                                                     ^
-compilation terminated.
-simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/homescreen_screen/HomeScreenPresenter.o' failed
-make[2]: *** [build/MINGW32_NT-6.2/gui/src/homescreen_screen/HomeScreenPresenter.o] Error 1
-make[2]: *** Waiting for unfinished jobs....
-In file included from generated/gui_generated/include/gui_generated/homescreen_screen/HomeScreenViewBase.hpp:9:0,
+In file included from generated/gui_generated/include/gui_generated/common/FrontendApplicationBase.hpp:8:0,
+                 from gui/include/gui/common/FrontendApplication.hpp:4,
+                 from generated/gui_generated/include/gui_generated/homescreen_screen/HomeScreenViewBase.hpp:7,
                  from gui/include/gui/homescreen_screen/HomeScreenView.hpp:4,
                  from gui/src/homescreen_screen/HomeScreenView.cpp:1:
-gui/include/gui/homescreen_screen/HomeScreenPresenter.hpp:5:69: fatal error: gui/include/gui/basescreen_screen/BaseScreenPresenter.hpp: No such file or directory
- #include <gui/include/gui/basescreen_screen/BaseScreenPresenter.hpp>
-                                                                     ^
+gui/include/gui/model/Model.hpp:5:27: fatal error: CelestialMath.h: No such file or directory
+ #include "CelestialMath.h"
+                           ^
+In file included from generated/gui_generated/include/gui_generated/common/FrontendApplicationBase.hpp:8:0,
+                 from gui/include/gui/common/FrontendApplication.hpp:4,
+                 from generated/gui_generated/include/gui_generated/settingscreen_screen/SettingScreenViewBase.hpp:7,
+                 from gui/include/gui/settingscreen_screen/SettingScreenView.hpp:4,
+                 from gui/src/settingscreen_screen/SettingScreenView.cpp:1:
+gui/include/gui/model/Model.hpp:5:27: fatal error: CelestialMath.h: No such file or directory
+ #include "CelestialMath.h"
+                           ^
+compilation terminated.
+compilation terminated.
+In file included from generated/gui_generated/include/gui_generated/common/FrontendApplicationBase.hpp:8:0,
+                 from gui/include/gui/common/FrontendApplication.hpp:4,
+                 from generated/gui_generated/include/gui_generated/settingscreen_screen/SettingScreenViewBase.hpp:7,
+                 from gui/include/gui/settingscreen_screen/SettingScreenView.hpp:4,
+                 from gui/src/settingscreen_screen/SettingScreenPresenter.cpp:1:
+gui/include/gui/model/Model.hpp:5:27: fatal error: CelestialMath.h: No such file or directory
+ #include "CelestialMath.h"
+                           ^
+compilation terminated.
+In file included from generated/gui_generated/include/gui_generated/common/FrontendApplicationBase.hpp:8:0,
+                 from gui/include/gui/common/FrontendApplication.hpp:4,
+                 from generated/gui_generated/include/gui_generated/containers/ConfigPopupBase.hpp:7,
+                 from gui/include/gui/containers/ConfigPopup.hpp:4,
+                 from gui/src/containers/ConfigPopup.cpp:1:
+gui/include/gui/model/Model.hpp:5:27: fatal error: CelestialMath.h: No such file or directory
+ #include "CelestialMath.h"
+                           ^
+compilation terminated.
+simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/settingscreen_screen/SettingScreenView.o' failed
+make[2]: *** [build/MINGW32_NT-6.2/gui/src/settingscreen_screen/SettingScreenView.o] Error 1
+make[2]: *** Waiting for unfinished jobs....
+simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/homescreen_screen/HomeScreenView.o' failed
+make[2]: *** [build/MINGW32_NT-6.2/gui/src/homescreen_screen/HomeScreenView.o] Error 1
+simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/settingscreen_screen/SettingScreenPresenter.o' failed
+make[2]: *** [build/MINGW32_NT-6.2/gui/src/settingscreen_screen/SettingScreenPresenter.o] Error 1
+In file included from generated/gui_generated/include/gui_generated/common/FrontendApplicationBase.hpp:8:0,
+                 from gui/include/gui/common/FrontendApplication.hpp:4,
+                 from generated/gui_generated/include/gui_generated/basescreen_screen/BaseScreenViewBase.hpp:7,
+                 from gui/include/gui/basescreen_screen/BaseScreenView.hpp:4,
+                 from gui/src/basescreen_screen/BaseScreenPresenter.cpp:1:
+gui/include/gui/model/Model.hpp:5:27: fatal error: CelestialMath.h: No such file or directory
+ #include "CelestialMath.h"
+                           ^
 compilation terminated.
 simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/containers/ConfigPopup.o' failed
 make[2]: *** [build/MINGW32_NT-6.2/gui/src/containers/ConfigPopup.o] Error 1
-simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/settingscreen_screen/SettingScreenView.o' failed
-make[2]: *** [build/MINGW32_NT-6.2/gui/src/settingscreen_screen/SettingScreenView.o] Error 1
-simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/settingscreen_screen/SettingScreenPresenter.o' failed
-make[2]: *** [build/MINGW32_NT-6.2/gui/src/settingscreen_screen/SettingScreenPresenter.o] Error 1
-In file included from generated/gui_generated/include/gui_generated/starmapscreen_screen/StarMapScreenViewBase.hpp:9:0,
+simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/basescreen_screen/BaseScreenPresenter.o' failed
+make[2]: *** [build/MINGW32_NT-6.2/gui/src/basescreen_screen/BaseScreenPresenter.o] Error 1
+In file included from generated/gui_generated/include/gui_generated/common/FrontendApplicationBase.hpp:8:0,
+                 from gui/include/gui/common/FrontendApplication.hpp:4,
+                 from generated/gui_generated/include/gui_generated/homescreen_screen/HomeScreenViewBase.hpp:7,
+                 from gui/include/gui/homescreen_screen/HomeScreenView.hpp:4,
+                 from gui/src/homescreen_screen/HomeScreenPresenter.cpp:1:
+gui/include/gui/model/Model.hpp:5:27: fatal error: CelestialMath.h: No such file or directory
+ #include "CelestialMath.h"
+                           ^
+compilation terminated.
+In file included from generated/gui_generated/include/gui_generated/common/FrontendApplicationBase.hpp:8:0,
+                 from gui/include/gui/common/FrontendApplication.hpp:4,
+                 from generated/gui_generated/include/gui_generated/basescreen_screen/BaseScreenViewBase.hpp:7,
+                 from gui/include/gui/basescreen_screen/BaseScreenView.hpp:4,
+                 from gui/src/basescreen_screen/BaseScreenView.cpp:1:
+gui/include/gui/model/Model.hpp:5:27: fatal error: CelestialMath.h: No such file or directory
+ #include "CelestialMath.h"
+                           ^
+compilation terminated.
+In file included from generated/gui_generated/include/gui_generated/common/FrontendApplicationBase.hpp:8:0,
+                 from gui/include/gui/common/FrontendApplication.hpp:4,
+                 from generated/gui_generated/include/gui_generated/starmapscreen_screen/StarMapScreenViewBase.hpp:7,
                  from gui/include/gui/starmapscreen_screen/StarMapScreenView.hpp:4,
                  from gui/src/starmapscreen_screen/StarMapScreenView.cpp:1:
-gui/include/gui/starmapscreen_screen/StarMapScreenPresenter.hpp:6:69: fatal error: gui/include/gui/basescreen_screen/BaseScreenPresenter.hpp: No such file or directory
- #include <gui/include/gui/basescreen_screen/BaseScreenPresenter.hpp>
-                                                                     ^
-simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/mountscreen_screen/MountScreenPresenter.o' failed
-make[2]: *** [build/MINGW32_NT-6.2/gui/src/mountscreen_screen/MountScreenPresenter.o] Error 1
+gui/include/gui/model/Model.hpp:5:27: fatal error: CelestialMath.h: No such file or directory
+ #include "CelestialMath.h"
+                           ^
 compilation terminated.
-simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/homescreen_screen/HomeScreenView.o' failed
-make[2]: *** [build/MINGW32_NT-6.2/gui/src/homescreen_screen/HomeScreenView.o] Error 1
-In file included from generated/gui_generated/include/gui_generated/starmapscreen_screen/StarMapScreenViewBase.hpp:9:0,
+simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/homescreen_screen/HomeScreenPresenter.o' failed
+make[2]: *** [build/MINGW32_NT-6.2/gui/src/homescreen_screen/HomeScreenPresenter.o] Error 1
+simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/basescreen_screen/BaseScreenView.o' failed
+make[2]: *** [build/MINGW32_NT-6.2/gui/src/basescreen_screen/BaseScreenView.o] Error 1
+In file included from generated/gui_generated/include/gui_generated/common/FrontendApplicationBase.hpp:8:0,
+                 from gui/include/gui/common/FrontendApplication.hpp:4,
+                 from generated/gui_generated/include/gui_generated/starmapscreen_screen/StarMapScreenViewBase.hpp:7,
                  from gui/include/gui/starmapscreen_screen/StarMapScreenView.hpp:4,
                  from gui/src/starmapscreen_screen/StarMapScreenPresenter.cpp:1:
-gui/include/gui/starmapscreen_screen/StarMapScreenPresenter.hpp:6:69: fatal error: gui/include/gui/basescreen_screen/BaseScreenPresenter.hpp: No such file or directory
- #include <gui/include/gui/basescreen_screen/BaseScreenPresenter.hpp>
-                                                                     ^
+gui/include/gui/model/Model.hpp:5:27: fatal error: CelestialMath.h: No such file or directory
+ #include "CelestialMath.h"
+                           ^
 compilation terminated.
+In file included from generated/gui_generated/include/gui_generated/common/FrontendApplicationBase.hpp:8:0,
+                 from gui/include/gui/common/FrontendApplication.hpp:4,
+                 from generated/gui_generated/include/gui_generated/mountscreen_screen/MountScreenViewBase.hpp:7,
+                 from gui/include/gui/mountscreen_screen/MountScreenView.hpp:4,
+                 from gui/src/mountscreen_screen/MountScreenPresenter.cpp:1:
+gui/include/gui/model/Model.hpp:5:27: fatal error: CelestialMath.h: No such file or directory
+ #include "CelestialMath.h"
+                           ^
 simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/starmapscreen_screen/StarMapScreenView.o' failed
 make[2]: *** [build/MINGW32_NT-6.2/gui/src/starmapscreen_screen/StarMapScreenView.o] Error 1
-In file included from generated/gui_generated/include/gui_generated/mountscreen_screen/MountScreenViewBase.hpp:9:0,
-                 from gui/include/gui/mountscreen_screen/MountScreenView.hpp:4,
-                 from gui/src/mountscreen_screen/MountScreenView.cpp:1:
-gui/include/gui/mountscreen_screen/MountScreenPresenter.hpp:5:69: fatal error: gui/include/gui/basescreen_screen/BaseScreenPresenter.hpp: No such file or directory
- #include <gui/include/gui/basescreen_screen/BaseScreenPresenter.hpp>
-                                                                     ^
 compilation terminated.
 simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/starmapscreen_screen/StarMapScreenPresenter.o' failed
 make[2]: *** [build/MINGW32_NT-6.2/gui/src/starmapscreen_screen/StarMapScreenPresenter.o] Error 1
-simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/mountscreen_screen/MountScreenView.o' failed
-make[2]: *** [build/MINGW32_NT-6.2/gui/src/mountscreen_screen/MountScreenView.o] Error 1
-gui/src/basescreen_screen/BaseScreenView.cpp: In member function 'void BaseScreenView::setTime(time_t)':
-gui/src/basescreen_screen/BaseScreenView.cpp:35:26: error: 'gmtime_r' was not declared in this scope
-  gmtime_r(&timestamp, &ts);
-                          ^
-simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/basescreen_screen/BaseScreenView.o' failed
-make[2]: *** [build/MINGW32_NT-6.2/gui/src/basescreen_screen/BaseScreenView.o] Error 1
+simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/mountscreen_screen/MountScreenPresenter.o' failed
+make[2]: *** [build/MINGW32_NT-6.2/gui/src/mountscreen_screen/MountScreenPresenter.o] Error 1
 simulator/gcc/Makefile:173: recipe for target 'generate_assets' failed
 make[1]: *** [generate_assets] Error 2
 simulator/gcc/Makefile:31: recipe for target 'all' failed

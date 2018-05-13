@@ -39,23 +39,28 @@ static RCC_PeriphCLKInitTypeDef PeriphClkInitStruct;
 #define HSYNC           1
 #define HBP             1
 #define HFP             1
-//#define USE_DOUBLE_BUFFERING
+#define USE_DOUBLE_BUFFERING
 
 #define HACT            480
 
 LCD24bpp display;
 const uint16_t bitDepth = 24;
 
-#define FBSIZE (800*480*3)>>1
+#ifdef USE_DOUBLE_BUFFERING
+	#define FBSIZE (800*480*3) * 3
+#else
+	#define FBSIZE (800*480*3) * 2
+#endif
+
 #define CANVAS_BUFFER_SIZE 262144
 
 // Allocate the frame buffer
 __attribute__((section (".sdram")))
-     uint32_t frameBuf0[FBSIZE];
+              uint8_t frameBuf0[FBSIZE];
 
 // Allocate buffer for Canvas widgets
 __attribute__((section (".sdram")))
-     uint8_t canvasBuffer[CANVAS_BUFFER_SIZE];
+              uint8_t canvasBuffer[CANVAS_BUFFER_SIZE];
 
 uint8_t pCol[] =
 { 0x00, 0x00, 0x01, 0xDF }; /* 0->479 */
@@ -78,8 +83,7 @@ void LCD_ReqTear(void)
 	ScanLineParams[0] = scanline >> 8;
 	ScanLineParams[1] = scanline & 0x00FF;
 
-	HAL_DSI_LongWrite(&hdsi_eval, 0, DSI_DCS_LONG_PKT_WRITE, 2, 0x44,
-			ScanLineParams);
+	HAL_DSI_LongWrite(&hdsi_eval, 0, DSI_DCS_LONG_PKT_WRITE, 2, 0x44, ScanLineParams);
 	// set_tear_on
 	HAL_DSI_ShortWrite(&hdsi_eval, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x35, 0x00);
 }
@@ -97,7 +101,7 @@ void hw_init()
 	LCD_Init();
 
 	/* Initialize LTDC layer 0 iused for Hint */
-	LCD_LayerInit(0, frameBuf0);
+	LCD_LayerInit(0, (uint32_t*) frameBuf0);
 	BSP_LCD_SelectLayer(0);
 
 	HAL_DSI_LongWrite(&hdsi_eval, 0, DSI_DCS_LONG_PKT_WRITE, 4,
@@ -132,13 +136,12 @@ void touchgfx_init()
 {
 	uint16_t dispWidth = xsize();
 	uint16_t dispHeight = ysize();
-	hal = &touchgfx_generic_init<STM32F4HAL_DSI>(dma, display, tc, dispWidth,
-			dispHeight, 0, 0);
+	hal = &touchgfx_generic_init<STM32F4HAL_DSI>(dma, display, tc, dispWidth, dispHeight, 0, 0);
 
 #ifdef USE_DOUBLE_BUFFERING
-	hal->setFrameBufferStartAddress((uint16_t*)frameBuf0, bitDepth);
+	hal->setFrameBufferStartAddress((uint16_t*) frameBuf0, bitDepth, true, true);
 #else
-	hal->setFrameBufferStartAddress((uint16_t*) frameBuf0, bitDepth, false);
+	hal->setFrameBufferStartAddress((uint16_t*) frameBuf0, bitDepth, false, true);
 #endif
 
 	// By default frame rate compensation is off.
@@ -161,7 +164,6 @@ void touchgfx_init()
 
 	// Initialize Canvas buffer
 	CanvasWidgetRenderer::setupBuffer(canvasBuffer, CANVAS_BUFFER_SIZE);
-
 
 }
 }
@@ -196,13 +198,8 @@ static uint8_t LCD_Init(void)
 	NVIC_DisableIRQ(DMA2D_IRQn);
 	NVIC_DisableIRQ(DSI_IRQn);
 
-
-	NVIC_SetPriority(DMA2D_IRQn, 0);
-	NVIC_SetPriority(DSI_IRQn, 1);
-
 	/* LCD clock configuration */
-	PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_LTDC
-			| RCC_PERIPHCLK_CLK48;
+	PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_LTDC | RCC_PERIPHCLK_CLK48;
 	/* use 384/5/2 = 38.4MHz */
 	PeriphClkInitStruct.PLLSAI.PLLSAIN = 384;
 	PeriphClkInitStruct.PLLSAI.PLLSAIP = 8;

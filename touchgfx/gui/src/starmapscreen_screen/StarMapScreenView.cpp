@@ -18,6 +18,7 @@ StarMapScreenView::StarMapScreenView() :
 	button_down.setAction(buttonCallback);
 	button_up.setAction(buttonCallback);
 
+	tim.start();
 }
 
 void StarMapScreenView::setupScreen()
@@ -28,6 +29,15 @@ void StarMapScreenView::setupScreen()
 void StarMapScreenView::tearDownScreen()
 {
 
+}
+
+void StarMapScreenView::draw(Rect& rect)
+{
+//	int timestart = tim.read_us();
+
+	Screen::draw(rect);
+
+//	printf("Time consumed to draw screen: %d us\r\n", tim.read_us() - timestart);
 }
 
 void StarMapScreenView::buttonPressed(const AbstractButton& src)

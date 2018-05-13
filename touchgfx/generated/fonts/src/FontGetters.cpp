@@ -18,6 +18,18 @@ touchgfx::InternalFlashFont& getFont_DejaVuSans_Bold_40_4bpp()
   return DejaVuSans_Bold_40_4bpp;
 }
 
+// trebuc_16_4bpp
+extern const touchgfx::GlyphNode glyphs_trebuc_16_4bpp[];
+extern const uint8_t unicodes_trebuc_16_4bpp[];
+extern const touchgfx::KerningNode kerning_trebuc_16_4bpp[];
+touchgfx::InternalFlashFont& getFont_trebuc_16_4bpp();
+
+touchgfx::InternalFlashFont& getFont_trebuc_16_4bpp()
+{
+  static touchgfx::InternalFlashFont trebuc_16_4bpp(glyphs_trebuc_16_4bpp, 92, 16, 4, 4, 1, 1, unicodes_trebuc_16_4bpp, kerning_trebuc_16_4bpp, 63, 0);
+  return trebuc_16_4bpp;
+}
+
 // trebuc_24_4bpp
 extern const touchgfx::GlyphNode glyphs_trebuc_24_4bpp[];
 extern const uint8_t unicodes_trebuc_24_4bpp[];

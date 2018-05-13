@@ -17,8 +17,8 @@ ConfigButton::ConfigButton(ConfigItem &config,
 		config(config), callback(this, &ConfigButton::buttonPressed), popup(
 				popup)
 {
-	setLabelText(TypedText(T_WILDCARD_MEDIUM));
-	Unicode::strncpy(config_name, config.name, sizeof(config_name));
+	setLabelText(TypedText(T_MEDIUM));
+	Unicode::strncpy(config_name, config.name, CONFIG_NAME_SIZE);
 	setLabelColor(Color::getColorFrom24BitRGB(255, 48, 48), false);
 	setLabelColorPressed(Color::getColorFrom24BitRGB(255, 255, 255), false);
 
@@ -80,7 +80,7 @@ void ConfigButton::draw(const Rect& area) const
 					typedText.getAlignment(), 0, rotation,
 					typedText.getTextDirection(), 0, WIDE_TEXT_NONE);
 			HAL::lcd().drawString(labelRect, dirty, visuals,
-					typedText.getText(), config_name);
+					config_name);
 		}
 	}
 }

@@ -11,51 +11,68 @@ StarMapScreenViewBase::StarMapScreenViewBase()
     box1.setPosition(0, 0, 480, 800);
     box1.setColor(touchgfx::Color::getColorFrom24BitRGB(0, 0, 0));
 
-    button_zoomout.setPosition(59, 602, 60, 60);
+    button_zoomout.setPosition(405, 475, 60, 60);
     button_zoomout.setBitmaps(Bitmap(BITMAP_BUTTON3_ID), Bitmap(BITMAP_BUTTON3_PRESSED_ID));
     button_zoomout.setLabelText(TypedText(T_SINGLEUSEID64));
     button_zoomout.setLabelColor(touchgfx::Color::getColorFrom24BitRGB(100, 91, 130));
     button_zoomout.setLabelColorPressed(touchgfx::Color::getColorFrom24BitRGB(160, 200, 214));
 
-    button_zoomin.setPosition(59, 498, 60, 60);
+    button_zoomin.setPosition(295, 475, 60, 60);
     button_zoomin.setBitmaps(Bitmap(BITMAP_BUTTON3_ID), Bitmap(BITMAP_BUTTON3_PRESSED_ID));
     button_zoomin.setLabelText(TypedText(T_SINGLEUSEID65));
     button_zoomin.setLabelColor(touchgfx::Color::getColorFrom24BitRGB(100, 91, 130));
     button_zoomin.setLabelColorPressed(touchgfx::Color::getColorFrom24BitRGB(160, 200, 214));
 
-    box2.setPosition(19, 19, 442, 442);
-    box2.setColor(touchgfx::Color::getColorFrom24BitRGB(28, 28, 28));
-
     button_left.setPosition(213, 550, 60, 60);
+    button_left.setVisible(false);
     button_left.setBitmaps(Bitmap(BITMAP_BUTTON3_ID), Bitmap(BITMAP_BUTTON3_PRESSED_ID));
     button_left.setLabelText(TypedText(T_SINGLEUSEID66));
     button_left.setLabelColor(touchgfx::Color::getColorFrom24BitRGB(100, 91, 130));
     button_left.setLabelColorPressed(touchgfx::Color::getColorFrom24BitRGB(160, 200, 214));
 
     button_right.setPosition(379, 550, 60, 60);
+    button_right.setVisible(false);
     button_right.setBitmaps(Bitmap(BITMAP_BUTTON3_ID), Bitmap(BITMAP_BUTTON3_PRESSED_ID));
     button_right.setLabelText(TypedText(T_SINGLEUSEID67));
     button_right.setLabelColor(touchgfx::Color::getColorFrom24BitRGB(100, 91, 130));
     button_right.setLabelColorPressed(touchgfx::Color::getColorFrom24BitRGB(160, 200, 214));
 
     button_up.setPosition(296, 468, 60, 60);
+    button_up.setVisible(false);
     button_up.setBitmaps(Bitmap(BITMAP_BUTTON3_ID), Bitmap(BITMAP_BUTTON3_PRESSED_ID));
     button_up.setLabelText(TypedText(T_SINGLEUSEID68));
     button_up.setLabelColor(touchgfx::Color::getColorFrom24BitRGB(100, 91, 130));
     button_up.setLabelColorPressed(touchgfx::Color::getColorFrom24BitRGB(160, 200, 214));
 
     button_down.setPosition(296, 632, 60, 60);
+    button_down.setVisible(false);
     button_down.setBitmaps(Bitmap(BITMAP_BUTTON3_ID), Bitmap(BITMAP_BUTTON3_PRESSED_ID));
     button_down.setLabelText(TypedText(T_SINGLEUSEID69));
     button_down.setLabelColor(touchgfx::Color::getColorFrom24BitRGB(100, 91, 130));
     button_down.setLabelColorPressed(touchgfx::Color::getColorFrom24BitRGB(160, 200, 214));
 
+    box2.setPosition(15, 15, 450, 450);
+    box2.setColor(touchgfx::Color::getColorFrom24BitRGB(41, 41, 41));
+
+    textInfo.setPosition(15, 477, 266, 255);
+    textInfo.setColor(touchgfx::Color::getColorFrom24BitRGB(207, 0, 0));
+    textInfo.setLinespacing(0);
+    textInfo.setTypedText(TypedText(T_SINGLEUSEID70));
+
+    button_goto.setPosition(295, 549, 170, 60);
+    button_goto.setBitmaps(Bitmap(BITMAP_BUTTON2_ID), Bitmap(BITMAP_BUTTON2_PRESSED_ID));
+    button_goto.setLabelText(TypedText(T_SINGLEUSEID71));
+    button_goto.setLabelColor(touchgfx::Color::getColorFrom24BitRGB(255, 255, 255));
+    button_goto.setLabelColorPressed(touchgfx::Color::getColorFrom24BitRGB(255, 255, 255));
+
     add(box1);
     add(button_zoomout);
     add(button_zoomin);
-    add(box2);
     add(button_left);
     add(button_right);
     add(button_up);
     add(button_down);
+    add(box2);
+    add(textInfo);
+    add(button_goto);
 }

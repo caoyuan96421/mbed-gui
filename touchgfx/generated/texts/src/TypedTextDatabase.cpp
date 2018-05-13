@@ -13,12 +13,14 @@ extern touchgfx::InternalFlashFont& getFont_trebuc_24_4bpp();
 extern touchgfx::InternalFlashFont& getFont_trebucbd_40_4bpp();
 extern touchgfx::InternalFlashFont& getFont_trebuc_32_4bpp();
 extern touchgfx::InternalFlashFont& getFont_DejaVuSans_Bold_40_4bpp();
+extern touchgfx::InternalFlashFont& getFont_trebuc_16_4bpp();
 
 const touchgfx::Font* const _fonts[] = {
     &(getFont_trebuc_24_4bpp()),
     &(getFont_trebucbd_40_4bpp()),
     &(getFont_trebuc_32_4bpp()),
-    &(getFont_DejaVuSans_Bold_40_4bpp())
+    &(getFont_DejaVuSans_Bold_40_4bpp()),
+    &(getFont_trebuc_16_4bpp())
 };
 
 TEXT_LOCATION_FLASH_PRAGMA
@@ -90,7 +92,10 @@ const touchgfx::TypedText::TypedTextData typedText_database_DEFAULT[] TEXT_LOCAT
     { 3, touchgfx::CENTER, touchgfx::TEXT_DIRECTION_LTR },
     { 3, touchgfx::CENTER, touchgfx::TEXT_DIRECTION_LTR },
     { 3, touchgfx::CENTER, touchgfx::TEXT_DIRECTION_LTR },
-    { 3, touchgfx::CENTER, touchgfx::TEXT_DIRECTION_LTR }
+    { 3, touchgfx::CENTER, touchgfx::TEXT_DIRECTION_LTR },
+    { 4, touchgfx::LEFT, touchgfx::TEXT_DIRECTION_LTR },
+    { 0, touchgfx::LEFT, touchgfx::TEXT_DIRECTION_LTR },
+    { 0, touchgfx::CENTER, touchgfx::TEXT_DIRECTION_LTR }
 };
 
 

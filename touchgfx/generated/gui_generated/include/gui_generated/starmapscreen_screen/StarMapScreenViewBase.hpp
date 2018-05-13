@@ -9,6 +9,7 @@
 #include <gui/starmapscreen_screen/StarMapScreenPresenter.hpp>
 #include <touchgfx/widgets/Box.hpp>
 #include <touchgfx/widgets/ButtonWithLabel.hpp>
+#include <touchgfx/widgets/TextArea.hpp>
 
 class StarMapScreenViewBase : public touchgfx::View<StarMapScreenPresenter>
 {
@@ -27,11 +28,13 @@ protected:
     touchgfx::Box box1;
     touchgfx::ButtonWithLabel button_zoomout;
     touchgfx::ButtonWithLabel button_zoomin;
-    touchgfx::Box box2;
     touchgfx::ButtonWithLabel button_left;
     touchgfx::ButtonWithLabel button_right;
     touchgfx::ButtonWithLabel button_up;
     touchgfx::ButtonWithLabel button_down;
+    touchgfx::Box box2;
+    touchgfx::TextArea textInfo;
+    touchgfx::ButtonWithLabel button_goto;
 
 private:
 

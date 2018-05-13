@@ -24,7 +24,8 @@ public:
 
 protected:
 	ConfigItem config;
-	touchgfx::Unicode::UnicodeChar config_name[32];
+	static const unsigned int CONFIG_NAME_SIZE = 32;
+	touchgfx::Unicode::UnicodeChar config_name[CONFIG_NAME_SIZE];
 	touchgfx::Callback<ConfigButton, const AbstractButton&> callback;
 	ConfigPopup &popup;
 

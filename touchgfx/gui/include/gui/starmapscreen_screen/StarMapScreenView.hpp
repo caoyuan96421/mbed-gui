@@ -15,10 +15,12 @@ public:
 	}
 	virtual void setupScreen();
 	virtual void tearDownScreen();
+	virtual void draw(Rect &rect);
 protected:
 
 	StarMapWidget starmap;
 	touchgfx::Callback<StarMapScreenView, const AbstractButton&> buttonCallback;
+	Timer tim;
 
 	void buttonPressed(const AbstractButton& src);
 };

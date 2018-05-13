@@ -16,10 +16,11 @@ const uint16_t BITMAP_DARK_ICONS_DOWN_ARROW_48_ID = 6; // Size: 48x28 pixels
 const uint16_t BITMAP_DARK_ICONS_UP_ARROW_48_ID = 7; // Size: 48x28 pixels
 const uint16_t BITMAP_HOME_BUTTON_ID = 8; // Size: 47x34 pixels
 const uint16_t BITMAP_HOME_BUTTON2_ID = 9; // Size: 47x34 pixels
-const uint16_t BITMAP_STARS_ID = 10; // Size: 200x200 pixels
-const uint16_t BITMAP_TELESCOPE_ID = 11; // Size: 104x158 pixels
-const uint16_t BITMAP_UTILITY_ID = 12; // Size: 200x200 pixels
-const uint16_t BITMAP_WRENCH_ID = 13; // Size: 146x147 pixels
+const uint16_t BITMAP_MOON_SMALL_ID = 10; // Size: 165x165 pixels
+const uint16_t BITMAP_STARS_ID = 11; // Size: 200x200 pixels
+const uint16_t BITMAP_TELESCOPE_ID = 12; // Size: 104x158 pixels
+const uint16_t BITMAP_UTILITY_ID = 13; // Size: 200x200 pixels
+const uint16_t BITMAP_WRENCH_ID = 14; // Size: 146x147 pixels
 
 namespace BitmapDatabase
 {

@@ -12,170 +12,76 @@
 #include <cmath>
 #include <cassert>
 #include <cctype>
-
-#define MAX_STAR 42000
-
-//const char CATALOG_COMMON[] = "/sdcard/hygcommon.csv";
-const char CATALOG_CONSTELLATION[] = "/sdcard/hygmag8.csv";
-const char CATALOG_ALL[] = "/sdcard/hygfull.csv";
-
-// Catalog of constellation stars
-__attribute__((section (".sdram")))
-                        StarItem catalog_constellation[MAX_STAR];
-
-unsigned int size_catalog_constellation;
+#include <cfloat>
+#include "HYGMag8.h"
 
 QuadTree qt_common;
 QuadTree qt_constellation;
 
 __attribute__((section (".sdram")))
-               QTNode _nodefactory[MAX_STAR];
+                                   QTNode _nodefactory[STAR_CATALOG_SIZE];
+
+__attribute__((section (".sdram")))
+                                   HashMap::HashMapNode _hashmapfactory[STAR_CATALOG_SIZE];
 
 static int _nodecount = 0;
+static int _hashcount = 0;
+
+HashMap starIndex;
 
 QTNode* QTNode::malloc()
 {
-	if (_nodecount == MAX_STAR)
+	if (_nodecount == STAR_CATALOG_SIZE)
 		return NULL;
 	return &_nodefactory[_nodecount++];
 }
 
 StarCatalog::StarCatalog()
 {
-	loadCatalogs();
+	constructTree();
 }
 
-static char *strtok_ch(char *buf, const char delim, char **saveptr)
+StarInfo* StarCatalog::searchCoordinates(float ra, float dec, float maxdist)
 {
-	if (!buf && saveptr && *saveptr)
-	{
-		buf = *saveptr;
-	}
-	char *d = strchr(buf, delim);
-	if (!d)
-	{
-		// Nothing found
-		*saveptr = buf;
-		return buf;
-	}
-	else
-	{
-		*d = '\0';
-		*saveptr = d + 1;
-		return buf;
-	}
+	return qt_constellation.search(ra, dec, maxdist);
 }
 
-void StarCatalog::loadCatalogs()
+StarInfo* StarCatalog::searchID(int id)
 {
-	// Load the constellation catalog
-	FILE *fp = fopen(CATALOG_CONSTELLATION, "r");
-	char buf[256];
-	assert(fp != NULL);
+	return starIndex[id];
+}
 
-	// Get the first line, and ignore it
-	fgets(buf, sizeof(buf), fp);
-	size_catalog_constellation = 0;
+void StarCatalog::constructTree()
+{
 
-	while (true)
+	for (unsigned int i = 0; i < STAR_CATALOG_SIZE; i++)
 	{
-		if (fgets(buf, sizeof(buf), fp) == NULL)
+		StarInfo &star = star_catalog_hyg[i];
+		if (star.id < 0)
 		{
 			break;
 		}
-		if (*buf == '\0' || *buf == '\n' || *buf == '\r')
+		if (star.name != '\0')
 		{
-			break;
+			qt_common.insert(&star);
 		}
 
-		char *saveptr;
-		const char delim = ',';
-
-		StarItem star;
-
-		// Extract ID
-		star.id = strtol(strtok_ch(buf, delim, &saveptr), NULL, 10);
-
-		// Skip 4 fields
-		for (int i = 0; i < 4; i++)
-		{
-			strtok_ch(NULL, delim, &saveptr);
-		}
-
-		// Extract BayerFlamsteed name
-		strcpy(star.BFname, strtok_ch(NULL, delim, &saveptr));
-
-		// Extract Proper name
-		char *s = strtok_ch(NULL, delim, &saveptr);
-		// Remove spaces
-		while (*s && !isalnum(*s))
-			s++;
-		strcpy(star.name, s);
-
-		// Extract RA, convert to degrees relative to 0h0m0s
-		star.RA = remainderf(
-				strtof(strtok_ch(NULL, delim, &saveptr), NULL) * 15.0f, 360.0f);
-
-		// Extract DEC
-		star.DEC = strtof(strtok_ch(NULL, delim, &saveptr), NULL);
-
-		// Extract Distance
-		star.distance = strtof(strtok_ch(NULL, delim, &saveptr), NULL);
-
-		// Extract magnitude
-		star.magnitude = strtof(strtok_ch(NULL, delim, &saveptr), NULL);
-
-		// Extract absolute magnitude
-		star.absmagnitude = strtof(strtok_ch(NULL, delim, &saveptr), NULL);
-
-		catalog_constellation[size_catalog_constellation] = star;
-
-		if (*star.name != '\0')
-		{
-			qt_common.insert(
-					&catalog_constellation[size_catalog_constellation]);
-		}
-
-		qt_constellation.insert(
-				&catalog_constellation[size_catalog_constellation]);
-
-		size_catalog_constellation++;
+		qt_constellation.insert(&star);
+		starIndex[star.id] = &star;
 	}
-	fclose(fp);
 }
-//#include "mbed.h"
-//extern UARTSerial serial;
-//extern void stprintf(FileHandle &f, const char *, ...);
-//
-//static void callback(QTNode *n)
-//{
-//	if (n->star)
-//	{
-////		int i = 100000;
-////		while (i--)
-////			;
-//		stprintf(serial,
-//				"Star #%d, BF=%s, name=%s, RA=%f, DEC=%f, mag=%f, absmag=%f, depth=%d, 0x%08x\r\n",
-//				n->star->id, n->star->BFname, n->star->name, n->star->RA,
-//				n->star->DEC, n->star->magnitude, n->star->absmagnitude,
-//				n->depth, (unsigned int) n);
-//	}
-//}
 
-void StarCatalog::query_common(void (*cb)(StarItem *, void *), float ramin,
-		float ramax, float decmin, float decmax, void *arg, float maxmag)
+void StarCatalog::query_common(void (*cb)(StarInfo *, void *), float ramin, float ramax, float decmin, float decmax, void *arg, float maxmag)
 {
-	qt_common.query(cb, NULL, ramin, ramax, decmin, decmax, arg, maxmag);
+	qt_common.query(cb, ramin, ramax, decmin, decmax, arg, maxmag);
 }
 
-void StarCatalog::query_all(void (*cb)(StarItem *, void *), float ramin,
-		float ramax, float decmin, float decmax, void *arg, float maxmag)
+void StarCatalog::query_all(void (*cb)(StarInfo *, void *), float ramin, float ramax, float decmin, float decmax, void *arg, float maxmag)
 {
-	qt_constellation.query(cb, NULL, ramin, ramax, decmin, decmax, arg, maxmag);
-//	printf("Max depth: %d\r\n", qt_constellation.maxdepth);
+	qt_constellation.query(cb, ramin, ramax, decmin, decmax, arg, maxmag);
 }
 
-bool QuadTree::insert(StarItem* newstar)
+bool QuadTree::insert(StarInfo* newstar)
 {
 	if (!newstar)
 	{
@@ -191,53 +97,81 @@ bool QuadTree::insert(StarItem* newstar)
 	}
 
 	p->star = newstar;
-	if (p->depth > maxdepth)
-		maxdepth = p->depth;
 	return true;
 }
 
-void QuadTree::query(void (*cb)(StarItem*, void*), QTNode* p, float ral,
-		float rar, float decl, float decr, void* arg, float maxmag)
+void QuadTree::query(void (*cb)(StarInfo*, void*), float ral, float rar, float decl, float decr, void* arg, float maxmag)
 {
-	if (p == NULL)
+	// Check
+	ral = remainderf(ral, 360.0f);
+	rar = remainderf(rar, 360.0f);
+	if (decl > decr)
 	{
-		p = &head;
+		float temp = decr;
+		decr = decl;
+		decl = temp;
+	}
+	if (decl < -90.0)
+		decl = -90.0;
+	if (decr > 90.0)
+		decr = 90.0;
+
+	if (ral > rar)
+	{
+		// Crossing 180/-180 RA, divide into two
+		_query(cb, &head, ral, 180.0f, decl, decr, arg, maxmag);
+		_query(cb, &head, -180.0f, rar, decl, decr, arg, maxmag);
+		return;
+	}
+	else
+	{
+		_query(cb, &head, ral, rar, decl, decr, arg, maxmag);
 	}
 
-	if (p == &head)
+}
+
+StarInfo* QuadTree::search(float ra, float dec, float maxdist)
+{
+	return _search(&head, ra, dec, maxdist);
+}
+
+StarInfo* QuadTree::_search(QTNode* p, float ra, float dec, float maxdist)
+{
+	if (!p->star)
+		return NULL;
+	if (fabsf(p->star->DEC - dec) < maxdist && fabsf(p->star->RA - ra) < maxdist)
 	{
-		// Check
-		ral = remainder(ral, 360.0);
-		rar = remainder(rar, 360.0);
-		if (decl > decr)
+		return p->star;
+	}
+	if (!p->isleaf)
+	{
+		// Search daughters in turn
+		for (int i = 0; i < 4; i++)
 		{
-			double temp = decr;
-			decr = decl;
-			decl = temp;
-		}
-		if (decl < -90.0)
-			decl = -90.0;
-		if (decr > 90.0)
-			decr = 90.0;
-		if (ral > rar)
-		{
-			// Crossing 180/-180 RA, divide into two
-			query(cb, p, rar, 180.0, decl, decr, arg, maxmag);
-			query(cb, p, -180.0, ral, decl, decr, arg, maxmag);
-			return;
+			if (p->daughters[i] && p->daughters[i]->intersects(ra - maxdist, ra + maxdist, dec - maxdist, dec + maxdist))
+			{
+				StarInfo *ret = _search(p->daughters[i], ra, dec, maxdist);
+				if (ret)
+					return ret;
+			}
 		}
 	}
+	return NULL; // Nothing found
+}
+
+void QuadTree::_query(void (*cb)(StarInfo*, void*), QTNode* p, float ral, float rar, float decl, float decr, void* arg, float maxmag)
+{
 
 // Check star at current node
 	if (p->star && p->star->magnitude < maxmag)
 	{
-		if (p->star->RA <= rar && p->star->RA >= ral && p->star->DEC <= decr
-				&& p->star->DEC >= decl)
+		if (p->star->RA <= rar && p->star->RA >= ral && p->star->DEC <= decr && p->star->DEC >= decl)
 		{
 			cb(p->star, arg);
 		}
 	}
-	else{
+	else
+	{
 		// If current node is below magnitude threshhold, then no more searching
 		// Because its children must be even lower magnitude
 		return;
@@ -248,11 +182,62 @@ void QuadTree::query(void (*cb)(StarItem*, void*), QTNode* p, float ral,
 	{
 		for (int i = 0; i < 4; i++)
 		{
-			if (p->daughters[i]
-					&& p->daughters[i]->intersects(ral, rar, decl, decr))
+			if (p->daughters[i] && p->daughters[i]->intersects(ral, rar, decl, decr))
 			{
-				query(cb, p->daughters[i], ral, rar, decl, decr, arg, maxmag);
+				_query(cb, p->daughters[i], ral, rar, decl, decr, arg, maxmag);
 			}
 		}
 	}
+}
+
+HashMap::HashMap()
+{
+	for (int i = 0; i < HASH_SIZE; i++)
+	{
+		list[i] = NULL;
+	}
+}
+
+HashMap::~HashMap()
+{
+	for (int i = 0; i < HASH_SIZE; i++)
+	{
+		HashMapNode *p = list[i];
+		while (p)
+		{
+			HashMapNode *q = p;
+			delete p;
+			p = q;
+		}
+	}
+}
+
+StarInfo*& HashMap::operator [](int id)
+{
+	int k = id % HASH_SIZE;
+	HashMapNode *p = list[k], *q = NULL;
+	while (p && p->id != id)
+		p = (q=p)->next;
+	if (!p)
+	{
+		p = malloc();
+		p->id = id;
+//		p->next = list[k];
+//		list[k] = p; // Insert at the beginning of the list
+		p->next = NULL;
+		if(q)
+			q->next = p;
+		else
+			list[k] = p; // Insert at the end of the list
+	}
+	return p->star;
+}
+
+HashMap::HashMapNode *HashMap::malloc()
+{
+	if (_hashcount == STAR_CATALOG_SIZE)
+	{
+		return NULL;
+	}
+	return &_hashmapfactory[_hashcount++];
 }

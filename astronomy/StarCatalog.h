@@ -11,7 +11,7 @@
 #include <cstdlib>
 #include <cmath>
 
-struct StarItem
+struct StarInfo
 {
 	int id;
 	char BFname[12];
@@ -21,6 +21,7 @@ struct StarItem
 	float distance;
 	float magnitude;
 	float absmagnitude;
+	float color;
 };
 
 inline float min(float x, float y)
@@ -33,18 +34,40 @@ inline float max(float x, float y)
 	return (x > y) ? x : y;
 }
 
+struct HashMap
+{
+	HashMap();
+	~HashMap();
+	StarInfo* &operator [](int id);
+	struct HashMapNode
+	{
+		int id;
+		StarInfo *star;
+		HashMapNode *next;
+		HashMapNode()
+		{
+			id = 0;
+			star = NULL;
+			next = NULL;
+		}
+	};
+private:
+	static const int HASH_SIZE = 1024;
+	HashMapNode *list[HASH_SIZE];
+
+	HashMapNode *malloc();
+};
+
 struct QTNode
 {
-	StarItem *star;
+	StarInfo *star;
 	QTNode *daughters[4];
 	float ral, rar;
 	float decl, decr;
 	bool isleaf;
-	int depth;
 
 	QTNode(float xl = 0, float xr = 0, float yl = 0, float yr = 0) :
-			star(NULL), ral(xl), rar(xr), decl(yl), decr(yr), isleaf(true), depth(
-					0)
+			star(NULL), ral(xl), rar(xr), decl(yl), decr(yr), isleaf(true)
 	{
 		daughters[0] = NULL;
 		daughters[1] = NULL;
@@ -103,7 +126,6 @@ struct QTNode
 			float dr = (q & 2) ? decm : decr;
 			daughters[q] = this->malloc();
 			*daughters[q] = QTNode(rl, rr, dl, dr);
-			daughters[q]->depth = depth + 1;
 			return daughters[q];
 		}
 	}
@@ -121,16 +143,18 @@ struct QTNode
 struct QuadTree
 {
 	QTNode head;
-	int maxdepth;
 
 	QuadTree() :
-			head(-180.0, 180.0, -90.0, 90.0), maxdepth(0)
+			head(-180.0f, 180.0f, -90.0f, 90.0f)
 	{
 	}
 
-	bool insert(StarItem *newstar);
-	void query(void (*cb)(StarItem *, void *), QTNode *p, float ral, float rar,
-			float decl, float decr, void *arg, float maxmag);
+	bool insert(StarInfo *newstar);
+	void query(void (*cb)(StarInfo *, void *), float ral, float rar, float decl, float decr, void *arg, float maxmag);
+	StarInfo *search(float ra, float dec, float maxdist);
+private:
+	void _query(void (*cb)(StarInfo *, void *), QTNode *p, float ral, float rar, float decl, float decr, void *arg, float maxmag);
+	StarInfo *_search(QTNode *p, float ra, float dec, float maxdist);
 };
 
 class StarCatalog
@@ -142,10 +166,11 @@ public:
 		return instance;
 	}
 
-	void query_common(void (*cb)(StarItem *, void *), float ramin, float ramax,
-			float decmin, float decmax, void *arg, float maxmag);
-	void query_all(void (*cb)(StarItem *, void *), float ramin, float ramax,
-			float decmin, float decmax, void *arg, float maxmag);
+	void query_common(void (*cb)(StarInfo *, void *), float ramin, float ramax, float decmin, float decmax, void *arg, float maxmag);
+	void query_all(void (*cb)(StarInfo *, void *), float ramin, float ramax, float decmin, float decmax, void *arg, float maxmag);
+
+	StarInfo *searchCoordinates(float ra, float dec, float maxdist);
+	StarInfo *searchID(int id);
 
 private:
 	StarCatalog();
@@ -153,7 +178,7 @@ private:
 	{
 	}
 
-	static void loadCatalogs();
+	static void constructTree();
 };
 
 #endif /* ASTRONOMY_STARCATALOG_H_ */

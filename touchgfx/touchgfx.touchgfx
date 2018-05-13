@@ -427,10 +427,10 @@
               "BufferSize": 20
             },
             "Name": "date",
-            "X": 300,
-            "Y": 774,
-            "Width": 175,
-            "Height": 25,
+            "X": 275,
+            "Y": 772,
+            "Width": 200,
+            "Height": 28,
             "Type": "TextArea",
             "Visible": true,
             "Draggable": false,
@@ -1145,8 +1145,8 @@
             },
             "TextRotation": "0",
             "Name": "button_zoomout",
-            "X": 59,
-            "Y": 602,
+            "X": 405,
+            "Y": 475,
             "Width": 60,
             "Height": 60,
             "Type": "ButtonWithLabel",
@@ -1173,30 +1173,11 @@
             },
             "TextRotation": "0",
             "Name": "button_zoomin",
-            "X": 59,
-            "Y": 498,
+            "X": 295,
+            "Y": 475,
             "Width": 60,
             "Height": 60,
             "Type": "ButtonWithLabel",
-            "Visible": true,
-            "Draggable": false,
-            "Clickable": false,
-            "Fadeable": false,
-            "Moveable": false
-          },
-          {
-            "Color": {
-              "Red": 28,
-              "Green": 28,
-              "Blue": 28
-            },
-            "Alpha": 255,
-            "Name": "box2",
-            "X": 19,
-            "Y": 19,
-            "Width": 442,
-            "Height": 442,
-            "Type": "Box",
             "Visible": true,
             "Draggable": false,
             "Clickable": false,
@@ -1225,7 +1206,7 @@
             "Width": 60,
             "Height": 60,
             "Type": "ButtonWithLabel",
-            "Visible": true,
+            "Visible": false,
             "Draggable": false,
             "Clickable": false,
             "Fadeable": false,
@@ -1253,7 +1234,7 @@
             "Width": 60,
             "Height": 60,
             "Type": "ButtonWithLabel",
-            "Visible": true,
+            "Visible": false,
             "Draggable": false,
             "Clickable": false,
             "Fadeable": false,
@@ -1281,7 +1262,7 @@
             "Width": 60,
             "Height": 60,
             "Type": "ButtonWithLabel",
-            "Visible": true,
+            "Visible": false,
             "Draggable": false,
             "Clickable": false,
             "Fadeable": false,
@@ -1307,6 +1288,76 @@
             "X": 296,
             "Y": 632,
             "Width": 60,
+            "Height": 60,
+            "Type": "ButtonWithLabel",
+            "Visible": false,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "Color": {
+              "Red": 41,
+              "Green": 41,
+              "Blue": 41
+            },
+            "Alpha": 255,
+            "Name": "box2",
+            "X": 15,
+            "Y": 15,
+            "Width": 450,
+            "Height": 450,
+            "Type": "Box",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "TextId": "SingleUseId70",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 207,
+              "Green": 0,
+              "Blue": 0
+            },
+            "Alpha": 255,
+            "AutoSize": false,
+            "LineSpacing": 0,
+            "Name": "textInfo",
+            "X": 15,
+            "Y": 477,
+            "Width": 303,
+            "Height": 229,
+            "Type": "TextArea",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "Pressed": "button2-pressed.png",
+            "Released": "button2.png",
+            "Alpha": 255,
+            "TextId": "SingleUseId71",
+            "ReleasedColor": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            },
+            "PressedColor": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            },
+            "TextRotation": "0",
+            "Name": "button_goto",
+            "X": 295,
+            "Y": 549,
+            "Width": 170,
             "Height": 60,
             "Type": "ButtonWithLabel",
             "Visible": true,
@@ -2028,15 +2079,15 @@
         "IsResource": false
       },
       {
-        "TextEntryId": "Wildcard_Medium",
+        "TextEntryId": "Medium",
         "IsResource": true
       },
       {
-        "TextEntryId": "Wildcard_Small",
+        "TextEntryId": "Small",
         "IsResource": true
       },
       {
-        "TextEntryId": "Wildcard_Large",
+        "TextEntryId": "Large",
         "IsResource": true
       },
       {
@@ -2241,6 +2292,18 @@
       },
       {
         "TextEntryId": "SingleUseId69",
+        "IsResource": false
+      },
+      {
+        "TextEntryId": "Tiny",
+        "IsResource": true
+      },
+      {
+        "TextEntryId": "SingleUseId70",
+        "IsResource": false
+      },
+      {
+        "TextEntryId": "SingleUseId71",
         "IsResource": false
       }
     ],

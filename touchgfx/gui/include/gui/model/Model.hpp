@@ -1,6 +1,10 @@
 #ifndef MODEL_HPP
 #define MODEL_HPP
 
+#include <ctime>
+#include "CelestialMath.h"
+#include "PlanetMoon.h"
+
 class ModelListener;
 
 /**
@@ -35,6 +39,16 @@ public:
      * the ModelListener interface.
      */
     void tick();
+
+    time_t getTime();
+
+    // Get mount information
+//    double getRA();
+//    double getDEC();
+//    double getSpeed();
+//
+//    int goTo(double ra, double dec);
+
 
 protected:
     /**

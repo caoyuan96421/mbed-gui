@@ -126,6 +126,9 @@ MountScreenViewBase::MountScreenViewBase()
     eqcoords_2.setWildcard(TypedText(T_SINGLEUSEID63).getText());
     eqcoords_2.resizeToCurrentText();
 
+    starmap_bb.setPosition(15, 400, 150, 300);
+    starmap_bb.setColor(touchgfx::Color::getColorFrom24BitRGB(31, 31, 31));
+
     add(box1);
     add(eqcoords);
     add(textArea1);
@@ -147,4 +150,5 @@ MountScreenViewBase::MountScreenViewBase()
     add(buttontracksolar);
     add(buttontrackking);
     add(eqcoords_2);
+    add(starmap_bb);
 }
