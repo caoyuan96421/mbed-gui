@@ -15,6 +15,7 @@ public:
 
     void addTo(Container *scr);
     void setTime(time_t timestamp);
+    void setEqCoords(const EquatorialCoordinates &eq);
 protected:
 };
 

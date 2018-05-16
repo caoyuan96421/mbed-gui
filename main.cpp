@@ -53,7 +53,7 @@ typedef Mail<mail_t, 256> MB_t;
 
 MB_t mbox;
 
-UARTSerial serial(USBTX, USBRX, 115200);
+UARTSerial console(USBTX, USBRX, 115200);
 
 Timer tim;
 void printer(MB_t *mbox)
@@ -64,9 +64,9 @@ void printer(MB_t *mbox)
 		if (evt.status == osEventMail)
 		{
 			mail_t *m = (mail_t *) evt.value.p;
-			serial.write(m->msg, m->len);
+			console.write(m->msg, m->len);
 			mbox->free(m);
-			serial.write("\r\n", 2);
+			console.write("\r\n", 2);
 		}
 		else
 		{
@@ -114,6 +114,7 @@ void stprintf(FileHandle &f, const char *fmt, ...)
 	int len = vsnprintf(buf, sizeof(buf), fmt, args);
 	va_end(args);
 
+	f.set_blocking(true);
 	f.write(buf, len);
 }
 
@@ -199,23 +200,18 @@ int main()
 //	out.period_us(2);
 //	out.write(0.5);
 //	set_time(1525757480);
-	EquatorialCoordinates eq = PlanetMoon::calculatePosition(PlanetMoon::MOON, time(NULL), LocationCoordinates(0, 0));
-	printf("MOON: ");
-	eq.print();
 
-	eq = PlanetMoon::calculatePosition(PlanetMoon::MARS, time(NULL), LocationCoordinates(0, 0));
-	printf("MARS: ");
-	eq.print();
 //	printf("MOON: RA=%f, DEC=%f (J2000)\r\n", eq.ra, eq.dec);
 
 	while (1)
 	{
 		Thread::wait(1000);
+
 //		xprintf("");
 //		time_t t = time(NULL);
-//
+////
 //		xprintf("Time as seconds since January 1, 1970 = %d\n", t);
-//
+////
 //		xprintf("Time as a basic string = %s", ctime(&t));
 //
 //		char buffer[32];

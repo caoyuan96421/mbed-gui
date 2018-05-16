@@ -29,6 +29,7 @@ public:
 
 
     void setTime(time_t timestamp);
+	void setEqCoords(const EquatorialCoordinates &eq);
 
 protected:
     BaseScreenView& view;

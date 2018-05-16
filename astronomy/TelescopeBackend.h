@@ -8,6 +8,9 @@
 #ifndef TELESCOPEBACKEND_H_
 #define TELESCOPEBACKEND_H_
 
+#include "mbed.h"
+#include "CelestialMath.h"
+
 typedef enum
 {
 	DATATYPE_INT, DATATYPE_DOUBLE, DATATYPE_STRING, DATATYPE_BOOL
@@ -35,13 +38,12 @@ class TelescopeBackend
 {
 public:
 
-	static ConfigItem configlist[];
+	static int syncTime();
+	static EquatorialCoordinates getEqCoords();
 
+private:
 	TelescopeBackend();
-	virtual ~TelescopeBackend()
-	{
-		// TODO Auto-generated destructor stub
-	}
+	~TelescopeBackend();
 };
 
 #endif /* TELESCOPEBACKEND_H_ */

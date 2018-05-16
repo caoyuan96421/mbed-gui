@@ -12,14 +12,14 @@ BaseScreenViewBase::BaseScreenViewBase()  :
     box2.setPosition(0, 750, 480, 50);
     box2.setColor(touchgfx::Color::getColorFrom24BitRGB(36, 5, 5));
 
-    ra_coord.setPosition(25, 750, 161, 25);
+    ra_coord.setPosition(0, 750, 192, 25);
     ra_coord.setColor(touchgfx::Color::getColorFrom24BitRGB(255, 0, 0));
     ra_coord.setLinespacing(0);
     ra_coord.setTypedText(TypedText(T_SINGLEUSEID1));
     Unicode::snprintf(ra_coordBuffer, RA_COORD_SIZE, "%s", TypedText(T_SINGLEUSEID2).getText());
     ra_coord.setWildcard(ra_coordBuffer);
 
-    dec_coord.setPosition(0, 774, 186, 25);
+    dec_coord.setPosition(0, 774, 192, 25);
     dec_coord.setColor(touchgfx::Color::getColorFrom24BitRGB(255, 0, 0));
     dec_coord.setLinespacing(0);
     dec_coord.setTypedText(TypedText(T_SINGLEUSEID4));

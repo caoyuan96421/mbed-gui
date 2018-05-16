@@ -343,9 +343,9 @@
               "BufferSize": 20
             },
             "Name": "ra_coord",
-            "X": 25,
+            "X": 0,
             "Y": 750,
-            "Width": 161,
+            "Width": 192,
             "Height": 25,
             "Type": "TextArea",
             "Visible": true,
@@ -373,7 +373,7 @@
             "Name": "dec_coord",
             "X": 0,
             "Y": 774,
-            "Width": 186,
+            "Width": 192,
             "Height": 25,
             "Type": "TextArea",
             "Visible": true,
@@ -1017,6 +1017,25 @@
             "Clickable": false,
             "Fadeable": false,
             "Moveable": false
+          },
+          {
+            "Color": {
+              "Red": 31,
+              "Green": 31,
+              "Blue": 31
+            },
+            "Alpha": 255,
+            "Name": "starmap_bb",
+            "X": 15,
+            "Y": 400,
+            "Width": 150,
+            "Height": 300,
+            "Type": "Box",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
           }
         ],
         "Interactions": [],
@@ -1329,8 +1348,8 @@
             "Name": "textInfo",
             "X": 15,
             "Y": 477,
-            "Width": 303,
-            "Height": 229,
+            "Width": 266,
+            "Height": 255,
             "Type": "TextArea",
             "Visible": true,
             "Draggable": false,

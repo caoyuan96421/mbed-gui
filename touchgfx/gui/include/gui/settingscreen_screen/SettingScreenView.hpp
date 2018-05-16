@@ -16,8 +16,8 @@ public:
     virtual void setupScreen();
     virtual void tearDownScreen();
 protected:
-    ConfigButton **cbt;
-    int cbn;
+//    ConfigButton **cbt;
+//    int cbn;
 };
 
 #endif // SETTINGSCREEN_VIEW_HPP

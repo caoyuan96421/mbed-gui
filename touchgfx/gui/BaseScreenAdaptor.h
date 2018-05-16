@@ -14,15 +14,22 @@
 class BaseScreenAdaptor
 {
 public:
-	BaseScreenAdaptor(){
+	BaseScreenAdaptor()
+	{
 
 	}
 	virtual ~BaseScreenAdaptor()
 	{
 	}
 
-	void setTime(time_t timestamp){
+	void setTime(time_t timestamp)
+	{
 		baseview.setTime(timestamp);
+	}
+
+	void setEqCoords(const EquatorialCoordinates &eq)
+	{
+		baseview.setEqCoords(eq);
 	}
 
 	BaseScreenView baseview;

@@ -3,6 +3,7 @@
 
 #include <gui/model/Model.hpp>
 #include <ctime>
+#include "CelestialMath.h"
 
 /**
  * ModelListener is the interface through which the Model can inform the currently
@@ -16,23 +17,33 @@
 class ModelListener
 {
 public:
-    ModelListener() : model(0) {}
+	ModelListener() :
+			model(0)
+	{
+	}
 
-    virtual ~ModelListener() {}
+	virtual ~ModelListener()
+	{
+	}
 
-    /**
-     * Sets the model pointer to point to the Model object. Called automatically
-     * when switching screen.
-     */
-    void bind(Model* m)
-    {
-        model = m;
-    }
+	/**
+	 * Sets the model pointer to point to the Model object. Called automatically
+	 * when switching screen.
+	 */
+	void bind(Model* m)
+	{
+		model = m;
+	}
 
-    virtual void setTime(time_t timestamp){
-    }
+	virtual void setTime(time_t timestamp)
+	{
+	}
+
+	virtual void setEqCoords(const EquatorialCoordinates &eq)
+	{
+	}
 protected:
-    Model* model;
+	Model* model;
 };
 
 #endif /* MODELLISTENER_HPP */

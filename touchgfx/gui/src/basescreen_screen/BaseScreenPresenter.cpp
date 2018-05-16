@@ -20,3 +20,8 @@ void BaseScreenPresenter::setTime(time_t timestamp)
 {
 	view.setTime(timestamp);
 }
+
+void BaseScreenPresenter::setEqCoords(const EquatorialCoordinates& eq)
+{
+	view.setEqCoords(eq);
+}

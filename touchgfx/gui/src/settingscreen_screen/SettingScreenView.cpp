@@ -9,33 +9,33 @@ SettingScreenView::SettingScreenView()
 
 	scrollableContainer1.setScrollThreshold(1);
 
-	int y = 0;
-	int dy = 100;
-	cbn = 0;
-	while (strlen(TelescopeBackend::configlist[cbn].name) > 0)
-		cbn++;
-
-	typedef ConfigButton *pcb;
-	cbt = new pcb[cbn];
-
-	for (int i = 0; i < cbn; i++)
-	{
-		cbt[i] = new ConfigButton(TelescopeBackend::configlist[i],
-				configPopup1);
-		cbt[i]->setPosition(0, y, scrollableContainer1.getWidth(), dy);
-		y += dy;
-		scrollableContainer1.add(*cbt[i]);
-	}
+//	int y = 0;
+//	int dy = 100;
+//	cbn = 0;
+//	while (strlen(TelescopeBackend::configlist[cbn].name) > 0)
+//		cbn++;
+//
+//	typedef ConfigButton *pcb;
+//	cbt = new pcb[cbn];
+//
+//	for (int i = 0; i < cbn; i++)
+//	{
+//		cbt[i] = new ConfigButton(TelescopeBackend::configlist[i],
+//				configPopup1);
+//		cbt[i]->setPosition(0, y, scrollableContainer1.getWidth(), dy);
+//		y += dy;
+//		scrollableContainer1.add(*cbt[i]);
+//	}
 
 }
 
 SettingScreenView::~SettingScreenView()
 {
-	for (int i = 0; i < cbn; i++)
-	{
-		delete cbt[i];
-	}
-	delete cbt;
+//	for (int i = 0; i < cbn; i++)
+//	{
+//		delete cbt[i];
+//	}
+//	delete cbt;
 }
 
 void SettingScreenView::setupScreen()

@@ -11,9 +11,11 @@ using namespace touchgfx;
 TEXT_LOCATION_FLASH_PRAGMA
 KEEP const touchgfx::Unicode::UnicodeChar T_SingleUseId1_Gb[6] TEXT_LOCATION_FLASH_ATTRIBUTE = { 0x52, 0x41, 0x3a, 0x20, 0x2, 0x0 };
 TEXT_LOCATION_FLASH_PRAGMA
+KEEP const touchgfx::Unicode::UnicodeChar T_SingleUseId2_Gb[12] TEXT_LOCATION_FLASH_ATTRIBUTE = { 0x2b, 0x30, 0x30, 0x68, 0x30, 0x30, 0x27, 0x30, 0x30, 0x22, 0x45, 0x0 };
+TEXT_LOCATION_FLASH_PRAGMA
 KEEP const touchgfx::Unicode::UnicodeChar T_SingleUseId4_Gb[7] TEXT_LOCATION_FLASH_ATTRIBUTE = { 0x44, 0x45, 0x43, 0x3a, 0x20, 0x2, 0x0 };
 TEXT_LOCATION_FLASH_PRAGMA
-KEEP const touchgfx::Unicode::UnicodeChar T_SingleUseId5_Gb[11] TEXT_LOCATION_FLASH_ATTRIBUTE = { 0x30, 0x30, 0xb0, 0x30, 0x30, 0x27, 0x30, 0x30, 0x22, 0x4e, 0x0 };
+KEEP const touchgfx::Unicode::UnicodeChar T_SingleUseId5_Gb[12] TEXT_LOCATION_FLASH_ATTRIBUTE = { 0x2b, 0x30, 0x30, 0xb0, 0x30, 0x30, 0x27, 0x30, 0x30, 0x22, 0x4e, 0x0 };
 TEXT_LOCATION_FLASH_PRAGMA
 KEEP const touchgfx::Unicode::UnicodeChar T_SingleUseId8_Gb[9] TEXT_LOCATION_FLASH_ATTRIBUTE = { 0x32, 0x31, 0x3a, 0x30, 0x30, 0x3a, 0x30, 0x30, 0x0 };
 TEXT_LOCATION_FLASH_PRAGMA
@@ -50,8 +52,6 @@ TEXT_LOCATION_FLASH_PRAGMA
 KEEP const touchgfx::Unicode::UnicodeChar T_SingleUseId38_Gb[7] TEXT_LOCATION_FLASH_ATTRIBUTE = { 0x48, 0x65, 0x6c, 0x70, 0x65, 0x72, 0x0 };
 TEXT_LOCATION_FLASH_PRAGMA
 KEEP const touchgfx::Unicode::UnicodeChar T_SingleUseId41_Gb[5] TEXT_LOCATION_FLASH_ATTRIBUTE = { 0x2, 0x20, 0x20, 0x2, 0x0 };
-TEXT_LOCATION_FLASH_PRAGMA
-KEEP const touchgfx::Unicode::UnicodeChar T_SingleUseId42_Gb[11] TEXT_LOCATION_FLASH_ATTRIBUTE = { 0x30, 0x30, 0x68, 0x30, 0x30, 0x27, 0x30, 0x30, 0x22, 0x45, 0x0 };
 TEXT_LOCATION_FLASH_PRAGMA
 KEEP const touchgfx::Unicode::UnicodeChar T_SingleUseId44_Gb[11] TEXT_LOCATION_FLASH_ATTRIBUTE = { 0x45, 0x71, 0x75, 0x61, 0x74, 0x6f, 0x72, 0x69, 0x61, 0x6c, 0x0 };
 TEXT_LOCATION_FLASH_PRAGMA
@@ -109,7 +109,7 @@ TEXT_LOCATION_FLASH_PRAGMA
 KEEP extern const touchgfx::Unicode::UnicodeChar* const textsGb[71] TEXT_LOCATION_FLASH_ATTRIBUTE =
 {
 T_SingleUseId1_Gb,
-T_SingleUseId42_Gb,
+T_SingleUseId2_Gb,
 T_SingleUseId4_Gb,
 T_SingleUseId5_Gb,
 T_SingleUseId17_Gb+9,
@@ -148,8 +148,8 @@ T_SingleUseId36_Gb,
 T_SingleUseId17_Gb+9,
 T_SingleUseId38_Gb,
 T_SingleUseId41_Gb,
-T_SingleUseId42_Gb,
-T_SingleUseId5_Gb,
+T_SingleUseId2_Gb+1,
+T_SingleUseId5_Gb+1,
 T_SingleUseId44_Gb,
 T_SingleUseId45_Gb,
 T_SingleUseId47_Gb,
