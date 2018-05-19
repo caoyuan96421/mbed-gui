@@ -399,9 +399,9 @@
               "BufferSize": 20
             },
             "Name": "time",
-            "X": 309,
+            "X": 275,
             "Y": 750,
-            "Width": 166,
+            "Width": 200,
             "Height": 25,
             "Type": "TextArea",
             "Visible": true,
@@ -503,22 +503,22 @@
               "Blue": 56
             },
             "Alpha": 255,
-            "AutoSize": true,
+            "AutoSize": false,
             "LineSpacing": 0,
             "Wildcard1": {
               "TextId": "SingleUseId42",
-              "UseBuffer": false,
-              "BufferSize": 0
+              "UseBuffer": true,
+              "BufferSize": 14
             },
             "Wildcard2": {
               "TextId": "SingleUseId43",
-              "UseBuffer": false,
-              "BufferSize": 0
+              "UseBuffer": true,
+              "BufferSize": 14
             },
             "Name": "eqcoords",
-            "X": 15,
-            "Y": 106,
-            "Width": 450,
+            "X": 0,
+            "Y": 104,
+            "Width": 480,
             "Height": 47,
             "Type": "TextArea",
             "Visible": true,
@@ -559,22 +559,22 @@
               "Blue": 130
             },
             "Alpha": 255,
-            "AutoSize": true,
+            "AutoSize": false,
             "LineSpacing": 0,
             "Wildcard1": {
               "TextId": "SingleUseId46",
-              "UseBuffer": false,
-              "BufferSize": 0
+              "UseBuffer": true,
+              "BufferSize": 14
             },
             "Wildcard2": {
               "TextId": "SingleUseId47",
-              "UseBuffer": false,
-              "BufferSize": 0
+              "UseBuffer": true,
+              "BufferSize": 14
             },
-            "Name": "eqcoords_1",
-            "X": 235,
+            "Name": "mount_coords",
+            "X": 221,
             "Y": 34,
-            "Width": 236,
+            "Width": 250,
             "Height": 28,
             "Type": "TextArea",
             "Visible": true,
@@ -1031,6 +1031,22 @@
             "Width": 150,
             "Height": 300,
             "Type": "Box",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "Pressed": "stop-pressed.png",
+            "Released": "stop.png",
+            "Alpha": 255,
+            "Name": "button_stop",
+            "X": 263,
+            "Y": 482,
+            "Width": 130,
+            "Height": 135,
+            "Type": "Button",
             "Visible": true,
             "Draggable": false,
             "Clickable": false,

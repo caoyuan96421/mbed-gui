@@ -17,7 +17,7 @@ KEEP const touchgfx::Unicode::UnicodeChar T_SingleUseId4_Gb[7] TEXT_LOCATION_FLA
 TEXT_LOCATION_FLASH_PRAGMA
 KEEP const touchgfx::Unicode::UnicodeChar T_SingleUseId5_Gb[12] TEXT_LOCATION_FLASH_ATTRIBUTE = { 0x2b, 0x30, 0x30, 0xb0, 0x30, 0x30, 0x27, 0x30, 0x30, 0x22, 0x4e, 0x0 };
 TEXT_LOCATION_FLASH_PRAGMA
-KEEP const touchgfx::Unicode::UnicodeChar T_SingleUseId8_Gb[9] TEXT_LOCATION_FLASH_ATTRIBUTE = { 0x32, 0x31, 0x3a, 0x30, 0x30, 0x3a, 0x30, 0x30, 0x0 };
+KEEP const touchgfx::Unicode::UnicodeChar T_SingleUseId8_Gb[16] TEXT_LOCATION_FLASH_ATTRIBUTE = { 0x55, 0x54, 0x43, 0x2d, 0x34, 0x20, 0x20, 0x32, 0x31, 0x3a, 0x30, 0x30, 0x3a, 0x30, 0x30, 0x0 };
 TEXT_LOCATION_FLASH_PRAGMA
 KEEP const touchgfx::Unicode::UnicodeChar T_SingleUseId10_Gb[16] TEXT_LOCATION_FLASH_ATTRIBUTE = { 0x32, 0x30, 0x31, 0x30, 0x20, 0x4a, 0x61, 0x6e, 0x20, 0x30, 0x35, 0x20, 0x54, 0x68, 0x75, 0x0 };
 TEXT_LOCATION_FLASH_PRAGMA
@@ -51,11 +51,11 @@ KEEP const touchgfx::Unicode::UnicodeChar T_SingleUseId36_Gb[4] TEXT_LOCATION_FL
 TEXT_LOCATION_FLASH_PRAGMA
 KEEP const touchgfx::Unicode::UnicodeChar T_SingleUseId38_Gb[7] TEXT_LOCATION_FLASH_ATTRIBUTE = { 0x48, 0x65, 0x6c, 0x70, 0x65, 0x72, 0x0 };
 TEXT_LOCATION_FLASH_PRAGMA
-KEEP const touchgfx::Unicode::UnicodeChar T_SingleUseId41_Gb[5] TEXT_LOCATION_FLASH_ATTRIBUTE = { 0x2, 0x20, 0x20, 0x2, 0x0 };
+KEEP const touchgfx::Unicode::UnicodeChar T_SingleUseId41_Gb[4] TEXT_LOCATION_FLASH_ATTRIBUTE = { 0x2, 0x20, 0x2, 0x0 };
 TEXT_LOCATION_FLASH_PRAGMA
 KEEP const touchgfx::Unicode::UnicodeChar T_SingleUseId44_Gb[11] TEXT_LOCATION_FLASH_ATTRIBUTE = { 0x45, 0x71, 0x75, 0x61, 0x74, 0x6f, 0x72, 0x69, 0x61, 0x6c, 0x0 };
 TEXT_LOCATION_FLASH_PRAGMA
-KEEP const touchgfx::Unicode::UnicodeChar T_SingleUseId45_Gb[8] TEXT_LOCATION_FLASH_ATTRIBUTE = { 0x2, 0x20, 0x20, 0x20, 0x20, 0x20, 0x2, 0x0 };
+KEEP const touchgfx::Unicode::UnicodeChar T_SingleUseId45_Gb[6] TEXT_LOCATION_FLASH_ATTRIBUTE = { 0x2, 0x20, 0x20, 0x20, 0x2, 0x0 };
 TEXT_LOCATION_FLASH_PRAGMA
 KEEP const touchgfx::Unicode::UnicodeChar T_SingleUseId47_Gb[10] TEXT_LOCATION_FLASH_ATTRIBUTE = { 0x30, 0x30, 0xb0, 0x30, 0x30, 0x27, 0x30, 0x30, 0x22, 0x0 };
 TEXT_LOCATION_FLASH_PRAGMA
@@ -140,7 +140,7 @@ T_SingleUseId55_Gb,
 T_SingleUseId52_Gb,
 T_SingleUseId51_Gb,
 T_SingleUseId49_Gb,
-T_SingleUseId8_Gb+7,
+T_SingleUseId8_Gb+14,
 T_SingleUseId33_Gb,
 T_SingleUseId34_Gb,
 T_SingleUseId17_Gb+9,

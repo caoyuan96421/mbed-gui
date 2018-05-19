@@ -28,6 +28,18 @@ public:
 
     virtual ~MountScreenPresenter() {};
 
+    EquatorialCoordinates getEqCoords(){
+    	return model->getEqCoords();
+    }
+
+	MountCoordinates getMountCoords(){
+		return model->getMountCoords();
+	}
+
+	virtual void setCoords(const EquatorialCoordinates &eq, const MountCoordinates& meq);
+
+
+
 private:
     MountScreenPresenter();
 

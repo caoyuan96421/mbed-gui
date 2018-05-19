@@ -13,6 +13,7 @@
 #include <touchgfx/widgets/ButtonWithLabel.hpp>
 #include <gui/containers/ConfigPopup.hpp>
 #include <touchgfx/widgets/ToggleButton.hpp>
+#include <touchgfx/widgets/Button.hpp>
 
 class MountScreenViewBase : public touchgfx::View<MountScreenPresenter>
 {
@@ -31,7 +32,7 @@ protected:
     touchgfx::Box box1;
     touchgfx::TextAreaWithTwoWildcards eqcoords;
     touchgfx::TextArea textArea1;
-    touchgfx::TextAreaWithTwoWildcards eqcoords_1;
+    touchgfx::TextAreaWithTwoWildcards mount_coords;
     touchgfx::TextArea textArea1_1;
     touchgfx::ButtonWithLabel button0;
     touchgfx::TextArea textArea1_1_1;
@@ -50,6 +51,19 @@ protected:
     touchgfx::ButtonWithLabel buttontrackking;
     touchgfx::TextAreaWithOneWildcard eqcoords_2;
     touchgfx::Box starmap_bb;
+    touchgfx::Button button_stop;
+
+    /*
+     * Wildcard Buffers
+     */
+    static const uint16_t EQCOORDSBUFFER1_SIZE = 14;
+    touchgfx::Unicode::UnicodeChar eqcoordsBuffer1[EQCOORDSBUFFER1_SIZE];
+    static const uint16_t EQCOORDSBUFFER2_SIZE = 14;
+    touchgfx::Unicode::UnicodeChar eqcoordsBuffer2[EQCOORDSBUFFER2_SIZE];
+    static const uint16_t MOUNT_COORDSBUFFER1_SIZE = 14;
+    touchgfx::Unicode::UnicodeChar mount_coordsBuffer1[MOUNT_COORDSBUFFER1_SIZE];
+    static const uint16_t MOUNT_COORDSBUFFER2_SIZE = 14;
+    touchgfx::Unicode::UnicodeChar mount_coordsBuffer2[MOUNT_COORDSBUFFER2_SIZE];
 
 private:
 

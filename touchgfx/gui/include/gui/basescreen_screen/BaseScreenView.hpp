@@ -14,7 +14,7 @@ public:
     virtual void tearDownScreen();
 
     void addTo(Container *scr);
-    void setTime(time_t timestamp);
+    void setTime(time_t timestamp, int tz);
     void setEqCoords(const EquatorialCoordinates &eq);
 protected:
 };

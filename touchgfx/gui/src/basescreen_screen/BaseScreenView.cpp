@@ -29,15 +29,20 @@ void BaseScreenView::addTo(Container *c)
 	}
 }
 
-void BaseScreenView::setTime(time_t timestamp)
+void BaseScreenView::setTime(time_t timestamp, int tz)
 {
+
+	timestamp += tz * 3600;
+
 	struct tm ts;
 	gmtime_r(&timestamp, &ts);
 
 	char buf[32];
+	Unicode::UnicodeChar bufU[32];
 	// Print time
 	strftime(buf, sizeof(buf), "%X", &ts);
-	Unicode::strncpy(timeBuffer, buf, TIME_SIZE);
+	Unicode::strncpy(bufU, buf, 32);
+	Unicode::snprintf(timeBuffer, TIME_SIZE, "UTC%d %s", tz, bufU);
 	time.invalidate();
 
 	// Print date
@@ -56,12 +61,12 @@ void BaseScreenView::setEqCoords(const EquatorialCoordinates& eq)
 	char buf[32];
 
 	// RA string
-	snprintf(buf, sizeof(buf), "%+02dh%02d'%02d\"%c", int(r / 15), int(fmod(r, 15.0) * 4), (int) round(fmod(r, 0.25) * 240), we);
+	snprintf(buf, sizeof(buf), "%2dh%02d'%02d\"%c", int(r / 15), int(fmod(r, 15.0) * 4), (int) round(fmod(r, 0.25) * 240), we);
 	Unicode::strncpy(ra_coordBuffer, buf, RA_COORD_SIZE);
 	ra_coord.invalidate();
 
 	// DEC string
-	snprintf(buf, sizeof(buf), "%+2d\x00b0%02d'%02d\"%c", int(d), int(fmod(d, 1.0) * 60), (int) round(fmod(d, 1.0 / 60) * 3600), ns);
+	snprintf(buf, sizeof(buf), "%2d\x00b0%02d'%02d\"%c", int(d), int(fmod(d, 1.0) * 60), (int) round(fmod(d, 1.0 / 60) * 3600), ns);
 	Unicode::strncpy(dec_coordBuffer, buf, DEC_COORD_SIZE);
 	dec_coord.invalidate();
 

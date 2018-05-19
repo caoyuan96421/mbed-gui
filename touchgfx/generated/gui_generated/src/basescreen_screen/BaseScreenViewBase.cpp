@@ -26,7 +26,7 @@ BaseScreenViewBase::BaseScreenViewBase()  :
     Unicode::snprintf(dec_coordBuffer, DEC_COORD_SIZE, "%s", TypedText(T_SINGLEUSEID5).getText());
     dec_coord.setWildcard(dec_coordBuffer);
 
-    time.setPosition(309, 750, 166, 25);
+    time.setPosition(275, 750, 200, 25);
     time.setColor(touchgfx::Color::getColorFrom24BitRGB(255, 78, 132));
     time.setLinespacing(0);
     time.setTypedText(TypedText(T_SINGLEUSEID7));

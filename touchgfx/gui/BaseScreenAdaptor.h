@@ -22,15 +22,15 @@ public:
 	{
 	}
 
-	void setTime(time_t timestamp)
-	{
-		baseview.setTime(timestamp);
-	}
-
-	void setEqCoords(const EquatorialCoordinates &eq)
-	{
-		baseview.setEqCoords(eq);
-	}
+//	virtual void setTime(time_t timestamp)
+//	{
+//		baseview.setTime(timestamp);
+//	}
+//
+//	virtual void setEqCoords(const EquatorialCoordinates &eq)
+//	{
+//		baseview.setEqCoords(eq);
+//	}
 
 	BaseScreenView baseview;
 };

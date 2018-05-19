@@ -19,8 +19,7 @@ typedef enum
 typedef union
 {
 	int idata;
-	double ddata;
-	bool bdata;
+	double ddata;bool bdata;
 	char strdata[32];
 } DataValue;
 
@@ -37,9 +36,28 @@ struct ConfigItem
 class TelescopeBackend
 {
 public:
+	typedef enum
+	{
+		NORTH, ///< An enum constant representing the north option
+		SOUTH, ///< An enum constant representing the south option
+		EAST,  ///< An enum constant representing the east option
+		WEST   ///< An enum constant representing the west option
+	} Direction;
+
+	static void initialize();
 
 	static int syncTime();
-	static EquatorialCoordinates getEqCoords();
+	static int getEqCoords(EquatorialCoordinates &);
+	static int getMountCoords(MountCoordinates &);
+
+	static int getConfigString(const char *config, char *buf, int size);
+	static int getConfigInt(const char *config);
+	static double getConfigDouble(const char *config);
+	static bool getConfigBool(const char *config);
+
+	static int startNudge(Direction dir);
+	static int stopNudge();
+	static void emergencyStop();
 
 private:
 	TelescopeBackend();

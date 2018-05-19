@@ -35,11 +35,11 @@ public:
 		model = m;
 	}
 
-	virtual void setTime(time_t timestamp)
+	virtual void setTime(time_t timestamp, int tz)
 	{
 	}
 
-	virtual void setEqCoords(const EquatorialCoordinates &eq)
+	virtual void setCoords(const EquatorialCoordinates &eq, const MountCoordinates &meq)
 	{
 	}
 protected:

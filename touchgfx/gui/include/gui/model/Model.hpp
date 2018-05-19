@@ -42,6 +42,10 @@ public:
 
     time_t getTime();
 
+    EquatorialCoordinates getEqCoords();
+    MountCoordinates getMountCoords();
+    int getTimeZone();
+
     // Get mount information
 //    double getRA();
 //    double getDEC();

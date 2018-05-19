@@ -11,26 +11,28 @@ MountScreenViewBase::MountScreenViewBase()
     box1.setPosition(0, 0, 480, 800);
     box1.setColor(touchgfx::Color::getColorFrom24BitRGB(0, 0, 0));
 
-    eqcoords.setXY(15, 106);
+    eqcoords.setPosition(0, 104, 480, 47);
     eqcoords.setColor(touchgfx::Color::getColorFrom24BitRGB(255, 56, 56));
     eqcoords.setLinespacing(0);
     eqcoords.setTypedText(TypedText(T_SINGLEUSEID41));
-    eqcoords.setWildcard1(TypedText(T_SINGLEUSEID42).getText());
-    eqcoords.setWildcard2(TypedText(T_SINGLEUSEID43).getText());
-    eqcoords.resizeToCurrentText();
+    Unicode::snprintf(eqcoordsBuffer1, EQCOORDSBUFFER1_SIZE, "%s", TypedText(T_SINGLEUSEID42).getText());
+    eqcoords.setWildcard1(eqcoordsBuffer1);
+    Unicode::snprintf(eqcoordsBuffer2, EQCOORDSBUFFER2_SIZE, "%s", TypedText(T_SINGLEUSEID43).getText());
+    eqcoords.setWildcard2(eqcoordsBuffer2);
 
     textArea1.setXY(15, 54);
     textArea1.setColor(touchgfx::Color::getColorFrom24BitRGB(179, 87, 181));
     textArea1.setLinespacing(0);
     textArea1.setTypedText(TypedText(T_SINGLEUSEID44));
 
-    eqcoords_1.setXY(235, 34);
-    eqcoords_1.setColor(touchgfx::Color::getColorFrom24BitRGB(65, 47, 130));
-    eqcoords_1.setLinespacing(0);
-    eqcoords_1.setTypedText(TypedText(T_SINGLEUSEID45));
-    eqcoords_1.setWildcard1(TypedText(T_SINGLEUSEID46).getText());
-    eqcoords_1.setWildcard2(TypedText(T_SINGLEUSEID47).getText());
-    eqcoords_1.resizeToCurrentText();
+    mount_coords.setPosition(221, 34, 250, 28);
+    mount_coords.setColor(touchgfx::Color::getColorFrom24BitRGB(65, 47, 130));
+    mount_coords.setLinespacing(0);
+    mount_coords.setTypedText(TypedText(T_SINGLEUSEID45));
+    Unicode::snprintf(mount_coordsBuffer1, MOUNT_COORDSBUFFER1_SIZE, "%s", TypedText(T_SINGLEUSEID46).getText());
+    mount_coords.setWildcard1(mount_coordsBuffer1);
+    Unicode::snprintf(mount_coordsBuffer2, MOUNT_COORDSBUFFER2_SIZE, "%s", TypedText(T_SINGLEUSEID47).getText());
+    mount_coords.setWildcard2(mount_coordsBuffer2);
 
     textArea1_1.setXY(221, 6);
     textArea1_1.setColor(touchgfx::Color::getColorFrom24BitRGB(40, 8, 196));
@@ -129,10 +131,13 @@ MountScreenViewBase::MountScreenViewBase()
     starmap_bb.setPosition(15, 400, 150, 300);
     starmap_bb.setColor(touchgfx::Color::getColorFrom24BitRGB(31, 31, 31));
 
+    button_stop.setPosition(263, 482, 130, 135);
+    button_stop.setBitmaps(Bitmap(BITMAP_STOP_ID), Bitmap(BITMAP_STOP_PRESSED_ID));
+
     add(box1);
     add(eqcoords);
     add(textArea1);
-    add(eqcoords_1);
+    add(mount_coords);
     add(textArea1_1);
     add(button0);
     add(textArea1_1_1);
@@ -151,4 +156,5 @@ MountScreenViewBase::MountScreenViewBase()
     add(buttontrackking);
     add(eqcoords_2);
     add(starmap_bb);
+    add(button_stop);
 }
