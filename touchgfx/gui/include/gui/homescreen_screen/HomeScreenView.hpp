@@ -4,7 +4,6 @@
 #include <gui_generated/homescreen_screen/HomeScreenViewBase.hpp>
 #include <gui/homescreen_screen/HomeScreenPresenter.hpp>
 #include <gui/BaseScreenAdaptor.h>
-#include <gui/widgets/MotorDisplay.h>
 #include <touchgfx/Unicode.hpp>
 #include <math.h>
 

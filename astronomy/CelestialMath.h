@@ -22,7 +22,7 @@ struct EquatorialCoordinates
 			dec(d), ra(r)
 	{
 	}
-	void print(FILE *f= stdout)
+	void print(FILE *f = stdout)
 	{
 		char we = (ra > 0) ? 'E' : 'W';
 		char ns = (dec > 0) ? 'N' : 'S';
@@ -260,6 +260,11 @@ public:
 	static double parseHMSAngle(char *hms);
 
 	static double parseDMSAngle(char *dms);
+
+	/**
+	 * Calculate King tracking rate based on the star position and location
+	 */
+	static double kingRate(const EquatorialCoordinates &eq, const LocationCoordinates &loc, time_t time);
 
 };
 

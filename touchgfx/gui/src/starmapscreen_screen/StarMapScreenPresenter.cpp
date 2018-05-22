@@ -8,7 +8,7 @@ StarMapScreenPresenter::StarMapScreenPresenter(StarMapScreenView& v) :
 
 void StarMapScreenPresenter::activate()
 {
-
+	BaseScreenPresenter::activate();
 }
 
 void StarMapScreenPresenter::deactivate()

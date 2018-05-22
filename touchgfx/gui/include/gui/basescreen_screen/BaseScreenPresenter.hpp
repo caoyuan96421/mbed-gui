@@ -30,6 +30,73 @@ public:
 	}
 	;
 
+	EquatorialCoordinates getEqCoords()
+	{
+		return model->getEqCoords();
+	}
+
+	MountCoordinates getMountCoords()
+	{
+		return model->getMountCoords();
+	}
+
+	LocationCoordinates getLocation()
+	{
+		return model->getLocation();
+	}
+
+	TelescopeBackend::mountstatus_t getStatus()
+	{
+		return model->getStatus();
+	}
+
+	void track(bool on)
+	{
+		return model->track(on);
+	}
+
+	void setSpeed(const char *type, double speed)
+	{
+		model->setSpeed(type, speed);
+	}
+
+	int getConfigString(const char *config, char *buf, int size)
+	{
+		return model->getConfigString(config, buf, size);
+	}
+	int getConfigInt(const char *config)
+	{
+		return model->getConfigInt(config);
+	}
+	double getConfigDouble(const char *config)
+	{
+		return model->getConfigDouble(config);
+	}
+	bool getConfigBool(const char *config)
+	{
+		return model->getConfigBool(config);
+	}
+
+	double getSpeed(const char *type)
+	{
+		return model->getSpeed(type);
+	}
+
+	void useKingRate(bool use)
+	{
+		model->useKingRate(use);
+	}
+
+	bool isUseKingRate()
+	{
+		return model->isUseKingRate();
+	}
+
+	int getConfigAll(ConfigItem *configs, int maxConfig)
+	{
+		return model->getConfigAll(configs, maxConfig);
+	}
+
 	void setTime(time_t timestamp, int tz);
 	void setCoords(const EquatorialCoordinates &eq, const MountCoordinates& meq);
 

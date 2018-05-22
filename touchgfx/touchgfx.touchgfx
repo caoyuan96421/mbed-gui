@@ -843,7 +843,7 @@
             "Pressed": "button2-pressed.png",
             "Released": "button2.png",
             "Alpha": 255,
-            "Name": "toggleButton1",
+            "Name": "toggle_track",
             "X": 27,
             "Y": 303,
             "Width": 170,
@@ -879,118 +879,6 @@
             "Moveable": false
           },
           {
-            "Pressed": "button3-pressed.png",
-            "Released": "button3.png",
-            "Alpha": 255,
-            "TextId": "SingleUseId58",
-            "ReleasedColor": {
-              "Red": 100,
-              "Green": 91,
-              "Blue": 130
-            },
-            "PressedColor": {
-              "Red": 160,
-              "Green": 200,
-              "Blue": 214
-            },
-            "TextRotation": "0",
-            "Name": "buttontrackstellar",
-            "X": 213,
-            "Y": 303,
-            "Width": 60,
-            "Height": 60,
-            "Type": "ButtonWithLabel",
-            "Visible": true,
-            "Draggable": false,
-            "Clickable": false,
-            "Fadeable": false,
-            "Moveable": false
-          },
-          {
-            "Pressed": "button3-pressed.png",
-            "Released": "button3.png",
-            "Alpha": 255,
-            "TextId": "SingleUseId59",
-            "ReleasedColor": {
-              "Red": 100,
-              "Green": 91,
-              "Blue": 130
-            },
-            "PressedColor": {
-              "Red": 160,
-              "Green": 200,
-              "Blue": 214
-            },
-            "TextRotation": "0",
-            "Name": "buttontracklunar",
-            "X": 279,
-            "Y": 303,
-            "Width": 60,
-            "Height": 60,
-            "Type": "ButtonWithLabel",
-            "Visible": true,
-            "Draggable": false,
-            "Clickable": false,
-            "Fadeable": false,
-            "Moveable": false
-          },
-          {
-            "Pressed": "button3-pressed.png",
-            "Released": "button3.png",
-            "Alpha": 255,
-            "TextId": "SingleUseId60",
-            "ReleasedColor": {
-              "Red": 100,
-              "Green": 91,
-              "Blue": 130
-            },
-            "PressedColor": {
-              "Red": 160,
-              "Green": 200,
-              "Blue": 214
-            },
-            "TextRotation": "0",
-            "Name": "buttontracksolar",
-            "X": 345,
-            "Y": 303,
-            "Width": 60,
-            "Height": 60,
-            "Type": "ButtonWithLabel",
-            "Visible": true,
-            "Draggable": false,
-            "Clickable": false,
-            "Fadeable": false,
-            "Moveable": false
-          },
-          {
-            "Pressed": "button3-pressed.png",
-            "Released": "button3.png",
-            "Alpha": 255,
-            "TextId": "SingleUseId61",
-            "ReleasedColor": {
-              "Red": 100,
-              "Green": 91,
-              "Blue": 130
-            },
-            "PressedColor": {
-              "Red": 160,
-              "Green": 200,
-              "Blue": 214
-            },
-            "TextRotation": "0",
-            "Name": "buttontrackking",
-            "X": 411,
-            "Y": 303,
-            "Width": 60,
-            "Height": 60,
-            "Type": "ButtonWithLabel",
-            "Visible": true,
-            "Draggable": false,
-            "Clickable": false,
-            "Fadeable": false,
-            "Moveable": false
-          },
-          {
             "TextId": "SingleUseId62",
             "TextRotation": "0",
             "Color": {
@@ -999,17 +887,17 @@
               "Blue": 50
             },
             "Alpha": 255,
-            "AutoSize": true,
+            "AutoSize": false,
             "LineSpacing": 0,
             "Wildcard1": {
               "TextId": "SingleUseId63",
-              "UseBuffer": false,
-              "BufferSize": 0
+              "UseBuffer": true,
+              "BufferSize": 15
             },
-            "Name": "eqcoords_2",
-            "X": 273,
+            "Name": "slewspeed",
+            "X": 235,
             "Y": 167,
-            "Width": 189,
+            "Width": 224,
             "Height": 47,
             "Type": "TextArea",
             "Visible": true,
@@ -1048,6 +936,185 @@
             "Height": 135,
             "Type": "Button",
             "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "Pressed": "button3-pressed.png",
+            "Released": "button3.png",
+            "Alpha": 255,
+            "Name": "toggleSidereal",
+            "X": 213,
+            "Y": 303,
+            "Width": 60,
+            "Height": 60,
+            "Type": "ToggleButton",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "TextId": "SingleUseId72",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 124,
+              "Green": 83,
+              "Blue": 161
+            },
+            "Alpha": 255,
+            "AutoSize": true,
+            "LineSpacing": 0,
+            "Name": "textArea2",
+            "X": 225,
+            "Y": 310,
+            "Width": 36,
+            "Height": 47,
+            "Type": "TextArea",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "Pressed": "button3-pressed.png",
+            "Released": "button3.png",
+            "Alpha": 255,
+            "Name": "toggleLunar",
+            "X": 279,
+            "Y": 303,
+            "Width": 60,
+            "Height": 60,
+            "Type": "ToggleButton",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "TextId": "SingleUseId73",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 124,
+              "Green": 83,
+              "Blue": 161
+            },
+            "Alpha": 255,
+            "AutoSize": true,
+            "LineSpacing": 0,
+            "Name": "textArea2_1",
+            "X": 291,
+            "Y": 310,
+            "Width": 36,
+            "Height": 47,
+            "Type": "TextArea",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "Pressed": "button3-pressed.png",
+            "Released": "button3.png",
+            "Alpha": 255,
+            "Name": "toggleSolar",
+            "X": 345,
+            "Y": 303,
+            "Width": 60,
+            "Height": 60,
+            "Type": "ToggleButton",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "TextId": "SingleUseId74",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 124,
+              "Green": 83,
+              "Blue": 161
+            },
+            "Alpha": 255,
+            "AutoSize": true,
+            "LineSpacing": 0,
+            "Name": "textArea2_2",
+            "X": 357,
+            "Y": 310,
+            "Width": 36,
+            "Height": 47,
+            "Type": "TextArea",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "Pressed": "button3-pressed.png",
+            "Released": "button3.png",
+            "Alpha": 255,
+            "Name": "toggleKing",
+            "X": 411,
+            "Y": 303,
+            "Width": 60,
+            "Height": 60,
+            "Type": "ToggleButton",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "TextId": "SingleUseId75",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 124,
+              "Green": 83,
+              "Blue": 161
+            },
+            "Alpha": 255,
+            "AutoSize": true,
+            "LineSpacing": 0,
+            "Name": "textArea2_3",
+            "X": 423,
+            "Y": 310,
+            "Width": 36,
+            "Height": 47,
+            "Type": "TextArea",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "TextId": "SingleUseId76",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 220,
+              "Green": 50,
+              "Blue": 50
+            },
+            "Alpha": 255,
+            "AutoSize": false,
+            "LineSpacing": 0,
+            "Name": "slewspeed_star",
+            "X": 423,
+            "Y": 167,
+            "Width": 36,
+            "Height": 47,
+            "Type": "TextArea",
+            "Visible": false,
             "Draggable": false,
             "Clickable": false,
             "Fadeable": false,
@@ -2282,22 +2349,6 @@
         "IsResource": false
       },
       {
-        "TextEntryId": "SingleUseId58",
-        "IsResource": false
-      },
-      {
-        "TextEntryId": "SingleUseId59",
-        "IsResource": false
-      },
-      {
-        "TextEntryId": "SingleUseId60",
-        "IsResource": false
-      },
-      {
-        "TextEntryId": "SingleUseId61",
-        "IsResource": false
-      },
-      {
         "TextEntryId": "SingleUseId62",
         "IsResource": false
       },
@@ -2339,6 +2390,26 @@
       },
       {
         "TextEntryId": "SingleUseId71",
+        "IsResource": false
+      },
+      {
+        "TextEntryId": "SingleUseId72",
+        "IsResource": false
+      },
+      {
+        "TextEntryId": "SingleUseId73",
+        "IsResource": false
+      },
+      {
+        "TextEntryId": "SingleUseId74",
+        "IsResource": false
+      },
+      {
+        "TextEntryId": "SingleUseId75",
+        "IsResource": false
+      },
+      {
+        "TextEntryId": "SingleUseId76",
         "IsResource": false
       }
     ],

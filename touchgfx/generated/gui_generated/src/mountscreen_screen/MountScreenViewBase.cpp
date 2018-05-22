@@ -89,50 +89,64 @@ MountScreenViewBase::MountScreenViewBase()
     configPopup2.setXY(0, 0);
     configPopup2.setVisible(false);
 
-    toggleButton1.setPosition(27, 303, 170, 60);
-    toggleButton1.setBitmaps(Bitmap(BITMAP_BUTTON2_ID), Bitmap(BITMAP_BUTTON2_PRESSED_ID));
+    toggle_track.setPosition(27, 303, 170, 60);
+    toggle_track.setBitmaps(Bitmap(BITMAP_BUTTON2_ID), Bitmap(BITMAP_BUTTON2_PRESSED_ID));
 
     textArea1_1_1_1.setXY(74, 314);
     textArea1_1_1_1.setColor(touchgfx::Color::getColorFrom24BitRGB(158, 120, 141));
     textArea1_1_1_1.setLinespacing(0);
     textArea1_1_1_1.setTypedText(TypedText(T_SINGLEUSEID57));
 
-    buttontrackstellar.setPosition(213, 303, 60, 60);
-    buttontrackstellar.setBitmaps(Bitmap(BITMAP_BUTTON3_ID), Bitmap(BITMAP_BUTTON3_PRESSED_ID));
-    buttontrackstellar.setLabelText(TypedText(T_SINGLEUSEID58));
-    buttontrackstellar.setLabelColor(touchgfx::Color::getColorFrom24BitRGB(100, 91, 130));
-    buttontrackstellar.setLabelColorPressed(touchgfx::Color::getColorFrom24BitRGB(160, 200, 214));
-
-    buttontracklunar.setPosition(279, 303, 60, 60);
-    buttontracklunar.setBitmaps(Bitmap(BITMAP_BUTTON3_ID), Bitmap(BITMAP_BUTTON3_PRESSED_ID));
-    buttontracklunar.setLabelText(TypedText(T_SINGLEUSEID59));
-    buttontracklunar.setLabelColor(touchgfx::Color::getColorFrom24BitRGB(100, 91, 130));
-    buttontracklunar.setLabelColorPressed(touchgfx::Color::getColorFrom24BitRGB(160, 200, 214));
-
-    buttontracksolar.setPosition(345, 303, 60, 60);
-    buttontracksolar.setBitmaps(Bitmap(BITMAP_BUTTON3_ID), Bitmap(BITMAP_BUTTON3_PRESSED_ID));
-    buttontracksolar.setLabelText(TypedText(T_SINGLEUSEID60));
-    buttontracksolar.setLabelColor(touchgfx::Color::getColorFrom24BitRGB(100, 91, 130));
-    buttontracksolar.setLabelColorPressed(touchgfx::Color::getColorFrom24BitRGB(160, 200, 214));
-
-    buttontrackking.setPosition(411, 303, 60, 60);
-    buttontrackking.setBitmaps(Bitmap(BITMAP_BUTTON3_ID), Bitmap(BITMAP_BUTTON3_PRESSED_ID));
-    buttontrackking.setLabelText(TypedText(T_SINGLEUSEID61));
-    buttontrackking.setLabelColor(touchgfx::Color::getColorFrom24BitRGB(100, 91, 130));
-    buttontrackking.setLabelColorPressed(touchgfx::Color::getColorFrom24BitRGB(160, 200, 214));
-
-    eqcoords_2.setXY(273, 167);
-    eqcoords_2.setColor(touchgfx::Color::getColorFrom24BitRGB(222, 50, 50));
-    eqcoords_2.setLinespacing(0);
-    eqcoords_2.setTypedText(TypedText(T_SINGLEUSEID62));
-    eqcoords_2.setWildcard(TypedText(T_SINGLEUSEID63).getText());
-    eqcoords_2.resizeToCurrentText();
+    slewspeed.setPosition(235, 167, 224, 47);
+    slewspeed.setColor(touchgfx::Color::getColorFrom24BitRGB(222, 50, 50));
+    slewspeed.setLinespacing(0);
+    slewspeed.setTypedText(TypedText(T_SINGLEUSEID62));
+    Unicode::snprintf(slewspeedBuffer, SLEWSPEED_SIZE, "%s", TypedText(T_SINGLEUSEID63).getText());
+    slewspeed.setWildcard(slewspeedBuffer);
 
     starmap_bb.setPosition(15, 400, 150, 300);
     starmap_bb.setColor(touchgfx::Color::getColorFrom24BitRGB(31, 31, 31));
 
     button_stop.setPosition(263, 482, 130, 135);
     button_stop.setBitmaps(Bitmap(BITMAP_STOP_ID), Bitmap(BITMAP_STOP_PRESSED_ID));
+
+    toggleSidereal.setPosition(213, 303, 60, 60);
+    toggleSidereal.setBitmaps(Bitmap(BITMAP_BUTTON3_ID), Bitmap(BITMAP_BUTTON3_PRESSED_ID));
+
+    textArea2.setXY(225, 310);
+    textArea2.setColor(touchgfx::Color::getColorFrom24BitRGB(124, 83, 161));
+    textArea2.setLinespacing(0);
+    textArea2.setTypedText(TypedText(T_SINGLEUSEID72));
+
+    toggleLunar.setPosition(279, 303, 60, 60);
+    toggleLunar.setBitmaps(Bitmap(BITMAP_BUTTON3_ID), Bitmap(BITMAP_BUTTON3_PRESSED_ID));
+
+    textArea2_1.setXY(291, 310);
+    textArea2_1.setColor(touchgfx::Color::getColorFrom24BitRGB(124, 83, 161));
+    textArea2_1.setLinespacing(0);
+    textArea2_1.setTypedText(TypedText(T_SINGLEUSEID73));
+
+    toggleSolar.setPosition(345, 303, 60, 60);
+    toggleSolar.setBitmaps(Bitmap(BITMAP_BUTTON3_ID), Bitmap(BITMAP_BUTTON3_PRESSED_ID));
+
+    textArea2_2.setXY(357, 310);
+    textArea2_2.setColor(touchgfx::Color::getColorFrom24BitRGB(124, 83, 161));
+    textArea2_2.setLinespacing(0);
+    textArea2_2.setTypedText(TypedText(T_SINGLEUSEID74));
+
+    toggleKing.setPosition(411, 303, 60, 60);
+    toggleKing.setBitmaps(Bitmap(BITMAP_BUTTON3_ID), Bitmap(BITMAP_BUTTON3_PRESSED_ID));
+
+    textArea2_3.setXY(423, 310);
+    textArea2_3.setColor(touchgfx::Color::getColorFrom24BitRGB(124, 83, 161));
+    textArea2_3.setLinespacing(0);
+    textArea2_3.setTypedText(TypedText(T_SINGLEUSEID75));
+
+    slewspeed_star.setPosition(423, 167, 36, 47);
+    slewspeed_star.setVisible(false);
+    slewspeed_star.setColor(touchgfx::Color::getColorFrom24BitRGB(220, 50, 50));
+    slewspeed_star.setLinespacing(0);
+    slewspeed_star.setTypedText(TypedText(T_SINGLEUSEID76));
 
     add(box1);
     add(eqcoords);
@@ -148,13 +162,18 @@ MountScreenViewBase::MountScreenViewBase()
     add(button0_5);
     add(button0_6);
     add(configPopup2);
-    add(toggleButton1);
+    add(toggle_track);
     add(textArea1_1_1_1);
-    add(buttontrackstellar);
-    add(buttontracklunar);
-    add(buttontracksolar);
-    add(buttontrackking);
-    add(eqcoords_2);
+    add(slewspeed);
     add(starmap_bb);
     add(button_stop);
+    add(toggleSidereal);
+    add(textArea2);
+    add(toggleLunar);
+    add(textArea2_1);
+    add(toggleSolar);
+    add(textArea2_2);
+    add(toggleKing);
+    add(textArea2_3);
+    add(slewspeed_star);
 }

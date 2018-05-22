@@ -16,6 +16,10 @@
 #include <cstdio>
 #include "SkyCulture.h"
 
+using namespace touchgfx;
+
+#define SMW_DEBUG 0
+
 static const float RADIAN_F = 180.0f / M_PI;
 static const float DEGREE_F = M_PI / 180.0f;
 static const double RADIAN = 180.0 / M_PI;
@@ -130,12 +134,12 @@ void StarMapWidget::handleClickEvent(const ClickEvent& evt)
 			// Find the star being selected
 			float x_delta = ((float) evt.getX() / getWidth() - 0.5f) * fovw;
 			float y_delta = ((float) evt.getY() / getHeight() - 0.5f) * fovh;
-			printf("Selected X=%f, Y=%f\r\n", x_delta, y_delta);
+			debug_if(SMW_DEBUG, "Selected X=%f, Y=%f\r\n", x_delta, y_delta);
 
 			// Field radius in degree
 			float rf = sqrtf(x_delta * x_delta + y_delta * y_delta);
 			float theta = (90.0f + rot) * DEGREE_F + atan2f(y_delta, x_delta);
-			printf("Selected R=%f, Th=%f\r\n", rf, theta);
+			debug_if(SMW_DEBUG, "Selected R=%f, Th=%f\r\n", rf, theta);
 
 			float p = cosf(rf * DEGREE_F);
 			float q = sqrtf(1.0f - p * p);
@@ -149,7 +153,7 @@ void StarMapWidget::handleClickEvent(const ClickEvent& evt)
 			float dec = atan2f(zs, sqrtf(xs * xs + ys * ys)) * RADIAN_F;
 			float maxdist = SELECTION_ERROR_THRESHOLD / getWidth() * fovw;
 
-			printf("Selected RA=%f, DEC=%f, maxdist=%f\r\n", ra, dec, maxdist);
+			debug_if(SMW_DEBUG, "Selected RA=%f, DEC=%f, maxdist=%f\r\n", ra, dec, maxdist);
 
 			StarInfo *newselected = NULL;
 			// First check planets and Sun/Moon
@@ -172,7 +176,7 @@ void StarMapWidget::handleClickEvent(const ClickEvent& evt)
 
 			if (selected != newselected)
 			{
-				printf("Selected star: id=%d, ra=%f, dec=%f\r\n", selected->id, selected->RA, selected->DEC);
+				debug_if(SMW_DEBUG, "Selected star: id=%d, ra=%f, dec=%f\r\n", selected->id, selected->RA, selected->DEC);
 				selected = newselected;
 				invalidate();
 			}
@@ -290,7 +294,7 @@ void StarMapWidget::draw(const Rect& invalidatedArea) const
 		}
 	}
 
-	printf("%lld us\r\n", tim.read_high_resolution_us() - time_start);
+	debug_if(SMW_DEBUG, "%lld us\r\n", tim.read_high_resolution_us() - time_start);
 }
 
 void StarMapWidget::handleTickEvent()
@@ -302,7 +306,7 @@ void StarMapWidget::handleTickEvent()
 		// Happens every second
 		timestamp = newtime;
 //		timestamp = 1712604420; // 2024/04/08 19:27:00 (UTC), Solar eclipse
-//		printf("tick\r\n");
+//		debug_if(SMW_DEBUG, "tick\r\n");
 		invalidate();
 	}
 	if (++count == 20)
@@ -397,7 +401,7 @@ void StarMapWidget::_callback(const StarInfo *star, bool isStar) const
 		yscr = CWRUtil::toQ5((0.5 - yf) * getHeight());
 	}
 
-//	printf("xf=%f, yf=%f\r\n", xf, yf);
+//	debug_if(SMW_DEBUG, "xf=%f, yf=%f\r\n", xf, yf);
 
 	float red = 1.0f + 0.10f * star->color;
 	float green = 1.0f;
@@ -448,7 +452,7 @@ void StarMapWidget::_callback(const StarInfo *star, bool isStar) const
 			CWRUtil::Q5 size = CWRUtil::toQ5(getWidth() / fovw * 0.25f);
 			MoonPhase &phase = ((SolarSystemInfo *) star)->phase;
 
-			printf("Update moon: %d %d\r\n", xscr.to<int>(), yscr.to<int>());
+			debug_if(SMW_DEBUG, "Update moon: %d %d\r\n", xscr.to<int>(), yscr.to<int>());
 
 			isMoon = true;
 			displayMoon = true;
@@ -480,7 +484,7 @@ void StarMapWidget::_callback(const StarInfo *star, bool isStar) const
 			if (!canvas->render())
 			{
 				renderSuccessful = false;
-				printf("Render failed\r\n");
+				debug_if(SMW_DEBUG, "Render failed\r\n");
 			}
 
 			CWRUtil::Q5 size2 = size * 4;
@@ -511,7 +515,7 @@ void StarMapWidget::_callback(const StarInfo *star, bool isStar) const
 		if (!canvas->render())
 		{
 			renderSuccessful = false;
-			printf("Render failed\r\n");
+			debug_if(SMW_DEBUG, "Render failed\r\n");
 		}
 
 	// Draw ticks around selected star
@@ -602,7 +606,7 @@ void StarMapWidget::_drawmoon() const
 
 	if (!canvas->render())
 	{
-		printf("Render failed.\r\n");
+		debug_if(SMW_DEBUG, "Render failed.\r\n");
 		renderSuccessful = false;
 	}
 
@@ -640,7 +644,7 @@ void StarMapWidget::_drawticks(CWRUtil::Q5 x0, CWRUtil::Q5 y0, CWRUtil::Q5 r) co
 
 	if (!canvas->render())
 	{
-		printf("Render failed.\r\n");
+		debug_if(SMW_DEBUG, "Render failed.\r\n");
 		renderSuccessful = false;
 	}
 }
@@ -791,8 +795,8 @@ void StarMapWidget::_drawconstell(const Rect &invalidatedArea) const
 	HAL::getInstance()->unlockFrameBuffer();
 	sum += tim.read_us() - timestart;
 
-	printf("%d us\r\n", sum);
-	printf("count=%d\r\n", count);
+	debug_if(SMW_DEBUG, "%d us\r\n", sum);
+	debug_if(SMW_DEBUG, "count=%d\r\n", count);
 }
 
 void StarMapWidget::_drawline(int16_t x1, int16_t y1, int16_t x2, int16_t y2, const Rect &invalid, colortype color, uint8_t *fb) const

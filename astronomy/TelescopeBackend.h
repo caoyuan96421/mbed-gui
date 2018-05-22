@@ -25,12 +25,59 @@ typedef union
 
 struct ConfigItem
 {
-	const char *name;
-	const char *help;
+	char *config;
+	char *name;
+	char *help;
 	DataType type;
 	DataValue value;
 	DataValue min;
 	DataValue max;
+
+	ConfigItem() :
+			config(NULL), name(NULL), help(NULL), type(DATATYPE_INT)
+	{
+	}
+	~ConfigItem()
+	{
+		if (config)
+			delete[] config;
+		if (name)
+			delete[] name;
+		if (help)
+			delete[] help;
+	}
+
+	void setName(const char *n)
+	{
+		if (name)
+			delete[] name;
+		name = new char[strlen(n) + 1];
+		if (name)
+		{
+			strcpy(name, n);
+		}
+	}
+	void setConfig(const char *c)
+	{
+		if (config)
+			delete[] config;
+		config = new char[strlen(c) + 1];
+		if (config)
+		{
+			strcpy(config, c);
+		}
+	}
+	void setHelp(const char *h)
+	{
+		if (help)
+			delete[] help;
+		help = new char[strlen(h) + 1];
+		if (help)
+		{
+			strcpy(help, h);
+		}
+	}
+
 };
 
 class TelescopeBackend
@@ -43,6 +90,10 @@ public:
 		EAST,  ///< An enum constant representing the east option
 		WEST   ///< An enum constant representing the west option
 	} Direction;
+	typedef enum
+	{
+		UNDEFINED = -1, MOUNT_STOPPED = 0, MOUNT_SLEWING = 1, MOUNT_TRACKING = 2, MOUNT_NUDGING = 4, MOUNT_NUDGING_TRACKING = MOUNT_TRACKING | MOUNT_NUDGING
+	} mountstatus_t;
 
 	static void initialize();
 
@@ -50,6 +101,7 @@ public:
 	static int getEqCoords(EquatorialCoordinates &);
 	static int getMountCoords(MountCoordinates &);
 
+	static int getConfigAll(ConfigItem *, int);
 	static int getConfigString(const char *config, char *buf, int size);
 	static int getConfigInt(const char *config);
 	static double getConfigDouble(const char *config);
@@ -58,6 +110,13 @@ public:
 	static int startNudge(Direction dir);
 	static int stopNudge();
 	static void emergencyStop();
+
+	static int track(bool on);
+	static mountstatus_t getStatus();
+
+	static double getSpeed(const char *type);
+
+	static void setSpeed(const char *type, double speedSidereal);
 
 private:
 	TelescopeBackend();

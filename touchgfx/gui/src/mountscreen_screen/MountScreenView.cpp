@@ -3,9 +3,12 @@
 #include "BitmapDatabase.hpp"
 #include "TelescopeBackend.h"
 
+const double lunar_speed = 0.00402557046; // deg/s
+const double solar_speed = 0.004166667; // deg/s
+
 MountScreenView::MountScreenView() :
 		buttonNWSEPressedCallback(this, &MountScreenView::buttonNWSEPressed), buttonNWSEReleasedCallback(this, &MountScreenView::buttonNWSEReleased), buttonStopCallback(this,
-				&MountScreenView::buttonStopPressed)
+				&MountScreenView::buttonStopPressed), toggleTrackCallback(this, &MountScreenView::trackToggled), toggleTrackSpeedCallback(this, &MountScreenView::trackSpeedSelected)
 {
 	baseview.addTo(&container);
 
@@ -47,11 +50,39 @@ MountScreenView::MountScreenView() :
 	add(button_south);
 	add(button_east);
 	add(button_west);
+
+	toggle_track.setAction(toggleTrackCallback);
+
+	toggleSidereal.setAction(toggleTrackSpeedCallback);
+	toggleLunar.setAction(toggleTrackSpeedCallback);
+	toggleSolar.setAction(toggleTrackSpeedCallback);
+	toggleKing.setAction(toggleTrackSpeedCallback);
+
 }
 
 void MountScreenView::setupScreen()
 {
 
+	toggle_track.forceState((presenter->getStatus() & TelescopeBackend::MOUNT_TRACKING) != 0);
+	double trackSpeed = presenter->getSpeed("track");
+	if (presenter->isUseKingRate())
+	{
+		toggleKing.forceState(true);
+	}
+	else if (fabs(trackSpeed - 1.0) < 1e-3)
+	{
+		toggleSidereal.forceState(true);
+	}
+	else if (fabs(trackSpeed - lunar_speed / sidereal_speed) < 1e-3)
+	{
+		toggleLunar.forceState(true);
+	}
+	else if (fabs(trackSpeed - solar_speed / sidereal_speed) < 1e-3)
+	{
+		toggleSolar.forceState(true);
+	}
+
+	setSlewSpeed(presenter->getSpeed("slew"));
 }
 
 void MountScreenView::tearDownScreen()
@@ -93,6 +124,13 @@ void MountScreenView::setCoords(const EquatorialCoordinates& eq, const MountCoor
 	snprintf(buf, sizeof(buf), "%c%2d\x00b0%02d'%02d\"", ns, int(d), int(fmod(d, 1.0) * 60), (int) round(fmod(d, 1.0 / 60) * 3600));
 	Unicode::strncpy(mount_coordsBuffer2, buf, MOUNT_COORDSBUFFER2_SIZE);
 	mount_coords.invalidate();
+
+	// Update king rate if selected
+	if (presenter->isUseKingRate())
+	{
+		double kingRate = CelestialMath::kingRate(eq, presenter->getLocation(), time(NULL));
+		presenter->setSpeed("track", kingRate / sidereal_speed);
+	}
 }
 
 void MountScreenView::buttonNWSEPressed(const AbstractButton& src)
@@ -125,4 +163,75 @@ void MountScreenView::buttonNWSEReleased(const AbstractButton& src)
 void MountScreenView::buttonStopPressed(const AbstractButton& src)
 {
 	TelescopeBackend::emergencyStop();
+	toggle_track.forceState(false);
+	toggle_track.invalidate();
+}
+
+void MountScreenView::trackToggled(const AbstractButton& src)
+{
+	ToggleButton& tb = (ToggleButton &) src;
+	if (tb.getState())
+	{
+		// Start tracking
+		presenter->track(true);
+	}
+	else
+	{
+		presenter->track(false);
+	}
+}
+
+void MountScreenView::trackSpeedSelected(const AbstractButton& src)
+{
+	ToggleButton &tb = (ToggleButton &) src;
+	// Set all to deselected
+	toggleSidereal.forceState(false);
+	toggleLunar.forceState(false);
+	toggleSolar.forceState(false);
+	toggleKing.forceState(false);
+	// Set the selected to selected state
+	tb.forceState(true);
+	bool useKing = false;
+	if (&tb == &toggleSidereal)
+	{
+		presenter->setSpeed("track", 1.0);
+	}
+	else if (&src == &toggleLunar)
+	{
+		presenter->setSpeed("track", lunar_speed / sidereal_speed);
+	}
+	else if (&src == &toggleSolar)
+	{
+		presenter->setSpeed("track", solar_speed / sidereal_speed);
+	}
+	else if (&src == &toggleKing)
+	{
+		useKing = true;
+		double kingRate = CelestialMath::kingRate(presenter->getEqCoords(), presenter->getLocation(), time(NULL));
+		presenter->setSpeed("track", kingRate / sidereal_speed);
+	}
+	presenter->useKingRate(useKing);
+
+	toggleSidereal.invalidate();
+	toggleLunar.invalidate();
+	toggleSolar.invalidate();
+	toggleKing.invalidate();
+}
+
+void MountScreenView::setSlewSpeed(double speed)
+{
+	Unicode::UnicodeChar buf[16];
+	if (speed > 64 * sidereal_speed)
+	{
+		Unicode::snprintfFloat(buf, sizeof(buf), "%.3f", speed);
+		Unicode::snprintf(slewspeedBuffer, SLEWSPEED_SIZE, "%s \xB0/s", buf);
+		slewspeed_star.setVisible(false);
+	}
+	else
+	{
+		Unicode::snprintfFloat(buf, sizeof(buf), "%.1f", speed / sidereal_speed);
+		Unicode::snprintf(slewspeedBuffer, SLEWSPEED_SIZE, "x%s      ", buf);
+		slewspeed_star.setVisible(true);
+	}
+	slewspeed.invalidate();
 }

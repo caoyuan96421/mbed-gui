@@ -3,47 +3,80 @@
 #include <cstdlib>
 #include <cstring>
 
-SettingScreenView::SettingScreenView()
+using namespace touchgfx;
+
+SettingScreenView::SettingScreenView() :
+		configCallback(this, &SettingScreenView::configButtonPressed)
 {
 	baseview.addTo(&container);
 
-	scrollableContainer1.setScrollThreshold(1);
+	scrollableContainer1.setScrollThreshold(0);
 
-//	int y = 0;
-//	int dy = 100;
-//	cbn = 0;
-//	while (strlen(TelescopeBackend::configlist[cbn].name) > 0)
-//		cbn++;
-//
-//	typedef ConfigButton *pcb;
-//	cbt = new pcb[cbn];
-//
-//	for (int i = 0; i < cbn; i++)
-//	{
-//		cbt[i] = new ConfigButton(TelescopeBackend::configlist[i],
-//				configPopup1);
-//		cbt[i]->setPosition(0, y, scrollableContainer1.getWidth(), dy);
-//		y += dy;
-//		scrollableContainer1.add(*cbt[i]);
-//	}
+	accordion.setXY(0, 0);
+	accordion.setWidth(scrollableContainer1.getWidth());
 
+	static const int menuHeight = 100;
+	hc_menu = accordion.createMenu("Hand Control Configuration", menuHeight);
+	mount_menu = accordion.createMenu("Mount Configuration", menuHeight);
+
+	scrollableContainer1.add(accordion);
+
+	num_config = 0;
 }
 
 SettingScreenView::~SettingScreenView()
 {
-//	for (int i = 0; i < cbn; i++)
-//	{
-//		delete cbt[i];
-//	}
-//	delete cbt;
+
 }
 
 void SettingScreenView::setupScreen()
 {
 	configPopup1.setVisible(false);
+
+	// Setup menu structure
+	num_config = presenter->getConfigAll(configs, MAX_CONFIG);
+
+	debug("# of config: %d\r\n", num_config);
+
+	for (int i = 0; i < num_config; i++)
+	{
+		abuttons[i] = new AccordionItem;
+		if (!abuttons[i])
+			break;
+
+		int nameLen = strlen(configs[i].name) + 1;
+		Unicode::UnicodeChar *nameBuf = new Unicode::UnicodeChar[nameLen];
+		if (!nameBuf)
+			break;
+		Unicode::strncpy(nameBuf, configs[i].name, nameLen);
+		abuttons[i]->setName(nameBuf);
+
+		Unicode::UnicodeChar *valueBuf = new Unicode::UnicodeChar[32];
+		if (!valueBuf)
+			break;
+		*valueBuf = 0;
+		abuttons[i]->setValue(valueBuf);
+
+		//Associate the config with the button for easier callback
+		abuttons[i]->setUserData(&configs[i]);
+
+		mount_menu->addItem(*abuttons[i], configCallback);
+	}
 }
 
 void SettingScreenView::tearDownScreen()
 {
+	// Delete ALL allocated resources
+	for (int i = 0; i < num_config; i++)
+	{
+		delete[] abuttons[i]->getName();
+		delete[] abuttons[i]->getValue();
+		delete abuttons[i];
+	}
+}
 
+void SettingScreenView::configButtonPressed(const AccordionItem& button)
+{
+	ConfigItem *config = (ConfigItem *) button.getUserData();
+	configPopup1.editConfig(config);
 }

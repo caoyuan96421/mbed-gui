@@ -15,7 +15,7 @@
 UARTSerial serial(D1, D0, 76800);
 
 // Timeout values for different commands
-static const int TIMEOUT_IMMEDIATE = 50; // Commands that should immediately return
+static const int TIMEOUT_IMMEDIATE = 500; // Commands that should immediately return
 static Mutex mutex;
 static Thread backend_thread(osPriorityBelowNormal, OS_STACK_SIZE, NULL, "backend_thread");
 static Timer timer;
@@ -119,11 +119,10 @@ static void nodeDelete(ListNode *node)
 	}
 }
 
-static char linebuf[512];
-
 static void read_thread()
 {
-	char buf[128];
+	char buf[1024];
+	char linebuf[1024];
 	char *p = linebuf;
 	char *g = linebuf + sizeof(linebuf);
 	char cmd[32];
@@ -212,20 +211,29 @@ static ListNode *queryStart(const char *command, const char *arg, int timeout)
 	if (!arg)
 		len = snprintf(buf, sizeof(buf), "%s\r\n", command);
 	else
+	{
 		len = snprintf(buf, sizeof(buf), "%s %s\r\n", command, arg);
 
-	// Prepare command tracking structure
+		debug_if(TB_DEBUG, "commandSent: %s+%s=%s\r\n", command, arg, buf);
+	}
+
+// Prepare command tracking structure
 	ListNode *cmd_node = commandStarted(command, timeout);
 
-	// Write command
+// Write command
 	serial.write(buf, len);
 
 	return cmd_node;
 }
 
+static bool queryHasReturned(ListNode *p)
+{
+	return p->retval != 0x7FFFFFFF;
+}
+
 static int queryMessage(ListNode *p, char *buf, int size, int timeout)
 {
-	if (!p)
+	if (!p || queryHasReturned(p))
 	{
 		return -1;
 	}
@@ -240,11 +248,6 @@ static int queryMessage(ListNode *p, char *buf, int size, int timeout)
 	return 0;
 }
 
-static bool queryHasReturned(ListNode *p)
-{
-	return p->retval != 0x7FFFFFFF;
-}
-
 static int queryWaitForReturn(ListNode *p, int timeout)
 {
 	if (!p)
@@ -256,6 +259,10 @@ static int queryWaitForReturn(ListNode *p, int timeout)
 		return -2;
 	}
 	int ret = p->retval;
+	if (ret && TB_DEBUG)
+	{
+		error("ret=%d", ret);
+	}
 	return ret;
 }
 
@@ -289,7 +296,7 @@ int TelescopeBackend::syncTime()
 	}
 	queryFinish(node);
 	timestamp = strtol(buf, NULL, 10);
-	debug("Setting time to %d\r\n", timestamp);
+	debug_if(TB_DEBUG, "Setting time to %d\r\n", timestamp);
 	set_time(timestamp);
 	return 0;
 
@@ -321,7 +328,7 @@ int TelescopeBackend::getEqCoords(EquatorialCoordinates &out)
 	{
 		goto failed;
 	}
-	debug("RA=%f, DEC=%f\r\n", ra, dec);
+	debug_if(TB_DEBUG, "RA=%f, DEC=%f\r\n", ra, dec);
 	out = EquatorialCoordinates(dec, ra);
 	return 0;
 
@@ -353,7 +360,7 @@ int TelescopeBackend::getMountCoords(MountCoordinates &out)
 	{
 		goto failed;
 	}
-	debug("RA=%f, DEC=%f\r\n", ra, dec);
+	debug_if(TB_DEBUG, "RA=%f, DEC=%f\r\n", ra, dec);
 	out = MountCoordinates(dec, ra);
 	return 0;
 
@@ -438,4 +445,199 @@ bool TelescopeBackend::getConfigBool(const char* config)
 	char buf[64];
 	getConfigString(config, buf, sizeof(buf));
 	return (strcmp(config, "true") == 0);
+}
+
+int TelescopeBackend::track(bool on)
+{
+	if (on)
+		queryNoResponse("track", NULL);
+	else
+		queryNoResponse("stop", "track");
+	return 0;
+}
+
+TelescopeBackend::mountstatus_t TelescopeBackend::getStatus()
+{
+	char buf[32];
+	ListNode *node = queryStart("status", NULL, TIMEOUT_IMMEDIATE);
+	if (!node)
+	{
+		return UNDEFINED;
+	}
+	if (queryMessage(node, buf, sizeof(buf), TIMEOUT_IMMEDIATE) != 0)
+	{
+		goto failed;
+	}
+	if (queryWaitForReturn(node, TIMEOUT_IMMEDIATE) != 0)
+	{
+		goto failed;
+	}
+	queryFinish(node);
+
+	debug("state: %s\r\n", buf);
+
+	if (strcmp(buf, "stopped") == 0)
+		return MOUNT_STOPPED;
+	else if (strcmp(buf, "slewing") == 0)
+		return MOUNT_SLEWING;
+	else if (strcmp(buf, "tracking") == 0)
+		return MOUNT_TRACKING;
+	else if (strcmp(buf, "nudging") == 0)
+		return MOUNT_NUDGING;
+	else if (strcmp(buf, "nudging_tracking") == 0)
+		return MOUNT_NUDGING_TRACKING;
+	else
+		return UNDEFINED;
+
+	failed: debug("Failed to read status.\r\n");
+	queryFinish(node);
+	return UNDEFINED;
+}
+
+static void setDataValue(DataType type, char *str, DataValue &value)
+{
+	switch (type)
+	{
+	case DATATYPE_STRING:
+		strncpy(value.strdata, str, sizeof(value.strdata));
+		return;
+	case DATATYPE_INT:
+		value.idata = strtol(str, NULL, 10);
+		return;
+	case DATATYPE_DOUBLE:
+		value.ddata = strtod(str, NULL);
+		return;
+	case DATATYPE_BOOL:
+		value.bdata = (strcmp(str, "true") == 0);
+		return;
+	}
+}
+
+int TelescopeBackend::getConfigAll(ConfigItem* configs, int maxConfig)
+{
+	char buf[1024];
+	int nConfig = 0;
+	char *saveptr;
+	const char *delim = " ";
+	char *str = buf;
+
+// Read all configs
+	ListNode *node = queryStart("config", NULL, TIMEOUT_IMMEDIATE);
+	if (!node)
+	{
+		return 0;
+	}
+	if (queryMessage(node, buf, sizeof(buf), TIMEOUT_IMMEDIATE) != 0)
+	{
+		goto failed;
+	}
+	if (queryWaitForReturn(node, TIMEOUT_IMMEDIATE) != 0)
+	{
+		goto failed;
+	}
+	queryFinish(node);
+
+	for (nConfig = 0; nConfig < maxConfig; nConfig++)
+	{
+		char *config = strtok_r(str, delim, &saveptr);
+		if (config == NULL)
+		{
+			// End of string
+			break;
+		}
+		configs[nConfig].setConfig(config);
+		str = NULL;
+	}
+
+// Read name, type and help
+	char query[64];
+	delim = ",";
+	for (int i = 0; i < nConfig; i++)
+	{
+		snprintf(query, sizeof(query), "%s info", configs[i].config);
+		node = queryStart("config", query, TIMEOUT_IMMEDIATE);
+		if (!node)
+		{
+			return 0;
+		}
+		if (queryMessage(node, buf, sizeof(buf), TIMEOUT_IMMEDIATE) != 0)
+		{
+			goto failed;
+		}
+		if (queryWaitForReturn(node, TIMEOUT_IMMEDIATE) != 0)
+		{
+			goto failed;
+		}
+		queryFinish(node);
+		// Get type
+		char *type = strtok_r(buf, delim, &saveptr);
+		if (strcmp(type, "INT") == 0)
+		{
+			configs[i].type = DATATYPE_INT;
+		}
+		else if (strcmp(type, "DOUBLE") == 0)
+		{
+			configs[i].type = DATATYPE_DOUBLE;
+		}
+		else if (strcmp(type, "BOOL") == 0)
+		{
+			configs[i].type = DATATYPE_BOOL;
+		}
+		else if (strcmp(type, "STRING") == 0)
+		{
+			configs[i].type = DATATYPE_STRING;
+		}
+		else
+		{
+			goto failed;
+		}
+		// Get value
+		char *value = strtok_r(NULL, delim, &saveptr);
+		setDataValue(configs[i].type, value, configs[i].value);
+		// Get name
+		char *name = strtok_r(NULL, delim, &saveptr);
+		configs[i].setName(name);
+		// Get help from the rest
+		configs[i].setHelp(saveptr);
+
+		// TODO get limits
+	}
+
+	return nConfig;
+
+	failed: debug("Failed to read config.\r\n");
+	queryFinish(node);
+	return nConfig;
+}
+
+void TelescopeBackend::setSpeed(const char *type, double speed)
+{
+	char buf[32];
+	snprintf(buf, sizeof(buf), "%s %.8f", type, speed);
+	queryNoResponse("speed", buf);
+}
+
+double TelescopeBackend::getSpeed(const char* type)
+{
+	char buf[32];
+	ListNode *node = queryStart("speed", type, TIMEOUT_IMMEDIATE);
+	if (!node)
+	{
+		return -1;
+	}
+	if (queryMessage(node, buf, sizeof(buf), TIMEOUT_IMMEDIATE) != 0)
+	{
+		goto failed;
+	}
+	if (queryWaitForReturn(node, TIMEOUT_IMMEDIATE) != 0)
+	{
+		goto failed;
+	}
+	queryFinish(node);
+
+	return strtod(buf, NULL);
+
+	failed: debug("Failed to read speed %s.\r\n", type);
+	queryFinish(node);
+	return NAN;
 }

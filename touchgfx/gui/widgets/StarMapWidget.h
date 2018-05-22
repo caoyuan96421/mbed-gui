@@ -18,16 +18,14 @@
 #include "mbed.h"
 #include "PlanetMoon.h"
 
-using namespace touchgfx;
-
-class StarMapWidget: public CanvasWidget
+class StarMapWidget: public touchgfx::CanvasWidget
 {
 public:
 	StarMapWidget();
 	virtual ~StarMapWidget();
 
-	virtual bool drawCanvasWidget(const Rect& invalidatedArea) const;
-	virtual void draw(const Rect& invalidatedArea) const;
+	virtual bool drawCanvasWidget(const touchgfx::Rect& invalidatedArea) const;
+	virtual void draw(const touchgfx::Rect& invalidatedArea) const;
 
 	void aimAt(double ra, double dec)
 	{
@@ -39,6 +37,11 @@ public:
 		else
 			dec_ctr = dec;
 		invalidate();
+	}
+
+	void aimAt(const EquatorialCoordinates &eq)
+	{
+		aimAt(eq.ra, eq.dec);
 	}
 
 	void setFOV(double fov)
@@ -80,19 +83,19 @@ public:
 		return dec_ctr;
 	}
 
-	void setColor(colortype c)
+	void setColor(touchgfx::colortype c)
 	{
 		starpainter.setColor(c);
 		invalidate();
 	}
 
-	colortype getColor()
+	touchgfx::colortype getColor()
 	{
 		return starpainter.getColor();
 	}
 
-	virtual void handleDragEvent(const DragEvent& evt);
-	virtual void handleClickEvent(const ClickEvent& evt);
+	virtual void handleDragEvent(const touchgfx::DragEvent& evt);
+	virtual void handleClickEvent(const touchgfx::ClickEvent& evt);
 	virtual void handleTickEvent();
 
 	const LocationCoordinates& getLocation() const
@@ -111,11 +114,11 @@ protected:
 	float fovh; // Field of view along the height of the widget
 	float rot; // Rotation of FOV
 	LocationCoordinates location;
-	mutable PainterRGB888 starpainter;
-	colortype labelColor;
+	mutable touchgfx::PainterRGB888 starpainter;
+	touchgfx::colortype labelColor;
 	uint8_t labelAlpha;
-	Bitmap moon_bitmap;
-	mutable class TextureMapperEx: public TextureMapper
+	touchgfx::Bitmap moon_bitmap;
+	mutable class TextureMapperEx: public touchgfx::TextureMapper
 	{
 	public:
 		void setParent(Drawable *p)
@@ -124,7 +127,7 @@ protected:
 		}
 	} moon_texture;
 
-	mutable class BoxEx: public Box
+	mutable class BoxEx: public touchgfx::Box
 	{
 	public:
 		void setParent(Drawable *p)
@@ -135,16 +138,16 @@ protected:
 
 private:
 	// These are for internal use
-	mutable Canvas *canvas;
+	mutable touchgfx::Canvas *canvas;
 	mutable float xc, yc, zc;
 	mutable float xp, yp, zp;
 	mutable float xq, yq;
 	mutable float fovr; // Field radius
 	mutable bool renderSuccessful;
 	mutable bool displayMoon;
-	mutable CWRUtil::Q5 moon_x;
-	mutable CWRUtil::Q5 moon_y;
-	mutable CWRUtil::Q5 moon_size;
+	mutable touchgfx::CWRUtil::Q5 moon_x;
+	mutable touchgfx::CWRUtil::Q5 moon_y;
+	mutable touchgfx::CWRUtil::Q5 moon_size;
 	mutable int moon_apex;
 	mutable int moon_illumangle;
 	mutable int tick_rotation;
@@ -182,9 +185,9 @@ private:
 	static void callback(StarInfo*, void*);
 	void _callback(const StarInfo *, bool isStar) const;
 	void _drawmoon() const;
-	void _drawticks(CWRUtil::Q5 x, CWRUtil::Q5 y, CWRUtil::Q5 r) const;
-	void _drawconstell(const Rect &invalidatedArea) const;
-	void _drawline(int16_t x0, int16_t y0, int16_t x1, int16_t y1, const Rect &invalid, colortype color, uint8_t *fb) const;
+	void _drawticks(touchgfx::CWRUtil::Q5 x, touchgfx::CWRUtil::Q5 y, touchgfx::CWRUtil::Q5 r) const;
+	void _drawconstell(const touchgfx::Rect &invalidatedArea) const;
+	void _drawline(int16_t x0, int16_t y0, int16_t x1, int16_t y1, const touchgfx::Rect &invalid, touchgfx::colortype color, uint8_t *fb) const;
 
 };
 

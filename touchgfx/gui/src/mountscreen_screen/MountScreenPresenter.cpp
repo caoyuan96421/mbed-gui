@@ -4,12 +4,12 @@
 MountScreenPresenter::MountScreenPresenter(MountScreenView& v) :
 		BaseScreenPresenter(v.baseview), view(v)
 {
-	view.setCoords(model->getEqCoords(), model->getMountCoords());
 }
 
 void MountScreenPresenter::activate()
 {
-
+	BaseScreenPresenter::activate();
+	view.setCoords(model->getEqCoords(), model->getMountCoords());
 }
 
 void MountScreenPresenter::deactivate()

@@ -8,7 +8,7 @@ HomeScreenPresenter::HomeScreenPresenter(HomeScreenView& v) :
 
 void HomeScreenPresenter::activate()
 {
-
+	BaseScreenPresenter::activate();
 }
 
 void HomeScreenPresenter::deactivate()

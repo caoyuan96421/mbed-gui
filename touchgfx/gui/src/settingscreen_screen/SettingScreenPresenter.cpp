@@ -8,7 +8,7 @@ SettingScreenPresenter::SettingScreenPresenter(SettingScreenView& v) :
 
 void SettingScreenPresenter::activate()
 {
-
+	BaseScreenPresenter::activate();
 }
 
 void SettingScreenPresenter::deactivate()

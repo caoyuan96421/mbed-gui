@@ -23,7 +23,7 @@ StarMapScreenView::StarMapScreenView() :
 
 void StarMapScreenView::setupScreen()
 {
-
+	starmap.aimAt(presenter->getEqCoords());
 }
 
 void StarMapScreenView::tearDownScreen()

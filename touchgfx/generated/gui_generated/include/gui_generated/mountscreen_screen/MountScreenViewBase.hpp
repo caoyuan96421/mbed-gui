@@ -43,15 +43,20 @@ protected:
     touchgfx::ButtonWithLabel button0_5;
     touchgfx::ButtonWithLabel button0_6;
     ConfigPopup configPopup2;
-    touchgfx::ToggleButton toggleButton1;
+    touchgfx::ToggleButton toggle_track;
     touchgfx::TextArea textArea1_1_1_1;
-    touchgfx::ButtonWithLabel buttontrackstellar;
-    touchgfx::ButtonWithLabel buttontracklunar;
-    touchgfx::ButtonWithLabel buttontracksolar;
-    touchgfx::ButtonWithLabel buttontrackking;
-    touchgfx::TextAreaWithOneWildcard eqcoords_2;
+    touchgfx::TextAreaWithOneWildcard slewspeed;
     touchgfx::Box starmap_bb;
     touchgfx::Button button_stop;
+    touchgfx::ToggleButton toggleSidereal;
+    touchgfx::TextArea textArea2;
+    touchgfx::ToggleButton toggleLunar;
+    touchgfx::TextArea textArea2_1;
+    touchgfx::ToggleButton toggleSolar;
+    touchgfx::TextArea textArea2_2;
+    touchgfx::ToggleButton toggleKing;
+    touchgfx::TextArea textArea2_3;
+    touchgfx::TextArea slewspeed_star;
 
     /*
      * Wildcard Buffers
@@ -64,6 +69,8 @@ protected:
     touchgfx::Unicode::UnicodeChar mount_coordsBuffer1[MOUNT_COORDSBUFFER1_SIZE];
     static const uint16_t MOUNT_COORDSBUFFER2_SIZE = 14;
     touchgfx::Unicode::UnicodeChar mount_coordsBuffer2[MOUNT_COORDSBUFFER2_SIZE];
+    static const uint16_t SLEWSPEED_SIZE = 15;
+    touchgfx::Unicode::UnicodeChar slewspeedBuffer[SLEWSPEED_SIZE];
 
 private:
 

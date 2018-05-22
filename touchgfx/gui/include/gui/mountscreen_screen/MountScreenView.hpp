@@ -59,10 +59,18 @@ protected:
 	touchgfx::Callback<MountScreenView, const AbstractButton&> buttonNWSEPressedCallback;
 	touchgfx::Callback<MountScreenView, const AbstractButton&> buttonNWSEReleasedCallback;
 	touchgfx::Callback<MountScreenView, const AbstractButton&> buttonStopCallback;
+	touchgfx::Callback<MountScreenView, const AbstractButton&> toggleTrackCallback;
+	touchgfx::Callback<MountScreenView, const AbstractButton&> toggleTrackSpeedCallback;
 
 	void buttonNWSEPressed(const AbstractButton& src);
 	void buttonNWSEReleased(const AbstractButton& src);
 	void buttonStopPressed(const AbstractButton& src);
+
+	void trackToggled(const AbstractButton& src);
+
+	void trackSpeedSelected(const AbstractButton& src);
+
+	void setSlewSpeed(double speed);
 };
 
 #endif // MOUNTSCREEN_VIEW_HPP

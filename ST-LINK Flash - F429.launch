@@ -5,6 +5,6 @@
     </listAttribute>
     <stringAttribute key="org.eclipse.ui.externaltools.ATTR_LAUNCH_CONFIGURATION_BUILD_SCOPE" value="${project}"/>
     <stringAttribute key="org.eclipse.ui.externaltools.ATTR_LOCATION" value="C:\Program Files (x86)\STMicroelectronics\STM32 ST-LINK Utility\ST-LINK Utility\ST-LINK_CLI.exe"/>
-    <stringAttribute key="org.eclipse.ui.externaltools.ATTR_TOOL_ARGUMENTS" value="-c -P ${project_name}.bin 0x08000000 -Rst"/>
+    <stringAttribute key="org.eclipse.ui.externaltools.ATTR_TOOL_ARGUMENTS" value="-c SN=52FF71064980515731372587 -P ${project_name}.bin 0x08000000 -Rst"/>
     <stringAttribute key="org.eclipse.ui.externaltools.ATTR_WORKING_DIRECTORY" value="${project_loc}/${config_name:${project_name}}"/>
 </launchConfiguration>

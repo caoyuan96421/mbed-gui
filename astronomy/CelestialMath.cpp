@@ -329,7 +329,7 @@ void CelestialMath::alignTwoStars(const LocalEquatorialCoordinates star_ref[], c
 }
 
 void CelestialMath::alignTwoStars(const LocalEquatorialCoordinates star_ref[], const MountCoordinates star_meas[], const LocationCoordinates& loc, AzimuthalCoordinates& pa, IndexOffset& offset,
-		bool &diverge)
+bool &diverge)
 {
 // Initialize the PA and offset
 	pa.alt = loc.lat;
@@ -799,7 +799,7 @@ double CelestialMath::parseHMSAngle(char* hms)
 		return NAN;
 	}
 
-	return remainder((hour + minute / 60 + second / 3600) * 15, 360);
+	return remainder((hour + minute / 60.0 + second / 3600.0) * 15.0, 360.0);
 }
 
 double CelestialMath::parseDMSAngle(char* dms)
@@ -838,7 +838,7 @@ double CelestialMath::parseDMSAngle(char* dms)
 		return NAN;
 	}
 
-	return remainder((degree + arcminute / 60 + arcsecond / 3600), 360);
+	return remainder((degree + arcminute / 60.0 + arcsecond / 3600.0), 360);
 }
 
 EquatorialCoordinates EquatorialCoordinates::precessFromJ2000(time_t timestamp)
@@ -859,4 +859,20 @@ EquatorialCoordinates EquatorialCoordinates::precessToJ2000(time_t timestamp)
 	double RA = ra - (3.075 + 1.336 * sin(ra * DEGREE) * tan(dec * DEGREE)) * Y / 240.0;
 	double DEC = dec - 20.04 * cos(ra * DEGREE) * Y / 3600.0;
 	return EquatorialCoordinates(DEC, RA);
+}
+
+double CelestialMath::kingRate(const EquatorialCoordinates &eq, const LocationCoordinates &loc, time_t time)
+{
+	LocalEquatorialCoordinates leq = CelestialMath::equatorialToLocalEquatorial(eq, time, loc);
+//	AzimuthalCoordinates ac = CelestialMath::localEquatorialToAzimuthal(leq,
+//			loc);
+	double cosLat = cos(loc.lat * DEGREE);
+	double sinLat = sin(loc.lat * DEGREE);
+	double cotLat = cosLat / sinLat;
+	double cosDec = cos(eq.dec * DEGREE);
+	double sinDec = sin(eq.dec * DEGREE);
+	double tanDec = sinDec / cosDec;
+	double cosHA = cos(leq.ha * DEGREE);
+	double kingMpD = (1436.46 + 0.4 * (cosLat / cosDec * (cosLat * cosDec + sinLat * sinDec * cosHA) / pow(sinLat * sinDec + cosLat * cosDec * cosHA, 2.0) - cotLat * tanDec * cosHA));
+	return 6.0 / kingMpD;
 }
