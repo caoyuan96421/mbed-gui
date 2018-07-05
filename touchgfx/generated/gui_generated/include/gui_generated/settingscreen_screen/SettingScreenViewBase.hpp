@@ -11,7 +11,6 @@
 #include <touchgfx/widgets/TextArea.hpp>
 #include <touchgfx/containers/ScrollableContainer.hpp>
 #include <gui/containers/ConfigPopup.hpp>
-#include <touchgfx/mixins/Draggable.hpp>
 
 class SettingScreenViewBase : public touchgfx::View<SettingScreenPresenter>
 {
@@ -30,7 +29,7 @@ protected:
     touchgfx::Box box1;
     touchgfx::TextArea textArea1_2;
     touchgfx::ScrollableContainer scrollableContainer1;
-    touchgfx::Draggable< ConfigPopup > configPopup1;
+    ConfigPopup configPopup1;
 
 private:
 

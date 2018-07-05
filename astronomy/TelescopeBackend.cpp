@@ -610,11 +610,275 @@ int TelescopeBackend::getConfigAll(ConfigItem* configs, int maxConfig)
 	return nConfig;
 }
 
+int TelescopeBackend::goTo(EquatorialCoordinates eq)
+{
+	char buf[64];
+	snprintf(buf, sizeof(buf), "%.8f %.8f", eq.ra, eq.dec);
+	queryNoResponse("goto", buf);
+	return 0;
+}
+
+int TelescopeBackend::goToMount(MountCoordinates mc)
+{
+	char buf[64];
+	snprintf(buf, sizeof(buf), "mount %.8f %.8f", mc.ra_delta, mc.dec_delta);
+	queryNoResponse("goto", buf);
+	return 0;
+}
+
+int TelescopeBackend::getCalibration(EqCalibration& calib)
+{
+	char buf[128];
+	ListNode *node = queryStart("align", "show", TIMEOUT_IMMEDIATE);
+	if (!node)
+	{
+		return -1;
+	}
+
+	if (queryMessage(node, buf, sizeof(buf), TIMEOUT_IMMEDIATE) != 0)
+	{
+		goto failed;
+	}
+	// Read offset
+	sscanf(buf, "%*s%lf%lf", &calib.offset.ra_off, &calib.offset.dec_off);
+
+	if (queryMessage(node, buf, sizeof(buf), TIMEOUT_IMMEDIATE) != 0)
+	{
+		goto failed;
+	}
+	// Read PA
+	sscanf(buf, "%*s%lf%lf", &calib.pa.alt, &calib.pa.azi);
+
+	if (queryMessage(node, buf, sizeof(buf), TIMEOUT_IMMEDIATE) != 0)
+	{
+		goto failed;
+	}
+	// Read PA
+	sscanf(buf, "%*s%lf", &calib.cone);
+
+	if (queryMessage(node, buf, sizeof(buf), TIMEOUT_IMMEDIATE) != 0)
+	{
+		goto failed;
+	}
+	// Read error
+	sscanf(buf, "%*s%lf", &calib.error);
+
+	if (queryWaitForReturn(node, TIMEOUT_IMMEDIATE) != 0)
+	{
+		goto failed;
+	}
+	queryFinish(node);
+	return 0;
+
+	failed: debug("Failed to get alignment.\r\n");
+	queryFinish(node);
+	return -1;
+}
+
+int TelescopeBackend::addAlignmentStar(const AlignmentStar& star)
+{
+	char buf[128];
+	snprintf(buf, sizeof(buf), "add %.8f %.8f %.8f %.8f", star.star_ref.ra, star.star_ref.dec, star.star_meas.ra_delta, star.star_meas.dec_delta);
+	ListNode *node = queryStart("align", buf, TIMEOUT_IMMEDIATE);
+	if (!node)
+	{
+		return UNDEFINED;
+	}
+	int ret = queryWaitForReturn(node, TIMEOUT_IMMEDIATE);
+	queryFinish(node);
+	return ret;
+}
+
+void TelescopeBackend::removeAlignmentStar(int index)
+{
+	char buf[128];
+	snprintf(buf, sizeof(buf), "delete %d", index);
+	ListNode *node = queryStart("align", buf, TIMEOUT_IMMEDIATE);
+	if (!node)
+	{
+		return;
+	}
+	queryWaitForReturn(node, TIMEOUT_IMMEDIATE);
+	queryFinish(node);
+}
+
+int TelescopeBackend::replaceAlignmentStar(int index, const AlignmentStar& star)
+{
+	char buf[128];
+	snprintf(buf, sizeof(buf), "replace %d %.8f %.8f %.8f %.8f", index, star.star_ref.ra, star.star_ref.dec, star.star_meas.ra_delta, star.star_meas.dec_delta);
+	ListNode *node = queryStart("align", buf, TIMEOUT_IMMEDIATE);
+	if (!node)
+	{
+		return UNDEFINED;
+	}
+	int ret = queryWaitForReturn(node, TIMEOUT_IMMEDIATE);
+	queryFinish(node);
+	return ret;
+}
+
+void TelescopeBackend::clearAlignment()
+{
+	queryNoResponse("align", "clear");
+}
+
+int TelescopeBackend::addAlignmentStar(const EquatorialCoordinates& star_ref)
+{
+	char buf[128];
+	snprintf(buf, sizeof(buf), "add %.8f %.8f", star_ref.ra, star_ref.dec);
+	ListNode *node = queryStart("align", buf, TIMEOUT_IMMEDIATE);
+	if (!node)
+	{
+		return -1;
+	}
+	int ret = queryWaitForReturn(node, TIMEOUT_IMMEDIATE);
+	queryFinish(node);
+	return ret;
+}
+
+int TelescopeBackend::replaceAlignmentStar(int index, const EquatorialCoordinates& star_ref)
+{
+	char buf[128];
+	snprintf(buf, sizeof(buf), "replace %d  %.8f %.8f", index, star_ref.ra, star_ref.dec);
+	ListNode *node = queryStart("align", buf, TIMEOUT_IMMEDIATE);
+	if (!node)
+	{
+		return -1;
+	}
+	int ret = queryWaitForReturn(node, TIMEOUT_IMMEDIATE);
+	queryFinish(node);
+	return ret;
+}
+
+EquatorialCoordinates TelescopeBackend::convertMountToEquatorial(const MountCoordinates& mc)
+{
+	char buf[128];
+	snprintf(buf, sizeof(buf), "convert mount %.8f %.8f", mc.ra_delta, mc.dec_delta);
+	ListNode *node = queryStart("align", buf, TIMEOUT_IMMEDIATE);
+	if (!node)
+	{
+		return EquatorialCoordinates(0, 0);
+	}
+	if (queryMessage(node, buf, sizeof(buf), TIMEOUT_IMMEDIATE) != 0)
+	{
+		goto failed;
+	}
+	if (queryWaitForReturn(node, TIMEOUT_IMMEDIATE) != 0)
+	{
+		goto failed;
+	}
+	queryFinish(node);
+
+	double ra, dec;
+	sscanf(buf, "%lf%lf", &ra, &dec);
+
+	return EquatorialCoordinates(dec, ra);
+
+	failed: debug("Failed to convert coordinates.\r\n");
+	queryFinish(node);
+	return EquatorialCoordinates(0, 0);
+}
+
+MountCoordinates TelescopeBackend::convertEquatorialToMount(const EquatorialCoordinates& eq)
+{
+	char buf[128];
+	snprintf(buf, sizeof(buf), "convert eq %.8f %.8f", eq.ra, eq.dec);
+	ListNode *node = queryStart("align", buf, TIMEOUT_IMMEDIATE);
+	if (!node)
+	{
+		return MountCoordinates(0, 0);
+	}
+	if (queryMessage(node, buf, sizeof(buf), TIMEOUT_IMMEDIATE) != 0)
+	{
+		goto failed;
+	}
+	if (queryWaitForReturn(node, TIMEOUT_IMMEDIATE) != 0)
+	{
+		goto failed;
+	}
+	queryFinish(node);
+
+	double ra, dec;
+	sscanf(buf, "%lf%lf", &ra, &dec);
+
+	return MountCoordinates(dec, ra);
+
+	failed: debug("Failed to convert coordinates.\r\n");
+	queryFinish(node);
+	return MountCoordinates(0, 0);
+}
+
+int TelescopeBackend::getNumAlignmentStars()
+{
+	char buf[16];
+	ListNode *node = queryStart("align", "show num", TIMEOUT_IMMEDIATE);
+	if (!node)
+	{
+		return 0;
+	}
+	if (queryMessage(node, buf, sizeof(buf), TIMEOUT_IMMEDIATE) != 0)
+	{
+		goto failed;
+	}
+	if (queryWaitForReturn(node, TIMEOUT_IMMEDIATE) != 0)
+	{
+		goto failed;
+	}
+	queryFinish(node);
+
+	return strtol(buf, NULL, 10);
+
+	failed: debug("Failed to get number of alignment stars.\r\n");
+	queryFinish(node);
+	return 0;
+}
+
+int TelescopeBackend::getAlignmentStar(int index, AlignmentStar &star)
+{
+	char buf[128];
+	snprintf(buf, sizeof(buf), "show %d", index);
+	ListNode *node = queryStart("align", buf, TIMEOUT_IMMEDIATE);
+	if (!node)
+	{
+		return -1;
+	}
+
+	if (queryMessage(node, buf, sizeof(buf), TIMEOUT_IMMEDIATE) != 0)
+	{
+		goto failed;
+	}
+
+	if (queryWaitForReturn(node, TIMEOUT_IMMEDIATE) != 0)
+	{
+		goto failed;
+	}
+	queryFinish(node);
+
+	// Alignment star
+	double ref_ra, ref_dec, meas_ra, meas_dec;
+	time_t timestamp;
+	sscanf(buf, "%lf%lf%lf%lf%ld", &ref_ra, &ref_dec, &meas_ra, &meas_dec, &timestamp);
+	star.star_ref.ra = ref_ra;
+	star.star_ref.dec = ref_dec;
+	star.star_meas.ra_delta = meas_ra;
+	star.star_meas.dec_delta = meas_dec;
+	star.timestamp = timestamp;
+	return 0;
+
+	failed: debug("Failed to get alignment star %d.\r\n", index);
+	queryFinish(node);
+	return -1;
+}
+
 void TelescopeBackend::setSpeed(const char *type, double speed)
 {
 	char buf[32];
 	snprintf(buf, sizeof(buf), "%s %.8f", type, speed);
-	queryNoResponse("speed", buf);
+	ListNode *node = queryStart("speed", buf, TIMEOUT_IMMEDIATE);
+	if (queryWaitForReturn(node, TIMEOUT_IMMEDIATE) != 0)
+	{
+		debug("Failed to set speed to %f.\r\n", speed);
+	}
+	queryFinish(node);
 }
 
 double TelescopeBackend::getSpeed(const char* type)
@@ -640,4 +904,32 @@ double TelescopeBackend::getSpeed(const char* type)
 	failed: debug("Failed to read speed %s.\r\n", type);
 	queryFinish(node);
 	return NAN;
+}
+
+void TelescopeBackend::writeConfig(ConfigItem* config)
+{
+	if (!config)
+		return;
+	char buf[128];
+	switch (config->type)
+	{
+	case DATATYPE_STRING:
+		snprintf(buf, sizeof(buf), "%s %s", config->config, config->value.strdata);
+		break;
+	case DATATYPE_INT:
+		snprintf(buf, sizeof(buf), "%s %d", config->config, config->value.idata);
+		break;
+	case DATATYPE_DOUBLE:
+		snprintf(buf, sizeof(buf), "%s %.8f", config->config, config->value.ddata);
+		break;
+	case DATATYPE_BOOL:
+		snprintf(buf, sizeof(buf), "%s %s", config->config, config->value.bdata ? "true" : "false");
+		break;
+	}
+	ListNode *node = queryStart("config", buf, TIMEOUT_IMMEDIATE);
+	if (queryWaitForReturn(node, TIMEOUT_IMMEDIATE) != 0)
+	{
+		debug("Failed to set: %s.\r\n", buf);
+	}
+	queryFinish(node);
 }

@@ -23,6 +23,12 @@
 #include <gui/settingscreen_screen/SettingScreenPresenter.hpp>
 #include <gui/starmapscreen_screen/StarMapScreenView.hpp>
 #include <gui/starmapscreen_screen/StarMapScreenPresenter.hpp>
+#include <gui/dummyscreen_screen/DummyScreenView.hpp>
+#include <gui/dummyscreen_screen/DummyScreenPresenter.hpp>
+#include <gui/utilityscreen_screen/UtilityScreenView.hpp>
+#include <gui/utilityscreen_screen/UtilityScreenPresenter.hpp>
+#include <gui/alignscreen_screen/AlignScreenView.hpp>
+#include <gui/alignscreen_screen/AlignScreenPresenter.hpp>
 
 
 /**
@@ -50,7 +56,10 @@ public:
             meta::TypeList< MountScreenView,
             meta::TypeList< SettingScreenView,
             meta::TypeList< StarMapScreenView,
-            meta::Nil > > > >
+            meta::TypeList< DummyScreenView,
+            meta::TypeList< UtilityScreenView,
+            meta::TypeList< AlignScreenView,
+            meta::Nil > > > > > > >
             > GeneratedViewTypes;
 
     /**
@@ -67,7 +76,10 @@ public:
             meta::TypeList< MountScreenPresenter,
             meta::TypeList< SettingScreenPresenter,
             meta::TypeList< StarMapScreenPresenter,
-            meta::Nil > > > >
+            meta::TypeList< DummyScreenPresenter,
+            meta::TypeList< UtilityScreenPresenter,
+            meta::TypeList< AlignScreenPresenter,
+            meta::Nil > > > > > > >
             > GeneratedPresenterTypes;
 
     /**
@@ -81,7 +93,8 @@ public:
      */
     typedef meta::TypeList< NoTransition,
             meta::TypeList< SlideTransition<WEST>,
-            meta::Nil >
+            meta::TypeList< SlideTransition<EAST>,
+            meta::Nil > >
             > GeneratedTransitionTypes;
 
     /**

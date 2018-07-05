@@ -62,6 +62,7 @@ public:
 	double getSpeed(const char *type);
 
 	int getConfigAll(ConfigItem *configs, int maxConfig);
+	void writeConfig(ConfigItem *config);
 
 	void useKingRate(bool use)
 	{

@@ -39,7 +39,7 @@ static RCC_PeriphCLKInitTypeDef PeriphClkInitStruct;
 #define HSYNC           1
 #define HBP             1
 #define HFP             1
-#define USE_DOUBLE_BUFFERING
+//#define USE_DOUBLE_BUFFERING
 
 #define HACT            480
 

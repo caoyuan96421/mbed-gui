@@ -106,10 +106,26 @@ public:
 	static int getConfigInt(const char *config);
 	static double getConfigDouble(const char *config);
 	static bool getConfigBool(const char *config);
+	static void writeConfig(ConfigItem *);
 
 	static int startNudge(Direction dir);
 	static int stopNudge();
 	static void emergencyStop();
+
+	static int goTo(EquatorialCoordinates eq);
+	static int goToMount(MountCoordinates eq);
+
+	static int getCalibration(EqCalibration &calib);
+	static int getNumAlignmentStars();
+	static int getAlignmentStar(int index, AlignmentStar &star);
+	static int addAlignmentStar(const AlignmentStar &star);
+	static int addAlignmentStar(const EquatorialCoordinates &star_ref);
+	static void removeAlignmentStar(int index);
+	static int replaceAlignmentStar(int index, const AlignmentStar &star);
+	static int replaceAlignmentStar(int index, const EquatorialCoordinates &star_ref);
+	static void clearAlignment();
+	static EquatorialCoordinates convertMountToEquatorial(const MountCoordinates &mc);
+	static MountCoordinates convertEquatorialToMount(const EquatorialCoordinates &eq);
 
 	static int track(bool on);
 	static mountstatus_t getStatus();

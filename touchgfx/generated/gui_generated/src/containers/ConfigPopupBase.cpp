@@ -9,11 +9,11 @@
 ConfigPopupBase::ConfigPopupBase()  
 {
     setWidth(480);
-    setHeight(800);
+    setHeight(750);
 
-    box3.setPosition(0, 0, 480, 800);
-    box3.setColor(touchgfx::Color::getColorFrom24BitRGB(128, 128, 128));
-    box3.setAlpha(40);
+    box3.setPosition(0, 0, 480, 750);
+    box3.setColor(touchgfx::Color::getColorFrom24BitRGB(25, 25, 25));
+    box3.setAlpha(100);
 
     box1.setPosition(45, 111, 391, 579);
     box1.setColor(touchgfx::Color::getColorFrom24BitRGB(74, 16, 54));

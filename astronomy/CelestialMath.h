@@ -165,12 +165,13 @@ struct EqCalibration
 	IndexOffset offset;
 	AzimuthalCoordinates pa;
 	double cone;
+	double error;
 	EqCalibration() :
-			cone(0)
+			cone(0), error(0)
 	{
 	}
 	EqCalibration(const IndexOffset &off, const AzimuthalCoordinates p, double c) :
-			offset(off), pa(p), cone(c)
+			offset(off), pa(p), cone(c), error(0)
 	{
 	}
 };

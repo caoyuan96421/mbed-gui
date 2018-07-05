@@ -6,7 +6,8 @@
 #include <texts/TextKeysAndLanguages.hpp>
 #include "BitmapDatabase.hpp"
 
-MountScreenViewBase::MountScreenViewBase()  
+MountScreenViewBase::MountScreenViewBase()  :
+    buttonCallback(this, &MountScreenViewBase::buttonCallbackHandler)
 {
     box1.setPosition(0, 0, 480, 800);
     box1.setColor(touchgfx::Color::getColorFrom24BitRGB(0, 0, 0));
@@ -25,7 +26,7 @@ MountScreenViewBase::MountScreenViewBase()
     textArea1.setLinespacing(0);
     textArea1.setTypedText(TypedText(T_SINGLEUSEID44));
 
-    mount_coords.setPosition(221, 34, 250, 28);
+    mount_coords.setPosition(204, 34, 270, 28);
     mount_coords.setColor(touchgfx::Color::getColorFrom24BitRGB(65, 47, 130));
     mount_coords.setLinespacing(0);
     mount_coords.setTypedText(TypedText(T_SINGLEUSEID45));
@@ -39,60 +40,15 @@ MountScreenViewBase::MountScreenViewBase()
     textArea1_1.setLinespacing(0);
     textArea1_1.setTypedText(TypedText(T_SINGLEUSEID48));
 
-    button0.setPosition(15, 226, 60, 60);
-    button0.setBitmaps(Bitmap(BITMAP_BUTTON3_ID), Bitmap(BITMAP_BUTTON3_PRESSED_ID));
-    button0.setLabelText(TypedText(T_SINGLEUSEID49));
-    button0.setLabelColor(touchgfx::Color::getColorFrom24BitRGB(100, 91, 130));
-    button0.setLabelColorPressed(touchgfx::Color::getColorFrom24BitRGB(160, 200, 214));
-
     textArea1_1_1.setXY(15, 171);
     textArea1_1_1.setColor(touchgfx::Color::getColorFrom24BitRGB(158, 67, 57));
     textArea1_1_1.setLinespacing(0);
     textArea1_1_1.setTypedText(TypedText(T_SINGLEUSEID50));
 
-    button0_1.setPosition(81, 226, 60, 60);
-    button0_1.setBitmaps(Bitmap(BITMAP_BUTTON3_ID), Bitmap(BITMAP_BUTTON3_PRESSED_ID));
-    button0_1.setLabelText(TypedText(T_SINGLEUSEID51));
-    button0_1.setLabelColor(touchgfx::Color::getColorFrom24BitRGB(100, 91, 130));
-    button0_1.setLabelColorPressed(touchgfx::Color::getColorFrom24BitRGB(160, 200, 214));
-
-    button0_2.setPosition(147, 226, 60, 60);
-    button0_2.setBitmaps(Bitmap(BITMAP_BUTTON3_ID), Bitmap(BITMAP_BUTTON3_PRESSED_ID));
-    button0_2.setLabelText(TypedText(T_SINGLEUSEID52));
-    button0_2.setLabelColor(touchgfx::Color::getColorFrom24BitRGB(100, 91, 130));
-    button0_2.setLabelColorPressed(touchgfx::Color::getColorFrom24BitRGB(160, 200, 214));
-
-    button0_3.setPosition(213, 226, 60, 60);
-    button0_3.setBitmaps(Bitmap(BITMAP_BUTTON3_ID), Bitmap(BITMAP_BUTTON3_PRESSED_ID));
-    button0_3.setLabelText(TypedText(T_SINGLEUSEID53));
-    button0_3.setLabelColor(touchgfx::Color::getColorFrom24BitRGB(100, 91, 130));
-    button0_3.setLabelColorPressed(touchgfx::Color::getColorFrom24BitRGB(160, 200, 214));
-
-    button0_4.setPosition(279, 226, 60, 60);
-    button0_4.setBitmaps(Bitmap(BITMAP_BUTTON3_ID), Bitmap(BITMAP_BUTTON3_PRESSED_ID));
-    button0_4.setLabelText(TypedText(T_SINGLEUSEID54));
-    button0_4.setLabelColor(touchgfx::Color::getColorFrom24BitRGB(100, 91, 130));
-    button0_4.setLabelColorPressed(touchgfx::Color::getColorFrom24BitRGB(160, 200, 214));
-
-    button0_5.setPosition(345, 226, 60, 60);
-    button0_5.setBitmaps(Bitmap(BITMAP_BUTTON3_ID), Bitmap(BITMAP_BUTTON3_PRESSED_ID));
-    button0_5.setLabelText(TypedText(T_SINGLEUSEID55));
-    button0_5.setLabelColor(touchgfx::Color::getColorFrom24BitRGB(100, 91, 130));
-    button0_5.setLabelColorPressed(touchgfx::Color::getColorFrom24BitRGB(160, 200, 214));
-
-    button0_6.setPosition(411, 226, 60, 60);
-    button0_6.setBitmaps(Bitmap(BITMAP_BUTTON3_ID), Bitmap(BITMAP_BUTTON3_PRESSED_ID));
-    button0_6.setLabelText(TypedText(T_SINGLEUSEID56));
-    button0_6.setLabelColor(touchgfx::Color::getColorFrom24BitRGB(100, 91, 130));
-    button0_6.setLabelColorPressed(touchgfx::Color::getColorFrom24BitRGB(160, 200, 214));
-
-    configPopup2.setXY(0, 0);
-    configPopup2.setVisible(false);
-
-    toggle_track.setPosition(27, 303, 170, 60);
+    toggle_track.setPosition(22, 303, 170, 60);
     toggle_track.setBitmaps(Bitmap(BITMAP_BUTTON2_ID), Bitmap(BITMAP_BUTTON2_PRESSED_ID));
 
-    textArea1_1_1_1.setXY(74, 314);
+    textArea1_1_1_1.setXY(69, 314);
     textArea1_1_1_1.setColor(touchgfx::Color::getColorFrom24BitRGB(158, 120, 141));
     textArea1_1_1_1.setLinespacing(0);
     textArea1_1_1_1.setTypedText(TypedText(T_SINGLEUSEID57));
@@ -148,20 +104,22 @@ MountScreenViewBase::MountScreenViewBase()
     slewspeed_star.setLinespacing(0);
     slewspeed_star.setTypedText(TypedText(T_SINGLEUSEID76));
 
+    align_button.setPosition(22, 238, 170, 60);
+    align_button.setBitmaps(Bitmap(BITMAP_BUTTON2_ID), Bitmap(BITMAP_BUTTON2_PRESSED_ID));
+    align_button.setLabelText(TypedText(T_SINGLEUSEID110));
+    align_button.setLabelColor(touchgfx::Color::getColorFrom24BitRGB(235, 61, 149));
+    align_button.setLabelColorPressed(touchgfx::Color::getColorFrom24BitRGB(255, 255, 255));
+    align_button.setAction(buttonCallback);
+
+    Next_arrow_482.setXY(162, 244);
+    Next_arrow_482.setBitmap(Bitmap(BITMAP_NEXT_ARROW_48_ID));
+
     add(box1);
     add(eqcoords);
     add(textArea1);
     add(mount_coords);
     add(textArea1_1);
-    add(button0);
     add(textArea1_1_1);
-    add(button0_1);
-    add(button0_2);
-    add(button0_3);
-    add(button0_4);
-    add(button0_5);
-    add(button0_6);
-    add(configPopup2);
     add(toggle_track);
     add(textArea1_1_1_1);
     add(slewspeed);
@@ -176,4 +134,41 @@ MountScreenViewBase::MountScreenViewBase()
     add(toggleKing);
     add(textArea2_3);
     add(slewspeed_star);
+    add(align_button);
+    add(Next_arrow_482);
+}
+
+void MountScreenViewBase::buttonCallbackHandler(const touchgfx::AbstractButton& src)
+{
+    if (&src == &toggle_track)
+    {
+
+    }
+    else if (&src == &button_stop)
+    {
+
+    }
+    else if (&src == &toggleSidereal)
+    {
+
+    }
+    else if (&src == &toggleLunar)
+    {
+
+    }
+    else if (&src == &toggleSolar)
+    {
+
+    }
+    else if (&src == &toggleKing)
+    {
+
+    }
+    else if (&src == &align_button)
+    {
+        //Interaction1
+        //When align_button clicked change screen to AlignScreen
+        //Go to AlignScreen with slide screen transition towards East
+        application().gotoAlignScreenScreenSlideTransitionEast();
+    }
 }

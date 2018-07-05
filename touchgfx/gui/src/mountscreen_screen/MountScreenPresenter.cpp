@@ -9,7 +9,7 @@ MountScreenPresenter::MountScreenPresenter(MountScreenView& v) :
 void MountScreenPresenter::activate()
 {
 	BaseScreenPresenter::activate();
-	view.setCoords(model->getEqCoords(), model->getMountCoords());
+	view.updateDisplay(model->getEqCoords(), model->getMountCoords());
 }
 
 void MountScreenPresenter::deactivate()
@@ -20,6 +20,6 @@ void MountScreenPresenter::deactivate()
 void MountScreenPresenter::setCoords(const EquatorialCoordinates& eq, const MountCoordinates& meq)
 {
 	BaseScreenPresenter::setCoords(eq, meq);
-	view.setCoords(eq, meq);
+	view.updateDisplay(eq, meq);
 }
 

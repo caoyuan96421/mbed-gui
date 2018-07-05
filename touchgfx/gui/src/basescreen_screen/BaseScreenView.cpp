@@ -42,7 +42,7 @@ void BaseScreenView::setTime(time_t timestamp, int tz)
 	// Print time
 	strftime(buf, sizeof(buf), "%X", &ts);
 	Unicode::strncpy(bufU, buf, 32);
-	Unicode::snprintf(timeBuffer, TIME_SIZE, "UTC%d %s", tz, bufU);
+	Unicode::snprintf(timeBuffer, TIME_SIZE, "UTC%+d %s", tz, bufU);
 	time.invalidate();
 
 	// Print date

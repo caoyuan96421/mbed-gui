@@ -1,4 +1,18 @@
 Converting images
-Generating generated/images/src/button1.cpp
+Generating generated/images/src/buttondown.cpp
 Generating generated/images/include/BitmapDatabase.hpp
 Generating generated/images/src/BitmapDatabase.cpp
+Generating generated/fonts/UnicodeListDejaVuSans_Bold_40_4.txt
+Generating generated/fonts/UnicodeListtrebuc_16_4.txt
+Generating generated/fonts/UnicodeListtrebuc_24_4.txt
+Generating generated/fonts/UnicodeListtrebuc_32_4.txt
+Generating generated/fonts/UnicodeListtrebucbd_40_4.txt
+Generating generated/fonts/src/ApplicationFontProvider.cpp
+Generating generated/fonts/include/fonts/ApplicationFontProvider.hpp
+Generating generated/texts/include/texts/TextKeysAndLanguages.hpp
+Generating generated/texts/src/Texts.cpp
+Generating generated/texts/src/LanguageGb.cpp
+Generating generated/texts/include/texts/TypedTextDatabase.hpp
+Generating generated/texts/src/TypedTextDatabase.cpp
+Remapped 46 strings (310 bytes saved)
+Remapped typedText_database_Gb

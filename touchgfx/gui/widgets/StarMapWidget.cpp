@@ -171,7 +171,7 @@ void StarMapWidget::handleClickEvent(const ClickEvent& evt)
 			// Then check stars
 			if (!newselected)
 			{
-				newselected = StarCatalog::getInstance().searchCoordinates(ra, dec, maxdist);
+				newselected = StarCatalog::getInstance().searchByCoordinates(ra, dec, maxdist);
 			}
 
 			if (selected != newselected)

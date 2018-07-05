@@ -17,6 +17,12 @@
 #include <gui/settingscreen_screen/SettingScreenPresenter.hpp>
 #include <gui/starmapscreen_screen/StarMapScreenView.hpp>
 #include <gui/starmapscreen_screen/StarMapScreenPresenter.hpp>
+#include <gui/dummyscreen_screen/DummyScreenView.hpp>
+#include <gui/dummyscreen_screen/DummyScreenPresenter.hpp>
+#include <gui/utilityscreen_screen/UtilityScreenView.hpp>
+#include <gui/utilityscreen_screen/UtilityScreenPresenter.hpp>
+#include <gui/alignscreen_screen/AlignScreenView.hpp>
+#include <gui/alignscreen_screen/AlignScreenPresenter.hpp>
 
 using namespace touchgfx;
 
@@ -71,6 +77,18 @@ void FrontendApplicationBase::gotoMountScreenScreenNoTransitionImpl()
     makeTransition<MountScreenView, MountScreenPresenter, touchgfx::NoTransition, Model >(&currentScreen, &currentPresenter, frontendHeap, &currentTransition, &model);
 }
 
+
+void FrontendApplicationBase::gotoMountScreenScreenSlideTransitionWest()
+{
+    transitionCallback = touchgfx::Callback<FrontendApplicationBase>(this, &FrontendApplication::gotoMountScreenScreenSlideTransitionWestImpl);
+    pendingScreenTransitionCallback = &transitionCallback;
+}
+
+void FrontendApplicationBase::gotoMountScreenScreenSlideTransitionWestImpl()
+{
+    makeTransition<MountScreenView, MountScreenPresenter, SlideTransition<WEST>, Model >(&currentScreen, &currentPresenter, frontendHeap, &currentTransition, &model);
+}
+
 // SettingScreen
 
 void FrontendApplicationBase::gotoSettingScreenScreenNoTransition()
@@ -95,5 +113,43 @@ void FrontendApplicationBase::gotoStarMapScreenScreenNoTransition()
 void FrontendApplicationBase::gotoStarMapScreenScreenNoTransitionImpl()
 {
     makeTransition<StarMapScreenView, StarMapScreenPresenter, touchgfx::NoTransition, Model >(&currentScreen, &currentPresenter, frontendHeap, &currentTransition, &model);
+}
+
+// UtilityScreen
+
+void FrontendApplicationBase::gotoUtilityScreenScreenNoTransition()
+{
+    transitionCallback = touchgfx::Callback<FrontendApplicationBase>(this, &FrontendApplication::gotoUtilityScreenScreenNoTransitionImpl);
+    pendingScreenTransitionCallback = &transitionCallback;
+}
+
+void FrontendApplicationBase::gotoUtilityScreenScreenNoTransitionImpl()
+{
+    makeTransition<UtilityScreenView, UtilityScreenPresenter, touchgfx::NoTransition, Model >(&currentScreen, &currentPresenter, frontendHeap, &currentTransition, &model);
+}
+
+// AlignScreen
+
+void FrontendApplicationBase::gotoAlignScreenScreenSlideTransitionEast()
+{
+    transitionCallback = touchgfx::Callback<FrontendApplicationBase>(this, &FrontendApplication::gotoAlignScreenScreenSlideTransitionEastImpl);
+    pendingScreenTransitionCallback = &transitionCallback;
+}
+
+void FrontendApplicationBase::gotoAlignScreenScreenSlideTransitionEastImpl()
+{
+    makeTransition<AlignScreenView, AlignScreenPresenter, SlideTransition<EAST>, Model >(&currentScreen, &currentPresenter, frontendHeap, &currentTransition, &model);
+}
+
+
+void FrontendApplicationBase::gotoAlignScreenScreenNoTransition()
+{
+    transitionCallback = touchgfx::Callback<FrontendApplicationBase>(this, &FrontendApplication::gotoAlignScreenScreenNoTransitionImpl);
+    pendingScreenTransitionCallback = &transitionCallback;
+}
+
+void FrontendApplicationBase::gotoAlignScreenScreenNoTransitionImpl()
+{
+    makeTransition<AlignScreenView, AlignScreenPresenter, touchgfx::NoTransition, Model >(&currentScreen, &currentPresenter, frontendHeap, &currentTransition, &model);
 }
 

@@ -98,6 +98,7 @@ KEEP extern const touchgfx::GlyphNode glyphs_trebuc_32_4bpp[] FONT_LOCATION_FLAS
  { 13612, 123,  12,  30,  23,   0,  12, 255,   0, touchgfx::GLYPH_DATA_FORMAT_A4|0},
  { 13792, 124,   3,  27,  23,   7,  17, 255,   0, touchgfx::GLYPH_DATA_FORMAT_A4|0},
  { 13846, 125,  12,  30,  23,   0,  12, 255,   0, touchgfx::GLYPH_DATA_FORMAT_A4|0},
- { 14026, 126,  13,   4,  12,   2,  17, 255,   0, touchgfx::GLYPH_DATA_FORMAT_A4|0}
+ { 14026, 126,  13,   4,  12,   2,  17, 255,   0, touchgfx::GLYPH_DATA_FORMAT_A4|0},
+ { 14054, 176,   8,   7,  23,   4,  17, 255,   0, touchgfx::GLYPH_DATA_FORMAT_A4|0}
 };
 

@@ -5,8 +5,7 @@
 #include <cmath>
 
 ConfigPopup::ConfigPopup() :
-		config(NULL), callbackok(this, &ConfigPopup::ok), callbackcancel(this,
-				&ConfigPopup::cancel), callbackedit(this, &ConfigPopup::edit)
+		config(NULL), callbackok(this, &ConfigPopup::ok), callbackcancel(this, &ConfigPopup::cancel), callbackedit(this, &ConfigPopup::edit), callback(NULL)
 {
 	okButton.setAction(callbackok);
 	cancelButton.setAction(callbackcancel);
@@ -27,6 +26,10 @@ ConfigPopup::ConfigPopup() :
 	buttonminus.setAction(callbackedit);
 
 	helpArea.setWideTextAction(WIDE_TEXT_WORDWRAP);
+	setVisible(false);
+	setTouchable(true); // Capture all click event
+
+//	box3.forceReportAsSolid(true);
 
 }
 
@@ -79,8 +82,7 @@ void ConfigPopup::editConfig(ConfigItem* config)
 			snprintf(buf, VALUEAREA_SIZE, "%s", config->value.strdata);
 			break;
 		case DATATYPE_BOOL:
-			snprintf(buf, VALUEAREA_SIZE, "%s",
-					config->value.bdata ? "TRUE" : "FALSE");
+			snprintf(buf, VALUEAREA_SIZE, "%s", config->value.bdata ? "TRUE" : "FALSE");
 			buttondot.setVisible(false);
 			button0.setVisible(false);
 			button1.setVisible(false);
@@ -106,6 +108,31 @@ void ConfigPopup::editConfig(ConfigItem* config)
 
 void ConfigPopup::ok(const AbstractButton& b)
 {
+	if (config && *editbuf != '\0')
+	{
+		switch (config->type)
+		{
+		case DATATYPE_INT:
+			config->value.idata = strtol(editbuf, NULL, 10);
+			break;
+		case DATATYPE_DOUBLE:
+			config->value.ddata = strtod(editbuf, NULL);
+			break;
+		case DATATYPE_BOOL:
+			config->value.bdata = (strcmp(editbuf, "TRUE") == 0);
+			break;
+		case DATATYPE_STRING:
+			// TODO
+			break;
+		}
+	}
+
+	if (config && callback)
+	{
+		callback->execute(config, true);
+	}
+
+	this->callback = NULL;
 	this->config = NULL;
 	this->setVisible(false);
 	invalidate();
@@ -113,6 +140,11 @@ void ConfigPopup::ok(const AbstractButton& b)
 
 void ConfigPopup::cancel(const AbstractButton& b)
 {
+	if (config && callback)
+	{
+		callback->execute(config, false);
+	}
+	this->callback = NULL;
 	this->config = NULL;
 	this->setVisible(false);
 	invalidate();
@@ -133,8 +165,7 @@ void ConfigPopup::edit(const AbstractButton& b)
 				strcpy(editbuf, "FALSE");
 			}
 		}
-		else if (config->type == DATATYPE_INT
-				|| config->type == DATATYPE_DOUBLE)
+		else if (config->type == DATATYPE_INT || config->type == DATATYPE_DOUBLE)
 		{
 			if (&b == &buttoncr)
 			{

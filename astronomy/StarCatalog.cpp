@@ -41,12 +41,12 @@ StarCatalog::StarCatalog()
 	constructTree();
 }
 
-StarInfo* StarCatalog::searchCoordinates(float ra, float dec, float maxdist)
+StarInfo* StarCatalog::searchByCoordinates(float ra, float dec, float maxdist)
 {
 	return qt_constellation.search(ra, dec, maxdist);
 }
 
-StarInfo* StarCatalog::searchID(int id)
+StarInfo* StarCatalog::searchByID(int id)
 {
 	return starIndex[id];
 }
@@ -61,7 +61,7 @@ void StarCatalog::constructTree()
 		{
 			break;
 		}
-		if (star.name != '\0')
+		if (*star.name != '\0')
 		{
 			qt_common.insert(&star);
 		}

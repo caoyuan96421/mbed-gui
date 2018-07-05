@@ -50,7 +50,7 @@ touchgfx::InternalFlashFont& getFont_trebuc_32_4bpp();
 
 touchgfx::InternalFlashFont& getFont_trebuc_32_4bpp()
 {
-  static touchgfx::InternalFlashFont trebuc_32_4bpp(glyphs_trebuc_32_4bpp, 92, 32, 7, 4, 1, 2, unicodes_trebuc_32_4bpp, kerning_trebuc_32_4bpp, 63, 0);
+  static touchgfx::InternalFlashFont trebuc_32_4bpp(glyphs_trebuc_32_4bpp, 93, 32, 7, 4, 1, 2, unicodes_trebuc_32_4bpp, kerning_trebuc_32_4bpp, 63, 0);
   return trebuc_32_4bpp;
 }
 

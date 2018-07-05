@@ -10,7 +10,6 @@
 #include <touchgfx/widgets/TextAreaWithWildcard.hpp>
 #include <touchgfx/widgets/ButtonWithLabel.hpp>
 #include <touchgfx/widgets/ButtonWithIcon.hpp>
-#include <touchgfx/mixins/ClickListener.hpp>
 
 class ConfigPopupBase : public touchgfx::Container
 {
@@ -26,7 +25,7 @@ protected:
     /*
      * Member Declarations
      */
-    touchgfx::ClickListener< touchgfx::Box > box3;
+    touchgfx::Box box3;
     touchgfx::Box box1;
     touchgfx::Box box2;
     touchgfx::TextAreaWithOneWildcard nameArea;

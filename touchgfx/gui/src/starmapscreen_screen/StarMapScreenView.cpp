@@ -24,6 +24,7 @@ StarMapScreenView::StarMapScreenView() :
 void StarMapScreenView::setupScreen()
 {
 	starmap.aimAt(presenter->getEqCoords());
+	starmap.setFOV(5);
 }
 
 void StarMapScreenView::tearDownScreen()

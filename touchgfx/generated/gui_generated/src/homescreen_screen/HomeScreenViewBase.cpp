@@ -36,27 +36,28 @@ HomeScreenViewBase::HomeScreenViewBase()  :
     textArea1_1.setLinespacing(0);
     textArea1_1.setTypedText(TypedText(T_SINGLEUSEID12));
 
-    setting_view.setPosition(23, 384, 200, 200);
+    setting_view.setPosition(23, 404, 200, 200);
     setting_view.setBitmaps(Bitmap(BITMAP_BUTTON1_ID), Bitmap(BITMAP_BUTTON1_PRESSED_ID));
     setting_view.setAction(buttonCallback);
 
-    textArea1_2.setXY(61, 584);
+    textArea1_2.setXY(61, 604);
     textArea1_2.setColor(touchgfx::Color::getColorFrom24BitRGB(176, 46, 46));
     textArea1_2.setLinespacing(0);
     textArea1_2.setTypedText(TypedText(T_SINGLEUSEID13));
 
-    image2.setXY(50, 411);
+    image2.setXY(50, 431);
     image2.setBitmap(Bitmap(BITMAP_WRENCH_ID));
 
-    utility_view.setPosition(260, 384, 200, 200);
+    utility_view.setPosition(260, 404, 200, 200);
     utility_view.setBitmaps(Bitmap(BITMAP_BUTTON1_ID), Bitmap(BITMAP_BUTTON1_PRESSED_ID));
+    utility_view.setAction(buttonCallback);
 
-    textArea1_2_1.setXY(287, 584);
+    textArea1_2_1.setXY(287, 604);
     textArea1_2_1.setColor(touchgfx::Color::getColorFrom24BitRGB(176, 46, 46));
     textArea1_2_1.setLinespacing(0);
     textArea1_2_1.setTypedText(TypedText(T_SINGLEUSEID14));
 
-    image3.setXY(260, 384);
+    image3.setXY(260, 404);
     image3.setBitmap(Bitmap(BITMAP_UTILITY_ID));
 
     textArea1_2_2.setXY(91, 27);
@@ -105,6 +106,9 @@ void HomeScreenViewBase::buttonCallbackHandler(const touchgfx::AbstractButton& s
     }
     else if (&src == &utility_view)
     {
-
+        //Interaction4
+        //When utility_view clicked change screen to UtilityScreen
+        //Go to UtilityScreen with no screen transition
+        application().gotoUtilityScreenScreenNoTransition();
     }
 }

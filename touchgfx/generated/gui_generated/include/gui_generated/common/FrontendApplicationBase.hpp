@@ -24,6 +24,8 @@ public:
     // MountScreen
     void gotoMountScreenScreenNoTransition();
 
+    void gotoMountScreenScreenSlideTransitionWest();
+
 
     // SettingScreen
     void gotoSettingScreenScreenNoTransition();
@@ -31,6 +33,16 @@ public:
 
     // StarMapScreen
     void gotoStarMapScreenScreenNoTransition();
+
+
+    // UtilityScreen
+    void gotoUtilityScreenScreenNoTransition();
+
+
+    // AlignScreen
+    void gotoAlignScreenScreenSlideTransitionEast();
+
+    void gotoAlignScreenScreenNoTransition();
 
 protected:
     touchgfx::Callback<FrontendApplicationBase> transitionCallback;
@@ -46,6 +58,8 @@ protected:
     // MountScreen
     void gotoMountScreenScreenNoTransitionImpl();
 
+    void gotoMountScreenScreenSlideTransitionWestImpl();
+
 
     // SettingScreen
     void gotoSettingScreenScreenNoTransitionImpl();
@@ -53,6 +67,16 @@ protected:
 
     // StarMapScreen
     void gotoStarMapScreenScreenNoTransitionImpl();
+
+
+    // UtilityScreen
+    void gotoUtilityScreenScreenNoTransitionImpl();
+
+
+    // AlignScreen
+    void gotoAlignScreenScreenSlideTransitionEastImpl();
+
+    void gotoAlignScreenScreenNoTransitionImpl();
 };
 
 #endif // FRONTENDAPPLICATIONBASE_HPP

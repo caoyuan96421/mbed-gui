@@ -10,10 +10,11 @@
 #include <touchgfx/widgets/Box.hpp>
 #include <touchgfx/widgets/TextAreaWithWildcard.hpp>
 #include <touchgfx/widgets/TextArea.hpp>
-#include <touchgfx/widgets/ButtonWithLabel.hpp>
-#include <gui/containers/ConfigPopup.hpp>
 #include <touchgfx/widgets/ToggleButton.hpp>
 #include <touchgfx/widgets/Button.hpp>
+#include <touchgfx/widgets/ButtonWithLabel.hpp>
+#include <touchgfx/widgets/Image.hpp>
+#include <touchgfx/mixins/ClickListener.hpp>
 
 class MountScreenViewBase : public touchgfx::View<MountScreenPresenter>
 {
@@ -30,22 +31,14 @@ protected:
      * Member Declarations
      */
     touchgfx::Box box1;
-    touchgfx::TextAreaWithTwoWildcards eqcoords;
+    touchgfx::ClickListener< touchgfx::TextAreaWithTwoWildcards > eqcoords;
     touchgfx::TextArea textArea1;
-    touchgfx::TextAreaWithTwoWildcards mount_coords;
+    touchgfx::ClickListener< touchgfx::TextAreaWithTwoWildcards > mount_coords;
     touchgfx::TextArea textArea1_1;
-    touchgfx::ButtonWithLabel button0;
     touchgfx::TextArea textArea1_1_1;
-    touchgfx::ButtonWithLabel button0_1;
-    touchgfx::ButtonWithLabel button0_2;
-    touchgfx::ButtonWithLabel button0_3;
-    touchgfx::ButtonWithLabel button0_4;
-    touchgfx::ButtonWithLabel button0_5;
-    touchgfx::ButtonWithLabel button0_6;
-    ConfigPopup configPopup2;
     touchgfx::ToggleButton toggle_track;
     touchgfx::TextArea textArea1_1_1_1;
-    touchgfx::TextAreaWithOneWildcard slewspeed;
+    touchgfx::ClickListener< touchgfx::TextAreaWithOneWildcard > slewspeed;
     touchgfx::Box starmap_bb;
     touchgfx::Button button_stop;
     touchgfx::ToggleButton toggleSidereal;
@@ -57,6 +50,8 @@ protected:
     touchgfx::ToggleButton toggleKing;
     touchgfx::TextArea textArea2_3;
     touchgfx::TextArea slewspeed_star;
+    touchgfx::ButtonWithLabel align_button;
+    touchgfx::Image Next_arrow_482;
 
     /*
      * Wildcard Buffers
@@ -73,6 +68,16 @@ protected:
     touchgfx::Unicode::UnicodeChar slewspeedBuffer[SLEWSPEED_SIZE];
 
 private:
+
+    /*
+     * Callback Handler Declarations
+     */
+    void buttonCallbackHandler(const touchgfx::AbstractButton& src);
+
+    /*
+     * Callback Declarations
+     */
+    touchgfx::Callback<MountScreenViewBase, const touchgfx::AbstractButton&> buttonCallback;
 
 };
 

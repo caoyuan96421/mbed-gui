@@ -6,7 +6,7 @@
 using namespace touchgfx;
 
 SettingScreenView::SettingScreenView() :
-		configCallback(this, &SettingScreenView::configButtonPressed)
+		configCallback(this, &SettingScreenView::configButtonPressed), configOKCallback(this, &SettingScreenView::configSet)
 {
 	baseview.addTo(&container);
 
@@ -40,7 +40,7 @@ void SettingScreenView::setupScreen()
 
 	for (int i = 0; i < num_config; i++)
 	{
-		abuttons[i] = new AccordionItem;
+		abuttons[i] = new ButtonItem;
 		if (!abuttons[i])
 			break;
 
@@ -75,8 +75,17 @@ void SettingScreenView::tearDownScreen()
 	}
 }
 
-void SettingScreenView::configButtonPressed(const AccordionItem& button)
+void SettingScreenView::configButtonPressed(const ButtonItem& button)
 {
 	ConfigItem *config = (ConfigItem *) button.getUserData();
 	configPopup1.editConfig(config);
+	configPopup1.setCallback(&configOKCallback);
+}
+
+void SettingScreenView::configSet(ConfigItem* config, bool ok)
+{
+	if (ok)
+	{
+		presenter->writeConfig(config);
+	}
 }

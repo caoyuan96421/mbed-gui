@@ -13,6 +13,19 @@ public:
 	}
 
 	void editConfig(ConfigItem *config);
+	void setCallback(touchgfx::GenericCallback<ConfigItem *, bool> *cb)
+	{
+		callback = cb;
+	}
+
+	Rect getSolidRect() const
+	{
+		return Rect(0, 0, getWidth(), getHeight());
+	}
+
+	void handleClickEvent(const ClickEvent &)
+	{
+	}
 
 protected:
 
@@ -22,10 +35,11 @@ protected:
 	touchgfx::Callback<ConfigPopup, const AbstractButton&> callbackok;
 	touchgfx::Callback<ConfigPopup, const AbstractButton&> callbackcancel;
 	touchgfx::Callback<ConfigPopup, const AbstractButton&> callbackedit;
+	touchgfx::GenericCallback<ConfigItem *, bool> *callback;
 
-	void ok(const AbstractButton &);
-	void cancel(const AbstractButton &);
-	void edit(const AbstractButton &);
+	virtual void ok(const AbstractButton &);
+	virtual void cancel(const AbstractButton &);
+	virtual void edit(const AbstractButton &);
 };
 
 #endif // CONFIGPOPUP_HPP

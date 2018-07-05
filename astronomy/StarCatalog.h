@@ -169,8 +169,8 @@ public:
 	void query_common(void (*cb)(StarInfo *, void *), float ramin, float ramax, float decmin, float decmax, void *arg, float maxmag);
 	void query_all(void (*cb)(StarInfo *, void *), float ramin, float ramax, float decmin, float decmax, void *arg, float maxmag);
 
-	StarInfo *searchCoordinates(float ra, float dec, float maxdist);
-	StarInfo *searchID(int id);
+	StarInfo *searchByCoordinates(float ra, float dec, float maxdist = 0.01f);
+	StarInfo *searchByID(int id);
 
 private:
 	StarCatalog();

@@ -6,6 +6,7 @@
 #include <gui/basescreen_screen/BaseScreenView.hpp>
 #include <gui/widgets/ConfigButton.h>
 #include <gui/widgets/AccordionMenu.h>
+#include <gui/widgets/ButtonItem.h>
 #include <gui/BaseScreenAdaptor.h>
 #include "TelescopeBackend.h"
 
@@ -24,7 +25,7 @@ protected:
 	Accordion accordion;
 	AccordionMenu *hc_menu;
 	AccordionMenu *mount_menu;
-	AccordionItem *abuttons[MAX_CONFIG];
+	ButtonItem *abuttons[MAX_CONFIG];
 
 
 	Unicode::UnicodeChar name1[20];
@@ -32,9 +33,11 @@ protected:
 	Unicode::UnicodeChar name3[20];
 	Unicode::UnicodeChar name4[20];
 
-	touchgfx::Callback<SettingScreenView, const AccordionItem &> configCallback;
+	touchgfx::Callback<SettingScreenView, const ButtonItem &> configCallback;
+	touchgfx::Callback<SettingScreenView, ConfigItem *, bool> configOKCallback;
 
-	void configButtonPressed(const AccordionItem &);
+	void configButtonPressed(const ButtonItem &);
+	void configSet(ConfigItem *, bool ok);
 };
 
 #endif // SETTINGSCREEN_VIEW_HPP

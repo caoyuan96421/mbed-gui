@@ -116,3 +116,7 @@ int Model::getConfigAll(ConfigItem* configs, int maxConfig)
 {
 	return TelescopeBackend::getConfigAll(configs, maxConfig);
 }
+
+void Model::writeConfig(ConfigItem* config){
+	return TelescopeBackend::writeConfig(config);
+}

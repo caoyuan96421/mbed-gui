@@ -97,6 +97,10 @@ public:
 		return model->getConfigAll(configs, maxConfig);
 	}
 
+	void writeConfig(ConfigItem *config){
+		model->writeConfig(config);
+	}
+
 	void setTime(time_t timestamp, int tz);
 	void setCoords(const EquatorialCoordinates &eq, const MountCoordinates& meq);
 

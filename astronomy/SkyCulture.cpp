@@ -197,8 +197,8 @@ SkyCulture::SkyCulture()
 			q->next = p;
 			int id1 = strtol(strtok_r(NULL, delim, &save), NULL, 10);
 			int id2 = strtol(strtok_r(NULL, delim, &save), NULL, 10); // Read ID of the stars of the segment
-			q->star1 = StarCatalog::getInstance().searchID(id1);
-			q->star2 = StarCatalog::getInstance().searchID(id2);
+			q->star1 = StarCatalog::getInstance().searchByID(id1);
+			q->star2 = StarCatalog::getInstance().searchByID(id2);
 			q->x1 = cosf(q->star1->DEC * M_PI / 180.0f) * cosf(q->star1->RA * M_PI / 180.0f);
 			q->y1 = cosf(q->star1->DEC * M_PI / 180.0f) * sinf(q->star1->RA * M_PI / 180.0f);
 			q->z1 = sinf(q->star1->DEC * M_PI / 180.0f);

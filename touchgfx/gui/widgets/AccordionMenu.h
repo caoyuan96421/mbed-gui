@@ -14,41 +14,10 @@
 #include <touchgfx/containers/Container.hpp>
 #include <touchgfx/Callback.hpp>
 #include <touchgfx/EasingEquations.hpp>
+#include <ButtonItem.h>
 
 namespace touchgfx
 {
-
-class AccordionItem: public AbstractButton
-{
-public:
-	AccordionItem();
-	virtual ~AccordionItem();
-
-	void setName(Unicode::UnicodeChar *name);
-	Unicode::UnicodeChar * getName();
-	void setValue(Unicode::UnicodeChar *value);
-	Unicode::UnicodeChar * getValue();
-
-	void draw(const Rect &invalidated) const;
-	Rect getSolidRect() const;
-
-	void* getUserData() const
-	{
-		return userData;
-	}
-
-	void setUserData(void* userData)
-	{
-		this->userData = userData;
-	}
-
-protected:
-	Unicode::UnicodeChar *name;
-	Unicode::UnicodeChar *value;
-	void *userData;
-	colortype pressedColor;
-	colortype releasedColor;
-};
 
 class AccordionMenu: public Container
 {
@@ -59,7 +28,7 @@ public:
 	void setMenuName(const char *name);
 	Unicode::UnicodeChar * getMenuName();
 
-	void addItem(AccordionItem &item, GenericCallback<const AccordionItem&>& callback);
+	void addItem(ButtonItem &item, GenericCallback<const ButtonItem&>& callback);
 
 	void setExpandState(bool state);
 	bool getExpandState() const;
