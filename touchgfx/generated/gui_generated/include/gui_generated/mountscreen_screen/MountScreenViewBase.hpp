@@ -14,6 +14,7 @@
 #include <touchgfx/widgets/Button.hpp>
 #include <touchgfx/widgets/ButtonWithLabel.hpp>
 #include <touchgfx/widgets/Image.hpp>
+#include <gui/containers/JoyStick.hpp>
 #include <touchgfx/mixins/ClickListener.hpp>
 
 class MountScreenViewBase : public touchgfx::View<MountScreenPresenter>
@@ -52,6 +53,7 @@ protected:
     touchgfx::TextArea slewspeed_star;
     touchgfx::ButtonWithLabel align_button;
     touchgfx::Image Next_arrow_482;
+    JoyStick joyStick1;
 
     /*
      * Wildcard Buffers

@@ -6,7 +6,8 @@
 using namespace touchgfx;
 
 SettingScreenView::SettingScreenView() :
-		configCallback(this, &SettingScreenView::configButtonPressed), configOKCallback(this, &SettingScreenView::configSet)
+		configCallback(this, &SettingScreenView::configButtonPressed), configOKCallback(this, &SettingScreenView::configSet),
+		configSaveCallback(this, &SettingScreenView::configSavePressed)
 {
 	baseview.addTo(&container);
 
@@ -22,6 +23,8 @@ SettingScreenView::SettingScreenView() :
 	scrollableContainer1.add(accordion);
 
 	num_config = 0;
+
+	buttonSave.setAction(configSaveCallback);
 }
 
 SettingScreenView::~SettingScreenView()
@@ -80,6 +83,11 @@ void SettingScreenView::configButtonPressed(const ButtonItem& button)
 	ConfigItem *config = (ConfigItem *) button.getUserData();
 	configPopup1.editConfig(config);
 	configPopup1.setCallback(&configOKCallback);
+}
+
+void SettingScreenView::configSavePressed(const AbstractButton&)
+{
+	TelescopeBackend::saveConfig();
 }
 
 void SettingScreenView::configSet(ConfigItem* config, bool ok)

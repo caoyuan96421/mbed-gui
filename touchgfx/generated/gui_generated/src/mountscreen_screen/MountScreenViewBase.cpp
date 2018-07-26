@@ -63,37 +63,37 @@ MountScreenViewBase::MountScreenViewBase()  :
     starmap_bb.setPosition(15, 400, 150, 300);
     starmap_bb.setColor(touchgfx::Color::getColorFrom24BitRGB(31, 31, 31));
 
-    button_stop.setPosition(263, 482, 130, 135);
+    button_stop.setPosition(335, 231, 130, 135);
     button_stop.setBitmaps(Bitmap(BITMAP_STOP_ID), Bitmap(BITMAP_STOP_PRESSED_ID));
 
-    toggleSidereal.setPosition(213, 303, 60, 60);
+    toggleSidereal.setPosition(204, 236, 60, 60);
     toggleSidereal.setBitmaps(Bitmap(BITMAP_BUTTON3_ID), Bitmap(BITMAP_BUTTON3_PRESSED_ID));
 
-    textArea2.setXY(225, 310);
+    textArea2.setXY(216, 243);
     textArea2.setColor(touchgfx::Color::getColorFrom24BitRGB(124, 83, 161));
     textArea2.setLinespacing(0);
     textArea2.setTypedText(TypedText(T_SINGLEUSEID72));
 
-    toggleLunar.setPosition(279, 303, 60, 60);
+    toggleLunar.setPosition(270, 236, 60, 60);
     toggleLunar.setBitmaps(Bitmap(BITMAP_BUTTON3_ID), Bitmap(BITMAP_BUTTON3_PRESSED_ID));
 
-    textArea2_1.setXY(291, 310);
+    textArea2_1.setXY(282, 243);
     textArea2_1.setColor(touchgfx::Color::getColorFrom24BitRGB(124, 83, 161));
     textArea2_1.setLinespacing(0);
     textArea2_1.setTypedText(TypedText(T_SINGLEUSEID73));
 
-    toggleSolar.setPosition(345, 303, 60, 60);
+    toggleSolar.setPosition(204, 303, 60, 60);
     toggleSolar.setBitmaps(Bitmap(BITMAP_BUTTON3_ID), Bitmap(BITMAP_BUTTON3_PRESSED_ID));
 
-    textArea2_2.setXY(357, 310);
+    textArea2_2.setXY(216, 310);
     textArea2_2.setColor(touchgfx::Color::getColorFrom24BitRGB(124, 83, 161));
     textArea2_2.setLinespacing(0);
     textArea2_2.setTypedText(TypedText(T_SINGLEUSEID74));
 
-    toggleKing.setPosition(411, 303, 60, 60);
+    toggleKing.setPosition(270, 303, 60, 60);
     toggleKing.setBitmaps(Bitmap(BITMAP_BUTTON3_ID), Bitmap(BITMAP_BUTTON3_PRESSED_ID));
 
-    textArea2_3.setXY(423, 310);
+    textArea2_3.setXY(282, 310);
     textArea2_3.setColor(touchgfx::Color::getColorFrom24BitRGB(124, 83, 161));
     textArea2_3.setLinespacing(0);
     textArea2_3.setTypedText(TypedText(T_SINGLEUSEID75));
@@ -113,6 +113,8 @@ MountScreenViewBase::MountScreenViewBase()  :
 
     Next_arrow_482.setXY(162, 244);
     Next_arrow_482.setBitmap(Bitmap(BITMAP_NEXT_ARROW_48_ID));
+
+    joyStick1.setXY(202, 424);
 
     add(box1);
     add(eqcoords);
@@ -136,6 +138,7 @@ MountScreenViewBase::MountScreenViewBase()  :
     add(slewspeed_star);
     add(align_button);
     add(Next_arrow_482);
+    add(joyStick1);
 }
 
 void MountScreenViewBase::buttonCallbackHandler(const touchgfx::AbstractButton& src)

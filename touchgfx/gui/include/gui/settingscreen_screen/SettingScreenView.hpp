@@ -35,8 +35,10 @@ protected:
 
 	touchgfx::Callback<SettingScreenView, const ButtonItem &> configCallback;
 	touchgfx::Callback<SettingScreenView, ConfigItem *, bool> configOKCallback;
+	touchgfx::Callback<SettingScreenView, const AbstractButton &> configSaveCallback;
 
 	void configButtonPressed(const ButtonItem &);
+	void configSavePressed(const AbstractButton &);
 	void configSet(ConfigItem *, bool ok);
 };
 

@@ -386,6 +386,20 @@ int TelescopeBackend::startNudge(Direction dir)
 	case NORTH:
 		dir_str = "north";
 		break;
+	case NORTHEAST:
+		dir_str = "north east";
+		break;
+	case NORTHWEST:
+		dir_str = "north west";
+		break;
+	case SOUTHEAST:
+		dir_str = "south east";
+		break;
+	case SOUTHWEST:
+		dir_str = "south west";
+		break;
+	default:
+		return 0;
 	}
 	queryNoResponse("nudge", dir_str);
 	return 0;
@@ -869,6 +883,16 @@ int TelescopeBackend::getAlignmentStar(int index, AlignmentStar &star)
 	return -1;
 }
 
+void TelescopeBackend::saveConfig()
+{
+	ListNode *node = queryStart("save", NULL, TIMEOUT_IMMEDIATE);
+	if (queryWaitForReturn(node, TIMEOUT_IMMEDIATE) != 0)
+	{
+		debug("Failed to save config.\r\n");
+	}
+	queryFinish(node);
+}
+
 void TelescopeBackend::setSpeed(const char *type, double speed)
 {
 	char buf[32];
@@ -932,4 +956,53 @@ void TelescopeBackend::writeConfig(ConfigItem* config)
 		debug("Failed to set: %s.\r\n", buf);
 	}
 	queryFinish(node);
+}
+
+void TelescopeBackend::handleNudge(float x, float y)
+{
+	debug("nudge %f %f\r\n", x, y);
+	static float savedspeed = -1; // For temporarily storing nudging speed
+	if (x == 0 && y == 0)
+	{
+		TelescopeBackend::stopNudge();
+		if (savedspeed != -1)
+		{
+			TelescopeBackend::setSpeed("slew", savedspeed); // Restore speed when nudging finishes
+			savedspeed = -1;
+		}
+		return;
+	}
+
+	if ((x == 0 && fabsf(y) < 1) || (y == 0 && fabsf(x) < 1))
+	{
+		// First stop nudging if it is already being nudged
+//		if (TelescopeBackend::getStatus() & MOUNT_NUDGING)
+//		{
+//			TelescopeBackend::stopNudge();
+//		}
+
+		// Fractional slew speed
+		if (savedspeed == -1)
+		{
+			savedspeed = TelescopeBackend::getSpeed("slew");
+		}
+		float newspeed = (fabsf(x) + fabsf(y)) * savedspeed; // New slewing speed
+		TelescopeBackend::setSpeed("slew", newspeed);
+	}
+
+	// Determing ramping direction
+	Direction d;
+	if (x > 0)
+		d = EAST;
+	else if (x < 0)
+		d = WEST;
+	else
+		d = NONE;
+
+	if (y > 0)
+		d = (Direction) (d | NORTH);
+	else if (y < 0)
+		d = (Direction) (d | SOUTH);
+
+	TelescopeBackend::startNudge(d);
 }

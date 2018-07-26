@@ -37,7 +37,7 @@ AlignScreenViewBase::AlignScreenViewBase()  :
     Unicode::snprintf(text_descriptionBuffer, TEXT_DESCRIPTION_SIZE, "%s", TypedText(T_SINGLEUSEID117).getText());
     text_description.setWildcard(text_descriptionBuffer);
 
-    scrollableContainer2.setPosition(245, 96, 225, 220);
+    scrollableContainer2.setPosition(245, 96, 225, 255);
     scrollableContainer2.setScrollbarsColor(touchgfx::Color::getColorFrom24BitRGB(0,0,0));
 
 
@@ -61,7 +61,7 @@ AlignScreenViewBase::AlignScreenViewBase()  :
     buttonAlign.setLabelColor(touchgfx::Color::getColorFrom24BitRGB(118, 141, 242));
     buttonAlign.setLabelColorPressed(touchgfx::Color::getColorFrom24BitRGB(255, 255, 255));
 
-    text_alignment.setPosition(10, 547, 225, 191);
+    text_alignment.setPosition(10, 522, 225, 168);
     text_alignment.setColor(touchgfx::Color::getColorFrom24BitRGB(255, 32, 32));
     text_alignment.setLinespacing(0);
     text_alignment.setTypedText(TypedText(T_SINGLEUSEID115));

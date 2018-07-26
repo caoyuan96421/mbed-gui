@@ -53,10 +53,10 @@ MountScreenView::MountScreenView() :
 
 	button_stop.setAction(buttonStopCallback);
 
-	add(button_north);
-	add(button_south);
-	add(button_east);
-	add(button_west);
+//	add(button_north);
+//	add(button_south);
+//	add(button_east);
+//	add(button_west);
 
 	toggle_track.setAction(toggleTrackCallback);
 
@@ -75,6 +75,7 @@ MountScreenView::MountScreenView() :
 	coordpop.setXY(0, 0);
 	add(coordpop);
 
+	joyStick1.setPositionChangedCallback(TelescopeBackend::handleNudge);
 }
 
 void MountScreenView::setupScreen()

@@ -32,15 +32,16 @@ const uint16_t BITMAP_DARK_ICONS_TRASH_48_ID = 22; // Size: 39x48 pixels
 const uint16_t BITMAP_DARK_ICONS_UP_ARROW_48_ID = 23; // Size: 48x28 pixels
 const uint16_t BITMAP_HOME_BUTTON_ID = 24; // Size: 47x34 pixels
 const uint16_t BITMAP_HOME_BUTTON2_ID = 25; // Size: 47x34 pixels
-const uint16_t BITMAP_MOON_SMALL_ID = 26; // Size: 165x165 pixels
-const uint16_t BITMAP_POLAR_ID = 27; // Size: 159x162 pixels
-const uint16_t BITMAP_STAR1_ID = 28; // Size: 34x34 pixels
-const uint16_t BITMAP_STARS_ID = 29; // Size: 200x200 pixels
-const uint16_t BITMAP_STOP_ID = 30; // Size: 130x135 pixels
-const uint16_t BITMAP_STOP_PRESSED_ID = 31; // Size: 130x135 pixels
-const uint16_t BITMAP_TELESCOPE_ID = 32; // Size: 104x158 pixels
-const uint16_t BITMAP_UTILITY_ID = 33; // Size: 200x200 pixels
-const uint16_t BITMAP_WRENCH_ID = 34; // Size: 146x147 pixels
+const uint16_t BITMAP_KNOB_ID = 26; // Size: 64x64 pixels
+const uint16_t BITMAP_MOON_SMALL_ID = 27; // Size: 165x165 pixels
+const uint16_t BITMAP_POLAR_ID = 28; // Size: 159x162 pixels
+const uint16_t BITMAP_STAR1_ID = 29; // Size: 34x34 pixels
+const uint16_t BITMAP_STARS_ID = 30; // Size: 200x200 pixels
+const uint16_t BITMAP_STOP_ID = 31; // Size: 130x135 pixels
+const uint16_t BITMAP_STOP_PRESSED_ID = 32; // Size: 130x135 pixels
+const uint16_t BITMAP_TELESCOPE_ID = 33; // Size: 104x158 pixels
+const uint16_t BITMAP_UTILITY_ID = 34; // Size: 200x200 pixels
+const uint16_t BITMAP_WRENCH_ID = 35; // Size: 146x147 pixels
 
 namespace BitmapDatabase
 {

@@ -11,6 +11,7 @@
 #include <touchgfx/widgets/TextArea.hpp>
 #include <touchgfx/containers/ScrollableContainer.hpp>
 #include <gui/containers/ConfigPopup.hpp>
+#include <touchgfx/widgets/ButtonWithLabel.hpp>
 
 class SettingScreenViewBase : public touchgfx::View<SettingScreenPresenter>
 {
@@ -30,6 +31,7 @@ protected:
     touchgfx::TextArea textArea1_2;
     touchgfx::ScrollableContainer scrollableContainer1;
     ConfigPopup configPopup1;
+    touchgfx::ButtonWithLabel buttonSave;
 
 private:
 

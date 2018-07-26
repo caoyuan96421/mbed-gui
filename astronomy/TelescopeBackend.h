@@ -85,10 +85,15 @@ class TelescopeBackend
 public:
 	typedef enum
 	{
-		NORTH, ///< An enum constant representing the north option
-		SOUTH, ///< An enum constant representing the south option
-		EAST,  ///< An enum constant representing the east option
-		WEST   ///< An enum constant representing the west option
+		NONE = 0,
+		NORTH = 1, ///< An enum constant representing the north option
+		SOUTH = 2, ///< An enum constant representing the south option
+		EAST = 4,  ///< An enum constant representing the east option
+		WEST = 8,   ///< An enum constant representing the west option
+		NORTHWEST = NORTH | WEST,
+		NORTHEAST = NORTH | EAST,
+		SOUTHWEST = SOUTH | WEST,
+		SOUTHEAST = SOUTH | EAST
 	} Direction;
 	typedef enum
 	{
@@ -107,6 +112,7 @@ public:
 	static double getConfigDouble(const char *config);
 	static bool getConfigBool(const char *config);
 	static void writeConfig(ConfigItem *);
+	static void saveConfig();
 
 	static int startNudge(Direction dir);
 	static int stopNudge();
@@ -133,6 +139,8 @@ public:
 	static double getSpeed(const char *type);
 
 	static void setSpeed(const char *type, double speedSidereal);
+
+	static void handleNudge(float, float);
 
 private:
 	TelescopeBackend();

@@ -4,6 +4,7 @@
 #include <gui_generated/settingscreen_screen/SettingScreenViewBase.hpp>
 #include <touchgfx/Color.hpp>
 #include <texts/TextKeysAndLanguages.hpp>
+#include "BitmapDatabase.hpp"
 
 SettingScreenViewBase::SettingScreenViewBase()  
 {
@@ -23,8 +24,15 @@ SettingScreenViewBase::SettingScreenViewBase()
 
     configPopup1.setXY(0, 0);
 
+    buttonSave.setPosition(300, 12, 170, 60);
+    buttonSave.setBitmaps(Bitmap(BITMAP_BUTTON2_ID), Bitmap(BITMAP_BUTTON2_PRESSED_ID));
+    buttonSave.setLabelText(TypedText(T_SINGLEUSEID118));
+    buttonSave.setLabelColor(touchgfx::Color::getColorFrom24BitRGB(255, 0, 0));
+    buttonSave.setLabelColorPressed(touchgfx::Color::getColorFrom24BitRGB(255, 255, 255));
+
     add(box1);
     add(textArea1_2);
     add(scrollableContainer1);
     add(configPopup1);
+    add(buttonSave);
 }
