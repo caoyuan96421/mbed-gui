@@ -989,6 +989,15 @@ void TelescopeBackend::handleNudge(float x, float y)
 		float newspeed = (fabsf(x) + fabsf(y)) * savedspeed; // New slewing speed
 		TelescopeBackend::setSpeed("slew", newspeed);
 	}
+	else
+	{
+		// Simultaneous fast slew. Use max speed
+		if (savedspeed != -1)
+		{
+			TelescopeBackend::setSpeed("slew", savedspeed); // Restore speed when nudging finishes
+			savedspeed = -1;
+		}
+	}
 
 	// Determing ramping direction
 	Direction d;

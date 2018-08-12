@@ -13,10 +13,13 @@ void JoyStick::handleClickEvent(const ClickEvent& evt)
 {
 	if (evt.getType() == ClickEvent::PRESSED)
 	{
+		debug("press\r\n");
 		updateStickPosition(evt.getX(), evt.getY());
 	}
-	else
+	else if (evt.getType() == ClickEvent::RELEASED)
 	{
+		debug("release\r\n");
+		evt.getType();
 		resetStick();
 	}
 }
@@ -25,6 +28,7 @@ void JoyStick::handleDragEvent(const DragEvent& evt)
 {
 	if (evt.getType() == DragEvent::DRAGGED)
 	{
+		debug("drag\r\n");
 		int x = evt.getNewX();
 		int y = evt.getNewY();
 		if (x < 0)
@@ -63,6 +67,7 @@ static float f(float x)
 
 void JoyStick::updateStickPosition(int x, int y)
 {
+	debug("x=%d y=%d\r\n", x, y);
 	handle.setX(x - handle.getWidth() / 2);
 	handle.setY(y - handle.getHeight() / 2);
 	invalidate();
