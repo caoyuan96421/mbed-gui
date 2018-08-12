@@ -3,8 +3,8 @@
 
 AlignScreenView::AlignScreenView() :
 		buttonRefreshCallback(this, &AlignScreenView::buttonRefreshPressed), buttonAddCallback(this, &AlignScreenView::buttonAddPressed), buttonDeleteCallback(this,
-				&AlignScreenView::buttonDeletePressed), buttonGotoCallback(this, &AlignScreenView::buttonGotoPressed), buttonAlignCallback(this, &AlignScreenView::buttonAlignPressed), starSelectedCallback(
-				this, &AlignScreenView::starSelected)
+				&AlignScreenView::buttonDeletePressed), buttonGotoCallback(this, &AlignScreenView::buttonGotoPressed), buttonAlignCallback(this, &AlignScreenView::buttonAlignPressed), buttonStopCallback(
+				this, &AlignScreenView::buttonStopPressed), starSelectedCallback(this, &AlignScreenView::starSelected)
 {
 	baseview.addTo(&container);
 
@@ -13,6 +13,7 @@ AlignScreenView::AlignScreenView() :
 	buttonDelete.setAction(buttonDeleteCallback);
 	buttonGoto.setAction(buttonGotoCallback);
 	buttonAlign.setAction(buttonAlignCallback);
+	buttonStop.setAction(buttonStopCallback);
 
 	time_now = time(NULL);
 
@@ -33,6 +34,8 @@ AlignScreenView::AlignScreenView() :
 
 	scrollableContainer1.add(container_candidates);
 	scrollableContainer2.add(container_selected);
+
+	joyStick2.setPositionChangedCallback(TelescopeBackend::handleNudge);
 }
 
 void AlignScreenView::setupScreen()
@@ -306,6 +309,12 @@ void AlignScreenView::buttonGotoPressed(const AbstractButton&)
 		TelescopeBackend::goTo(EquatorialCoordinates(star->DEC, star->RA));
 	}
 }
+
+void AlignScreenView::buttonStopPressed(const AbstractButton&)
+{
+	TelescopeBackend::emergencyStop();
+}
+
 
 void AlignScreenView::buttonAlignPressed(const AbstractButton&)
 {

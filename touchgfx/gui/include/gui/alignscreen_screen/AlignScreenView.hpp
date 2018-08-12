@@ -28,6 +28,8 @@ protected:
     void buttonDeletePressed(const AbstractButton&);
     void buttonGotoPressed(const AbstractButton&);
     void buttonAlignPressed(const AbstractButton&);
+    void buttonStopPressed(const AbstractButton&);
+
 
 	static void callback(StarInfo*, void*);
 	void _callback(StarInfo *);
@@ -39,6 +41,7 @@ protected:
 	touchgfx::Callback<AlignScreenView, const AbstractButton&> buttonDeleteCallback;
 	touchgfx::Callback<AlignScreenView, const AbstractButton&> buttonGotoCallback;
 	touchgfx::Callback<AlignScreenView, const AbstractButton&> buttonAlignCallback;
+	touchgfx::Callback<AlignScreenView, const AbstractButton&> buttonStopCallback;
 
 	touchgfx::Callback<AlignScreenView, const AbstractButton&> starSelectedCallback;
 

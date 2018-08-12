@@ -6,14 +6,32 @@ Compiling gui/src/containers/JoyStick.cpp
 Compiling gui/src/containers/ConfigPopup.cpp
 Compiling gui/src/dummyscreen_screen/DummyScreenView.cpp
 Compiling gui/src/dummyscreen_screen/DummyScreenPresenter.cpp
-Compiling gui/src/basescreen_screen/BaseScreenView.cpp
 Compiling gui/src/basescreen_screen/BaseScreenPresenter.cpp
+Compiling gui/src/basescreen_screen/BaseScreenView.cpp
 Compiling gui/src/starmapscreen_screen/StarMapScreenPresenter.cpp
 In file included from generated/gui_generated/include/gui_generated/common/FrontendApplicationBase.hpp:8:0,
                  from gui/include/gui/common/FrontendApplication.hpp:4,
                  from generated/gui_generated/include/gui_generated/containers/CoordinatePopupBase.hpp:7,
                  from gui/include/gui/containers/CoordinatePopup.hpp:5,
                  from gui/src/containers/CoordinatePopup.cpp:1:
+gui/include/gui/model/Model.hpp:5:27: fatal error: CelestialMath.h: No such file or directory
+ #include "CelestialMath.h"
+                           ^
+compilation terminated.
+In file included from generated/gui_generated/include/gui_generated/common/FrontendApplicationBase.hpp:8:0,
+                 from gui/include/gui/common/FrontendApplication.hpp:4,
+                 from generated/gui_generated/include/gui_generated/settingscreen_screen/SettingScreenViewBase.hpp:7,
+                 from gui/include/gui/settingscreen_screen/SettingScreenView.hpp:4,
+                 from gui/src/settingscreen_screen/SettingScreenView.cpp:1:
+gui/include/gui/model/Model.hpp:5:27: fatal error: CelestialMath.h: No such file or directory
+ #include "CelestialMath.h"
+                           ^
+compilation terminated.
+In file included from generated/gui_generated/include/gui_generated/common/FrontendApplicationBase.hpp:8:0,
+                 from gui/include/gui/common/FrontendApplication.hpp:4,
+                 from generated/gui_generated/include/gui_generated/settingscreen_screen/SettingScreenViewBase.hpp:7,
+                 from gui/include/gui/settingscreen_screen/SettingScreenView.hpp:4,
+                 from gui/src/settingscreen_screen/SettingScreenPresenter.cpp:1:
 gui/include/gui/model/Model.hpp:5:27: fatal error: CelestialMath.h: No such file or directory
  #include "CelestialMath.h"
                            ^
@@ -27,29 +45,6 @@ gui/include/gui/model/Model.hpp:5:27: fatal error: CelestialMath.h: No such file
  #include "CelestialMath.h"
                            ^
 compilation terminated.
-simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/containers/CoordinatePopup.o' failed
-make[2]: *** [build/MINGW32_NT-6.2/gui/src/containers/CoordinatePopup.o] Error 1
-make[2]: *** Waiting for unfinished jobs....
-In file included from generated/gui_generated/include/gui_generated/common/FrontendApplicationBase.hpp:8:0,
-                 from gui/include/gui/common/FrontendApplication.hpp:4,
-                 from generated/gui_generated/include/gui_generated/settingscreen_screen/SettingScreenViewBase.hpp:7,
-                 from gui/include/gui/settingscreen_screen/SettingScreenView.hpp:4,
-                 from gui/src/settingscreen_screen/SettingScreenPresenter.cpp:1:
-gui/include/gui/model/Model.hpp:5:27: fatal error: CelestialMath.h: No such file or directory
- #include "CelestialMath.h"
-                           ^
-compilation terminated.
-simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/dummyscreen_screen/DummyScreenView.o' failed
-make[2]: *** [build/MINGW32_NT-6.2/gui/src/dummyscreen_screen/DummyScreenView.o] Error 1
-In file included from generated/gui_generated/include/gui_generated/common/FrontendApplicationBase.hpp:8:0,
-                 from gui/include/gui/common/FrontendApplication.hpp:4,
-                 from generated/gui_generated/include/gui_generated/settingscreen_screen/SettingScreenViewBase.hpp:7,
-                 from gui/include/gui/settingscreen_screen/SettingScreenView.hpp:4,
-                 from gui/src/settingscreen_screen/SettingScreenView.cpp:1:
-gui/include/gui/model/Model.hpp:5:27: fatal error: CelestialMath.h: No such file or directory
- #include "CelestialMath.h"
-                           ^
-compilation terminated.
 In file included from generated/gui_generated/include/gui_generated/common/FrontendApplicationBase.hpp:8:0,
                  from gui/include/gui/common/FrontendApplication.hpp:4,
                  from generated/gui_generated/include/gui_generated/containers/ConfigPopupBase.hpp:7,
@@ -59,15 +54,9 @@ gui/include/gui/model/Model.hpp:5:27: fatal error: CelestialMath.h: No such file
  #include "CelestialMath.h"
                            ^
 compilation terminated.
-In file included from generated/gui_generated/include/gui_generated/common/FrontendApplicationBase.hpp:8:0,
-                 from gui/include/gui/common/FrontendApplication.hpp:4,
-                 from generated/gui_generated/include/gui_generated/basescreen_screen/BaseScreenViewBase.hpp:7,
-                 from gui/include/gui/basescreen_screen/BaseScreenView.hpp:4,
-                 from gui/src/basescreen_screen/BaseScreenPresenter.cpp:1:
-gui/include/gui/model/Model.hpp:5:27: fatal error: CelestialMath.h: No such file or directory
- #include "CelestialMath.h"
-                           ^
-compilation terminated.
+simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/containers/CoordinatePopup.o' failed
+make[2]: *** [build/MINGW32_NT-6.2/gui/src/containers/CoordinatePopup.o] Error 1
+make[2]: *** Waiting for unfinished jobs....
 In file included from generated/gui_generated/include/gui_generated/common/FrontendApplicationBase.hpp:8:0,
                  from gui/include/gui/common/FrontendApplication.hpp:4,
                  from generated/gui_generated/include/gui_generated/containers/JoyStickBase.hpp:7,
@@ -76,22 +65,33 @@ In file included from generated/gui_generated/include/gui_generated/common/Front
 gui/include/gui/model/Model.hpp:5:27: fatal error: CelestialMath.h: No such file or directory
  #include "CelestialMath.h"
                            ^
+simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/settingscreen_screen/SettingScreenView.o' failed
+make[2]: *** [build/MINGW32_NT-6.2/gui/src/settingscreen_screen/SettingScreenView.o] Error 1
 compilation terminated.
 simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/settingscreen_screen/SettingScreenPresenter.o' failed
 make[2]: *** [build/MINGW32_NT-6.2/gui/src/settingscreen_screen/SettingScreenPresenter.o] Error 1
-simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/settingscreen_screen/SettingScreenView.o' failed
-make[2]: *** [build/MINGW32_NT-6.2/gui/src/settingscreen_screen/SettingScreenView.o] Error 1
-simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/containers/ConfigPopup.o' failed
-make[2]: *** [build/MINGW32_NT-6.2/gui/src/containers/ConfigPopup.o] Error 1
-simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/basescreen_screen/BaseScreenPresenter.o' failed
-make[2]: *** [build/MINGW32_NT-6.2/gui/src/basescreen_screen/BaseScreenPresenter.o] Error 1
+simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/dummyscreen_screen/DummyScreenView.o' failed
+make[2]: *** [build/MINGW32_NT-6.2/gui/src/dummyscreen_screen/DummyScreenView.o] Error 1
 simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/containers/JoyStick.o' failed
 make[2]: *** [build/MINGW32_NT-6.2/gui/src/containers/JoyStick.o] Error 1
+simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/containers/ConfigPopup.o' failed
+make[2]: *** [build/MINGW32_NT-6.2/gui/src/containers/ConfigPopup.o] Error 1
 In file included from generated/gui_generated/include/gui_generated/common/FrontendApplicationBase.hpp:8:0,
                  from gui/include/gui/common/FrontendApplication.hpp:4,
                  from generated/gui_generated/include/gui_generated/dummyscreen_screen/DummyScreenViewBase.hpp:7,
                  from gui/include/gui/dummyscreen_screen/DummyScreenView.hpp:4,
                  from gui/src/dummyscreen_screen/DummyScreenPresenter.cpp:1:
+gui/include/gui/model/Model.hpp:5:27: fatal error: CelestialMath.h: No such file or directory
+ #include "CelestialMath.h"
+                           ^
+compilation terminated.
+simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/dummyscreen_screen/DummyScreenPresenter.o' failed
+make[2]: *** [build/MINGW32_NT-6.2/gui/src/dummyscreen_screen/DummyScreenPresenter.o] Error 1
+In file included from generated/gui_generated/include/gui_generated/common/FrontendApplicationBase.hpp:8:0,
+                 from gui/include/gui/common/FrontendApplication.hpp:4,
+                 from generated/gui_generated/include/gui_generated/basescreen_screen/BaseScreenViewBase.hpp:7,
+                 from gui/include/gui/basescreen_screen/BaseScreenView.hpp:4,
+                 from gui/src/basescreen_screen/BaseScreenPresenter.cpp:1:
 gui/include/gui/model/Model.hpp:5:27: fatal error: CelestialMath.h: No such file or directory
  #include "CelestialMath.h"
                            ^
@@ -105,10 +105,6 @@ gui/include/gui/model/Model.hpp:5:27: fatal error: CelestialMath.h: No such file
  #include "CelestialMath.h"
                            ^
 compilation terminated.
-simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/dummyscreen_screen/DummyScreenPresenter.o' failed
-make[2]: *** [build/MINGW32_NT-6.2/gui/src/dummyscreen_screen/DummyScreenPresenter.o] Error 1
-simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/basescreen_screen/BaseScreenView.o' failed
-make[2]: *** [build/MINGW32_NT-6.2/gui/src/basescreen_screen/BaseScreenView.o] Error 1
 In file included from generated/gui_generated/include/gui_generated/common/FrontendApplicationBase.hpp:8:0,
                  from gui/include/gui/common/FrontendApplication.hpp:4,
                  from generated/gui_generated/include/gui_generated/starmapscreen_screen/StarMapScreenViewBase.hpp:7,
@@ -118,6 +114,10 @@ gui/include/gui/model/Model.hpp:5:27: fatal error: CelestialMath.h: No such file
  #include "CelestialMath.h"
                            ^
 compilation terminated.
+simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/basescreen_screen/BaseScreenPresenter.o' failed
+make[2]: *** [build/MINGW32_NT-6.2/gui/src/basescreen_screen/BaseScreenPresenter.o] Error 1
+simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/basescreen_screen/BaseScreenView.o' failed
+make[2]: *** [build/MINGW32_NT-6.2/gui/src/basescreen_screen/BaseScreenView.o] Error 1
 simulator/gcc/Makefile:211: recipe for target 'build/MINGW32_NT-6.2/gui/src/starmapscreen_screen/StarMapScreenPresenter.o' failed
 make[2]: *** [build/MINGW32_NT-6.2/gui/src/starmapscreen_screen/StarMapScreenPresenter.o] Error 1
 simulator/gcc/Makefile:173: recipe for target 'generate_assets' failed

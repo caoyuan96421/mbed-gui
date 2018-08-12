@@ -26,7 +26,7 @@ AlignScreenViewBase::AlignScreenViewBase()  :
     scrollableContainer1.setScrollbarsColor(touchgfx::Color::getColorFrom24BitRGB(0,0,0));
 
 
-    buttonRefresh.setPosition(270, 20, 60, 60);
+    buttonRefresh.setPosition(272, 20, 60, 60);
     buttonRefresh.setBitmaps(Bitmap(BITMAP_BUTTON3_ID), Bitmap(BITMAP_BUTTON3_PRESSED_ID), Bitmap(BITMAP_DARK_ICONS_REFRESH_48_ID), Bitmap(BITMAP_DARK_ICONS_REFRESH_48_ID));
     buttonRefresh.setIconXY(6, 8);
 
@@ -37,7 +37,7 @@ AlignScreenViewBase::AlignScreenViewBase()  :
     Unicode::snprintf(text_descriptionBuffer, TEXT_DESCRIPTION_SIZE, "%s", TypedText(T_SINGLEUSEID117).getText());
     text_description.setWildcard(text_descriptionBuffer);
 
-    scrollableContainer2.setPosition(245, 96, 225, 255);
+    scrollableContainer2.setPosition(245, 96, 225, 191);
     scrollableContainer2.setScrollbarsColor(touchgfx::Color::getColorFrom24BitRGB(0,0,0));
 
 
@@ -49,13 +49,13 @@ AlignScreenViewBase::AlignScreenViewBase()  :
     buttonDelete.setBitmaps(Bitmap(BITMAP_BUTTON3_ID), Bitmap(BITMAP_BUTTON3_PRESSED_ID), Bitmap(BITMAP_DARK_ICONS_TRASH_48_ID), Bitmap(BITMAP_DARK_ICONS_TRASH_48_ID));
     buttonDelete.setIconXY(11, 6);
 
-    buttonGoto.setPosition(272, 370, 170, 60);
+    buttonGoto.setPosition(272, 301, 170, 60);
     buttonGoto.setBitmaps(Bitmap(BITMAP_BUTTON2_ID), Bitmap(BITMAP_BUTTON2_PRESSED_ID));
     buttonGoto.setLabelText(TypedText(T_SINGLEUSEID113));
     buttonGoto.setLabelColor(touchgfx::Color::getColorFrom24BitRGB(118, 141, 242));
     buttonGoto.setLabelColorPressed(touchgfx::Color::getColorFrom24BitRGB(255, 255, 255));
 
-    buttonAlign.setPosition(272, 438, 170, 60);
+    buttonAlign.setPosition(272, 370, 170, 60);
     buttonAlign.setBitmaps(Bitmap(BITMAP_BUTTON2_ID), Bitmap(BITMAP_BUTTON2_PRESSED_ID));
     buttonAlign.setLabelText(TypedText(T_SINGLEUSEID114));
     buttonAlign.setLabelColor(touchgfx::Color::getColorFrom24BitRGB(118, 141, 242));
@@ -67,6 +67,12 @@ AlignScreenViewBase::AlignScreenViewBase()  :
     text_alignment.setTypedText(TypedText(T_SINGLEUSEID115));
     Unicode::snprintf(text_alignmentBuffer, TEXT_ALIGNMENT_SIZE, "%s", TypedText(T_SINGLEUSEID116).getText());
     text_alignment.setWildcard(text_alignmentBuffer);
+
+    joyStick2.setXY(215, 460);
+
+    buttonStop.setPosition(200, 20, 60, 60);
+    buttonStop.setBitmaps(Bitmap(BITMAP_BUTTON3_ID), Bitmap(BITMAP_BUTTON3_PRESSED_ID), Bitmap(BITMAP_DARK_ICONS_REMOVE_48_ID), Bitmap(BITMAP_DARK_ICONS_REMOVE_48_ID));
+    buttonStop.setIconXY(6, 6);
 
     add(box1);
     add(mount_button);
@@ -80,6 +86,8 @@ AlignScreenViewBase::AlignScreenViewBase()  :
     add(buttonGoto);
     add(buttonAlign);
     add(text_alignment);
+    add(joyStick2);
+    add(buttonStop);
 }
 
 void AlignScreenViewBase::buttonCallbackHandler(const touchgfx::AbstractButton& src)
@@ -108,6 +116,10 @@ void AlignScreenViewBase::buttonCallbackHandler(const touchgfx::AbstractButton& 
 
     }
     else if (&src == &buttonAlign)
+    {
+
+    }
+    else if (&src == &buttonStop)
     {
 
     }
