@@ -9,6 +9,8 @@
 #include <gui/starmapscreen_screen/StarMapScreenPresenter.hpp>
 #include <touchgfx/widgets/Box.hpp>
 #include <touchgfx/widgets/ButtonWithLabel.hpp>
+#include <touchgfx/widgets/TextAreaWithWildcard.hpp>
+#include <touchgfx/widgets/ToggleButton.hpp>
 #include <touchgfx/widgets/TextArea.hpp>
 
 class StarMapScreenViewBase : public touchgfx::View<StarMapScreenPresenter>
@@ -28,13 +30,17 @@ protected:
     touchgfx::Box box1;
     touchgfx::ButtonWithLabel button_zoomout;
     touchgfx::ButtonWithLabel button_zoomin;
-    touchgfx::ButtonWithLabel button_left;
-    touchgfx::ButtonWithLabel button_right;
-    touchgfx::ButtonWithLabel button_up;
-    touchgfx::ButtonWithLabel button_down;
     touchgfx::Box box2;
-    touchgfx::TextArea textInfo;
+    touchgfx::TextAreaWithOneWildcard textInfo;
     touchgfx::ButtonWithLabel button_goto;
+    touchgfx::ToggleButton toggleConstell;
+    touchgfx::TextArea textArea1;
+
+    /*
+     * Wildcard Buffers
+     */
+    static const uint16_t TEXTINFO_SIZE = 256;
+    touchgfx::Unicode::UnicodeChar textInfoBuffer[TEXTINFO_SIZE];
 
 private:
 

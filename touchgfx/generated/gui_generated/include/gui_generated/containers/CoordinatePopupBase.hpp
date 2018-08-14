@@ -25,7 +25,6 @@ protected:
     /*
      * Member Declarations
      */
-    touchgfx::Box box3;
     touchgfx::Box box1;
     touchgfx::ButtonWithLabel okButton;
     touchgfx::ButtonWithLabel cancelButton;

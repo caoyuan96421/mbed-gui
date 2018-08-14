@@ -92,8 +92,8 @@ public:
      * @note All transition types used in the application MUST be added to this list!
      */
     typedef meta::TypeList< NoTransition,
-            meta::TypeList< SlideTransition<WEST>,
             meta::TypeList< SlideTransition<EAST>,
+            meta::TypeList< SlideTransition<WEST>,
             meta::Nil > >
             > GeneratedTransitionTypes;
 

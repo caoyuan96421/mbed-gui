@@ -66,15 +66,15 @@ void FrontendApplicationBase::gotoHomeScreenScreenSlideTransitionWestImpl()
 
 // MountScreen
 
-void FrontendApplicationBase::gotoMountScreenScreenNoTransition()
+void FrontendApplicationBase::gotoMountScreenScreenSlideTransitionEast()
 {
-    transitionCallback = touchgfx::Callback<FrontendApplicationBase>(this, &FrontendApplication::gotoMountScreenScreenNoTransitionImpl);
+    transitionCallback = touchgfx::Callback<FrontendApplicationBase>(this, &FrontendApplication::gotoMountScreenScreenSlideTransitionEastImpl);
     pendingScreenTransitionCallback = &transitionCallback;
 }
 
-void FrontendApplicationBase::gotoMountScreenScreenNoTransitionImpl()
+void FrontendApplicationBase::gotoMountScreenScreenSlideTransitionEastImpl()
 {
-    makeTransition<MountScreenView, MountScreenPresenter, touchgfx::NoTransition, Model >(&currentScreen, &currentPresenter, frontendHeap, &currentTransition, &model);
+    makeTransition<MountScreenView, MountScreenPresenter, SlideTransition<EAST>, Model >(&currentScreen, &currentPresenter, frontendHeap, &currentTransition, &model);
 }
 
 
@@ -104,15 +104,15 @@ void FrontendApplicationBase::gotoSettingScreenScreenNoTransitionImpl()
 
 // StarMapScreen
 
-void FrontendApplicationBase::gotoStarMapScreenScreenNoTransition()
+void FrontendApplicationBase::gotoStarMapScreenScreenSlideTransitionEast()
 {
-    transitionCallback = touchgfx::Callback<FrontendApplicationBase>(this, &FrontendApplication::gotoStarMapScreenScreenNoTransitionImpl);
+    transitionCallback = touchgfx::Callback<FrontendApplicationBase>(this, &FrontendApplication::gotoStarMapScreenScreenSlideTransitionEastImpl);
     pendingScreenTransitionCallback = &transitionCallback;
 }
 
-void FrontendApplicationBase::gotoStarMapScreenScreenNoTransitionImpl()
+void FrontendApplicationBase::gotoStarMapScreenScreenSlideTransitionEastImpl()
 {
-    makeTransition<StarMapScreenView, StarMapScreenPresenter, touchgfx::NoTransition, Model >(&currentScreen, &currentPresenter, frontendHeap, &currentTransition, &model);
+    makeTransition<StarMapScreenView, StarMapScreenPresenter, SlideTransition<EAST>, Model >(&currentScreen, &currentPresenter, frontendHeap, &currentTransition, &model);
 }
 
 // UtilityScreen

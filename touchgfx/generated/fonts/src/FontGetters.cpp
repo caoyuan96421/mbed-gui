@@ -14,7 +14,7 @@ touchgfx::InternalFlashFont& getFont_DejaVuSans_Bold_40_4bpp();
 
 touchgfx::InternalFlashFont& getFont_DejaVuSans_Bold_40_4bpp()
 {
-  static touchgfx::InternalFlashFont DejaVuSans_Bold_40_4bpp(glyphs_DejaVuSans_Bold_40_4bpp, 11, 40, 1, 4, 0, 0, unicodes_DejaVuSans_Bold_40_4bpp, kerning_DejaVuSans_Bold_40_4bpp, 63, 0);
+  static touchgfx::InternalFlashFont DejaVuSans_Bold_40_4bpp(glyphs_DejaVuSans_Bold_40_4bpp, 7, 40, 1, 4, 0, 0, unicodes_DejaVuSans_Bold_40_4bpp, kerning_DejaVuSans_Bold_40_4bpp, 63, 0);
   return DejaVuSans_Bold_40_4bpp;
 }
 

@@ -87,15 +87,15 @@ void HomeScreenViewBase::buttonCallbackHandler(const touchgfx::AbstractButton& s
     {
         //Interaction1
         //When mount_view clicked change screen to MountScreen
-        //Go to MountScreen with no screen transition
-        application().gotoMountScreenScreenNoTransition();
+        //Go to MountScreen with slide screen transition towards East
+        application().gotoMountScreenScreenSlideTransitionEast();
     }
     else if (&src == &starmap_view)
     {
         //Interaction3
         //When starmap_view clicked change screen to StarMapScreen
-        //Go to StarMapScreen with no screen transition
-        application().gotoStarMapScreenScreenNoTransition();
+        //Go to StarMapScreen with slide screen transition towards East
+        application().gotoStarMapScreenScreenSlideTransitionEast();
     }
     else if (&src == &setting_view)
     {

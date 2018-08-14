@@ -271,7 +271,8 @@
               "Type": "TriggerClicked"
             },
             "Action": {
-              "ScreenTransitionType": "ScreenTransitionNone",
+              "ScreenTransitionType": "ScreenTransitionSlide",
+              "ScreenTransitionDirection": "East",
               "ActionComponent": "MountScreen",
               "Type": "ActionGotoScreen"
             }
@@ -297,7 +298,8 @@
               "Type": "TriggerClicked"
             },
             "Action": {
-              "ScreenTransitionType": "ScreenTransitionNone",
+              "ScreenTransitionType": "ScreenTransitionSlide",
+              "ScreenTransitionDirection": "East",
               "ActionComponent": "StarMapScreen",
               "Type": "ActionGotoScreen"
             }
@@ -706,25 +708,6 @@
             "Visible": true,
             "Draggable": false,
             "Clickable": true,
-            "Fadeable": false,
-            "Moveable": false
-          },
-          {
-            "Color": {
-              "Red": 31,
-              "Green": 31,
-              "Blue": 31
-            },
-            "Alpha": 255,
-            "Name": "starmap_bb",
-            "X": 15,
-            "Y": 400,
-            "Width": 150,
-            "Height": 300,
-            "Type": "Box",
-            "Visible": true,
-            "Draggable": false,
-            "Clickable": false,
             "Fadeable": false,
             "Moveable": false
           },
@@ -1190,118 +1173,6 @@
             "Moveable": false
           },
           {
-            "Pressed": "button3-pressed.png",
-            "Released": "button3.png",
-            "Alpha": 255,
-            "TextId": "SingleUseId66",
-            "ReleasedColor": {
-              "Red": 100,
-              "Green": 91,
-              "Blue": 130
-            },
-            "PressedColor": {
-              "Red": 160,
-              "Green": 200,
-              "Blue": 214
-            },
-            "TextRotation": "0",
-            "Name": "button_left",
-            "X": 213,
-            "Y": 550,
-            "Width": 60,
-            "Height": 60,
-            "Type": "ButtonWithLabel",
-            "Visible": false,
-            "Draggable": false,
-            "Clickable": false,
-            "Fadeable": false,
-            "Moveable": false
-          },
-          {
-            "Pressed": "button3-pressed.png",
-            "Released": "button3.png",
-            "Alpha": 255,
-            "TextId": "SingleUseId67",
-            "ReleasedColor": {
-              "Red": 100,
-              "Green": 91,
-              "Blue": 130
-            },
-            "PressedColor": {
-              "Red": 160,
-              "Green": 200,
-              "Blue": 214
-            },
-            "TextRotation": "0",
-            "Name": "button_right",
-            "X": 379,
-            "Y": 550,
-            "Width": 60,
-            "Height": 60,
-            "Type": "ButtonWithLabel",
-            "Visible": false,
-            "Draggable": false,
-            "Clickable": false,
-            "Fadeable": false,
-            "Moveable": false
-          },
-          {
-            "Pressed": "button3-pressed.png",
-            "Released": "button3.png",
-            "Alpha": 255,
-            "TextId": "SingleUseId68",
-            "ReleasedColor": {
-              "Red": 100,
-              "Green": 91,
-              "Blue": 130
-            },
-            "PressedColor": {
-              "Red": 160,
-              "Green": 200,
-              "Blue": 214
-            },
-            "TextRotation": "0",
-            "Name": "button_up",
-            "X": 296,
-            "Y": 468,
-            "Width": 60,
-            "Height": 60,
-            "Type": "ButtonWithLabel",
-            "Visible": false,
-            "Draggable": false,
-            "Clickable": false,
-            "Fadeable": false,
-            "Moveable": false
-          },
-          {
-            "Pressed": "button3-pressed.png",
-            "Released": "button3.png",
-            "Alpha": 255,
-            "TextId": "SingleUseId69",
-            "ReleasedColor": {
-              "Red": 100,
-              "Green": 91,
-              "Blue": 130
-            },
-            "PressedColor": {
-              "Red": 160,
-              "Green": 200,
-              "Blue": 214
-            },
-            "TextRotation": "0",
-            "Name": "button_down",
-            "X": 296,
-            "Y": 632,
-            "Width": 60,
-            "Height": 60,
-            "Type": "ButtonWithLabel",
-            "Visible": false,
-            "Draggable": false,
-            "Clickable": false,
-            "Fadeable": false,
-            "Moveable": false
-          },
-          {
             "Color": {
               "Red": 41,
               "Green": 41,
@@ -1331,11 +1202,16 @@
             "Alpha": 255,
             "AutoSize": false,
             "LineSpacing": 0,
+            "Wildcard1": {
+              "TextId": "SingleUseId120",
+              "UseBuffer": true,
+              "BufferSize": 256
+            },
             "Name": "textInfo",
             "X": 15,
-            "Y": 477,
+            "Y": 475,
             "Width": 266,
-            "Height": 255,
+            "Height": 164,
             "Type": "TextArea",
             "Visible": true,
             "Draggable": false,
@@ -1365,6 +1241,45 @@
             "Width": 170,
             "Height": 60,
             "Type": "ButtonWithLabel",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "Pressed": "__designer\\blue_togglebars_toggle_re_small_button_off.png",
+            "Released": "__designer\\blue_togglebars_toggle_re_small_button_on.png",
+            "Alpha": 255,
+            "Name": "toggleConstell",
+            "X": 369,
+            "Y": 629,
+            "Width": 96,
+            "Height": 38,
+            "Type": "ToggleButton",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "TextId": "SingleUseId119",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 255,
+              "Green": 0,
+              "Blue": 0
+            },
+            "Alpha": 255,
+            "AutoSize": true,
+            "LineSpacing": 0,
+            "Name": "textArea1",
+            "X": 305,
+            "Y": 639,
+            "Width": 58,
+            "Height": 19,
+            "Type": "TextArea",
             "Visible": true,
             "Draggable": false,
             "Clickable": false,
@@ -2076,25 +1991,6 @@
         "Components": [
           {
             "Color": {
-              "Red": 25,
-              "Green": 25,
-              "Blue": 25
-            },
-            "Alpha": 100,
-            "Name": "box3",
-            "X": 0,
-            "Y": 0,
-            "Width": 480,
-            "Height": 750,
-            "Type": "Box",
-            "Visible": true,
-            "Draggable": false,
-            "Clickable": false,
-            "Fadeable": false,
-            "Moveable": false
-          },
-          {
-            "Color": {
               "Red": 74,
               "Green": 16,
               "Blue": 54
@@ -2722,25 +2618,6 @@
       },
       {
         "Components": [
-          {
-            "Color": {
-              "Red": 25,
-              "Green": 25,
-              "Blue": 25
-            },
-            "Alpha": 100,
-            "Name": "box3",
-            "X": 0,
-            "Y": 0,
-            "Width": 480,
-            "Height": 750,
-            "Type": "Box",
-            "Visible": true,
-            "Draggable": false,
-            "Clickable": false,
-            "Fadeable": false,
-            "Moveable": false
-          },
           {
             "Color": {
               "Red": 74,
@@ -3416,22 +3293,6 @@
         "IsResource": false
       },
       {
-        "TextEntryId": "SingleUseId66",
-        "IsResource": false
-      },
-      {
-        "TextEntryId": "SingleUseId67",
-        "IsResource": false
-      },
-      {
-        "TextEntryId": "SingleUseId68",
-        "IsResource": false
-      },
-      {
-        "TextEntryId": "SingleUseId69",
-        "IsResource": false
-      },
-      {
         "TextEntryId": "Tiny",
         "IsResource": true
       },
@@ -3609,6 +3470,14 @@
       },
       {
         "TextEntryId": "SingleUseId118",
+        "IsResource": false
+      },
+      {
+        "TextEntryId": "SingleUseId119",
+        "IsResource": false
+      },
+      {
+        "TextEntryId": "SingleUseId120",
         "IsResource": false
       }
     ],

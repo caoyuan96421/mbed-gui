@@ -22,7 +22,7 @@ public:
 
 
     // MountScreen
-    void gotoMountScreenScreenNoTransition();
+    void gotoMountScreenScreenSlideTransitionEast();
 
     void gotoMountScreenScreenSlideTransitionWest();
 
@@ -32,7 +32,7 @@ public:
 
 
     // StarMapScreen
-    void gotoStarMapScreenScreenNoTransition();
+    void gotoStarMapScreenScreenSlideTransitionEast();
 
 
     // UtilityScreen
@@ -56,7 +56,7 @@ protected:
 
 
     // MountScreen
-    void gotoMountScreenScreenNoTransitionImpl();
+    void gotoMountScreenScreenSlideTransitionEastImpl();
 
     void gotoMountScreenScreenSlideTransitionWestImpl();
 
@@ -66,7 +66,7 @@ protected:
 
 
     // StarMapScreen
-    void gotoStarMapScreenScreenNoTransitionImpl();
+    void gotoStarMapScreenScreenSlideTransitionEastImpl();
 
 
     // UtilityScreen

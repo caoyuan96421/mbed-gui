@@ -11,10 +11,6 @@ CoordinatePopupBase::CoordinatePopupBase()
     setWidth(480);
     setHeight(750);
 
-    box3.setPosition(0, 0, 480, 750);
-    box3.setColor(touchgfx::Color::getColorFrom24BitRGB(25, 25, 25));
-    box3.setAlpha(100);
-
     box1.setPosition(45, 111, 391, 579);
     box1.setColor(touchgfx::Color::getColorFrom24BitRGB(74, 16, 54));
 
@@ -108,7 +104,6 @@ CoordinatePopupBase::CoordinatePopupBase()
     sign2.setWildcard(sign2Buffer);
     sign2.resizeToCurrentText();
 
-    add(box3);
     add(box1);
     add(okButton);
     add(cancelButton);

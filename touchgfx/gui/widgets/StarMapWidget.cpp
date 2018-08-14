@@ -18,7 +18,7 @@
 
 using namespace touchgfx;
 
-#define SMW_DEBUG 0
+#define SMW_DEBUG 1
 
 static const float RADIAN_F = 180.0f / M_PI;
 static const float DEGREE_F = M_PI / 180.0f;
@@ -31,6 +31,7 @@ static const int DRAG_THRESHOLD = 30;
 static const int DOUBLE_CLICK_THRESHOLD_MS = 200;
 static const int DOUBLE_CLICK_DURATION_MS = 200;
 static const float SELECTION_ERROR_THRESHOLD = 50.0f;
+static const float MAX_RADIUS = 8.0f;
 
 static const float CONSTELLATION_LINE_RESOLUTION = 5.0f;
 
@@ -46,15 +47,16 @@ static inline T clip(T x)
 }
 
 StarMapWidget::StarMapWidget() :
-		ra_ctr(84.3f), dec_ctr(-1.2f), fovw(20), fovh(20), rot(0), location(42, -73), moon_bitmap(BITMAP_MOON_SMALL_ID), canvas(
-		NULL), xc(0), yc(0), zc(0), xp(0), yp(0), zp(0), xq(0), yq(0), fovr(14.142f), renderSuccessful(true), displayMoon(false), moon_apex(0), moon_illumangle(0), tick_rotation(0), selected(NULL), ispressed(
+		ra_ctr(84.3f), dec_ctr(-1.2f), fovw(20), fovh(20), rot(0), location(42, -73), moon_bitmap(BITMAP_MOON_SMALL_ID), selectionCallback(NULL), drawConstell(false), xc(0), yc(0), zc(0), xp(0), yp(
+				0), zp(0), xq(0), yq(0), fovr(14.142f), renderSuccessful(
+		true), displayMoon(false), displaySun(false), tick_rotation(0), selected(NULL), ispressed(
 		false), isdoubleclick(
 		false), isdrag(false), first(
-		true), clickStartTime(0), lastClickDuration(0), clickX(-1000), clickY(-1000), timestamp(time(NULL)), num_label(0)
+		true), clickStartTime(0), lastClickDuration(0), clickX(-1000), clickY(-1000), timestamp(time(NULL)), num_label(0), num_stars(0)
 {
-	this->setPainter(starpainter);
+	this->setPainter(painter);
 	this->setTouchable(true);
-	starpainter.setColor(Color::getColorFrom24BitRGB(255, 255, 255), 255);
+	painter.setColor(Color::getColorFrom24BitRGB(255, 255, 255), 255);
 	labelColor = Color::getColorFrom24BitRGB(200, 200, 200);
 	labelAlpha = 200;
 	tim.start();
@@ -73,6 +75,9 @@ StarMapWidget::StarMapWidget() :
 	}
 
 	Application::getInstance()->registerTimerWidget(this);
+
+	// Initialize the view
+	updateView();
 }
 
 StarMapWidget::~StarMapWidget()
@@ -176,8 +181,12 @@ void StarMapWidget::handleClickEvent(const ClickEvent& evt)
 
 			if (selected != newselected)
 			{
-				debug_if(SMW_DEBUG, "Selected star: id=%d, ra=%f, dec=%f\r\n", selected->id, selected->RA, selected->DEC);
+//				debug_if(SMW_DEBUG, "Selected star: id=%d, ra=%f, dec=%f\r\n", selected->id, selected->RA, selected->DEC);
 				selected = newselected;
+				if (selectionCallback)
+				{
+					selectionCallback->execute(newselected);
+				}
 				invalidate();
 			}
 		}
@@ -193,22 +202,8 @@ void StarMapWidget::handleClickEvent(const ClickEvent& evt)
 void StarMapWidget::draw(const Rect& invalidatedArea) const
 {
 	uint64_t time_start = tim.read_high_resolution_us();
-// Update parameters
-	fovr = sqrtf(fovw * fovw + fovh * fovh) * 0.5f; // Field radius
-	// Field center
-	xc = cosf(dec_ctr * DEGREE_F) * cosf(ra_ctr * DEGREE_F);
-	yc = cosf(dec_ctr * DEGREE_F) * sinf(ra_ctr * DEGREE_F);
-	zc = sinf(dec_ctr * DEGREE_F);
 
-	// Auxiliary vectors (both perpendicular to (xc,yc,zc) and to each other)
-	xp = -sinf(dec_ctr * DEGREE_F) * cosf(ra_ctr * DEGREE_F);
-	yp = -sinf(dec_ctr * DEGREE_F) * sinf(ra_ctr * DEGREE_F);
-	zp = cosf(dec_ctr * DEGREE_F);
-
-	xq = -sinf(ra_ctr * DEGREE_F);
-	yq = cosf(ra_ctr * DEGREE_F);
-// Draw BG box first
-// Draw texture of moon
+	// Draw BG box
 	bgBox.setPosition(0, 0, getWidth(), getHeight());
 	Rect d = invalidatedArea & bgBox.getRect();
 	if (!d.isEmpty())
@@ -219,28 +214,17 @@ void StarMapWidget::draw(const Rect& invalidatedArea) const
 	}
 
 	// Draw Constellations
-	_drawconstell(invalidatedArea);
+	if (drawConstell)
+		_drawconstell(invalidatedArea);
 
-	num_label = 0;
-
-	// Before drawing everything else, let's check moon
-	SolarSystemInfo &moon = planetSunMoon[(int) PlanetMoon::MOON];
-	EquatorialCoordinatesWithDist eq = PlanetMoon::calculatePosition(PlanetMoon::MOON, timestamp, location);
-	moon.RA = eq.ra;
-	moon.DEC = eq.dec;
-	moon.accurate_pos = eq;
-	moon.phase = PlanetMoon::getLunarPhase(timestamp, location, eq);
-	displayMoon = false;
-	_callback(&moon, false);
-
-// Display the texture now if necessary
+	// Display the lunar texture
 	if (displayMoon)
 	{
 		// Set moon position
-		moon_texture.setXY((moon_x - moon_size).to<int>(), (moon_y - moon_size).to<int>());
-		moon_texture.setWidth((moon_size * 2).to<int>());
-		moon_texture.setHeight((moon_size * 2).to<int>());
-		moon_texture.setScale((moon_size * 2).to<float>() / (moon_bitmap.getWidth() + 4));
+		moon_texture.setXY((moonPos.x - moonPos.size).to<int>(), (moonPos.y - moonPos.size).to<int>());
+		moon_texture.setWidth((moonPos.size * 2).to<int>());
+		moon_texture.setHeight((moonPos.size * 2).to<int>());
+		moon_texture.setScale((moonPos.size * 2).to<float>() / (moon_bitmap.getWidth() + 4));
 		moon_texture.setBitmapPosition(2, 2);
 		moon_texture.setAlpha(127);
 		// Draw texture of moon
@@ -253,10 +237,10 @@ void StarMapWidget::draw(const Rect& invalidatedArea) const
 		}
 	}
 
-// Now draw the star map, including the moon shadow
+	// Draw the stars, including the moon shadow
 	CanvasWidget::draw(invalidatedArea);
 
-// Now draw the label
+	// Draw the label
 	if (num_label > 0)
 	{
 		TypedText typedText(T_TINY);
@@ -266,7 +250,7 @@ void StarMapWidget::draw(const Rect& invalidatedArea) const
 		const Font* fontToDraw = typedText.getFont();
 		if ((fontToDraw != 0) && typedText.hasValidId())
 		{
-			for (unsigned int i = 0; i < num_label; i++)
+			for (int i = 0; i < num_label; i++)
 			{
 				int16_t offsetx, offsety;
 				Rect labelRect;
@@ -307,6 +291,7 @@ void StarMapWidget::handleTickEvent()
 		timestamp = newtime;
 //		timestamp = 1712604420; // 2024/04/08 19:27:00 (UTC), Solar eclipse
 //		debug_if(SMW_DEBUG, "tick\r\n");
+		updateView();
 		invalidate();
 	}
 	if (++count == 20)
@@ -321,6 +306,81 @@ void StarMapWidget::handleTickEvent()
 	}
 }
 
+void StarMapWidget::updateView()
+{
+	// Update parameters
+	fovr = sqrtf(fovw * fovw + fovh * fovh) * 0.5f; // Field radius
+	// Field center
+	xc = cosf(dec_ctr * DEGREE_F) * cosf(ra_ctr * DEGREE_F);
+	yc = cosf(dec_ctr * DEGREE_F) * sinf(ra_ctr * DEGREE_F);
+	zc = sinf(dec_ctr * DEGREE_F);
+
+	// Auxiliary vectors (both perpendicular to (xc,yc,zc) and to each other)
+	xp = -sinf(dec_ctr * DEGREE_F) * cosf(ra_ctr * DEGREE_F);
+	yp = -sinf(dec_ctr * DEGREE_F) * sinf(ra_ctr * DEGREE_F);
+	zp = cosf(dec_ctr * DEGREE_F);
+
+	xq = -sinf(ra_ctr * DEGREE_F);
+	yq = cosf(ra_ctr * DEGREE_F);
+
+	// Update visible stars and planets, except Moon
+	float maxmagnitude = 6.5 - 5 * log10f(fovw / 20.0f); // Estimate maximum magnitude for searching
+	num_stars = 0;
+	num_label = 0;
+	// Search for stars
+	if (dec_ctr + fovr >= 85.0f)
+	{
+		// FOV close to north pole, search entire pole region
+		StarCatalog::getInstance().query_all(StarMapWidget::callback, -180.0f, 180.0f, dec_ctr - fovr, 90.0f, (void *) this, maxmagnitude);
+	}
+	else if (dec_ctr - fovr <= -85.0f)
+	{
+		// FOV close to south pole, search entire pole region
+		StarCatalog::getInstance().query_all(StarMapWidget::callback, -180.0f, 180.0f, -90.0f, dec_ctr + fovr, (void *) this, maxmagnitude);
+	}
+	else
+	{
+		// FOV is contained within poles.
+
+		// Maximum RA range must be corrected
+		float maxdec = (dec_ctr > 0) ? (dec_ctr + fovr) : -(dec_ctr - fovr);
+		float delta_ra = atanf(sqrtf(1.0f + tanf(maxdec * DEGREE_F) * tanf(maxdec * DEGREE_F)) * tanf(fovr * DEGREE_F)) * RADIAN_F;
+
+		StarCatalog::getInstance().query_all(StarMapWidget::callback, remainderf(ra_ctr - delta_ra, 360.0f), remainderf(ra_ctr + delta_ra, 360.0f), dec_ctr - fovr, dec_ctr + fovr, (void *) this,
+				maxmagnitude);
+	}
+
+	displayMoon = false;
+	displaySun = false;
+	// Deal with planets as if they are stars
+	for (PlanetMoon::Object obj = PlanetMoon::MERCURY; obj <= PlanetMoon::MOON; obj = (PlanetMoon::Object) (obj + 1))
+	{
+		EquatorialCoordinatesWithDist eq = PlanetMoon::calculatePosition(obj, timestamp, location);
+		planetSunMoon[(int) obj].RA = eq.ra;
+		planetSunMoon[(int) obj].DEC = eq.dec;
+		planetSunMoon[(int) obj].accurate_pos = eq;
+		if (planetSunMoon[(int) obj].magnitude <= maxmagnitude)
+		{
+			if ((obj != PlanetMoon::SUN && obj != PlanetMoon::MOON) || fovw >= 20.0f)
+			{
+				// Handle as star
+				_handleStars(&planetSunMoon[(int) obj], true);
+			}
+			else if (obj == PlanetMoon::SUN)
+			{
+				// Handle Sun (zoomed in)
+				_handleSun(&planetSunMoon[(int) obj]);
+			}
+			else
+			{
+				// Handle Moon (zoomed in)
+				planetSunMoon[(int) obj].phase = PlanetMoon::getLunarPhase(timestamp, location, eq);
+				_handleMoon(&planetSunMoon[(int) obj]);
+			}
+		}
+	}
+}
+
 void StarMapWidget::callback(StarInfo *star, void *arg)
 {
 	StarMapWidget *pw = (StarMapWidget *) arg;
@@ -328,26 +388,28 @@ void StarMapWidget::callback(StarInfo *star, void *arg)
 	if (!pw)
 		return;
 
-	pw->_callback(star, true);
+	pw->_handleStars(star, false);
 }
 
-void StarMapWidget::_callback(const StarInfo *star, bool isStar) const
+bool StarMapWidget::_calcScreenPosition(const StarInfo *star, bool hires, CWRUtil::Q5 &xscr, CWRUtil::Q5 &yscr, float maxradius) const
 {
-	CWRUtil::Q5 xscr, yscr; // Screen coordinate of the object center
-
-	if (isStar)
+	if (!hires)
 	{
 		// Use precalculated float values for faster calculation
-		float xs = cosf(star->DEC * DEGREE_F) * cosf(star->RA * DEGREE_F);
-		float ys = cosf(star->DEC * DEGREE_F) * sinf(star->RA * DEGREE_F);
-		float zs = sinf(star->DEC * DEGREE_F);
+		float cdec = cosf(star->DEC * DEGREE_F);
+		float sdec = sinf(star->DEC * DEGREE_F);
+		float cra = cosf(star->RA * DEGREE_F);
+		float sra = sinf(star->RA * DEGREE_F);
+		float xs = cdec * cra;
+		float ys = cdec * sra;
+		float zs = sdec;
 
 		float dotsc = xc * xs + yc * ys + zc * zs; // Dot product
 		float rf = acosf(clip(dotsc)) * RADIAN_F; // Angular distance to field center
 
-		if (rf > fovr)
+		if (rf > fovr + MAX_RADIUS)
 		{
-			return;
+			return false;
 		}
 
 		// Projected onto a plane perpendicular to (xc,yc,zc)
@@ -365,8 +427,10 @@ void StarMapWidget::_callback(const StarInfo *star, bool isStar) const
 		float xf = (rf * cosf(thetapq * DEGREE_F)) / fovw;
 		float yf = (rf * sinf(thetapq * DEGREE_F)) / fovh;
 		// Check if it is in the FOV
-		if (xf > 0.5f || xf < -0.5f || yf > 0.5f || yf < -0.5f)
-			return;
+		float maxx = 0.5f + (float) maxradius / getWidth();
+		float maxy = 0.5f + (float) maxradius / getHeight();
+		if (xf > maxx || xf < -maxx || yf > maxy || yf < -maxy)
+			return false;
 		// Coordinate on screen (Widget coordinate)
 		xscr = CWRUtil::toQ5((xf + 0.5f) * getWidth());
 		yscr = CWRUtil::toQ5((0.5f - yf) * getHeight());
@@ -394,12 +458,26 @@ void StarMapWidget::_callback(const StarInfo *star, bool isStar) const
 		double xf = (rf * cos(thetapq * DEGREE)) / fovw;
 		double yf = (rf * sin(thetapq * DEGREE)) / fovh;
 		// Check if it is in the FOV
-		if (xf > 0.5 || xf < -0.5 || yf > 0.5 || yf < -0.5)
-			return;
+		double maxx = 0.5 + (double) maxradius / getWidth();
+		double maxy = 0.5 + (double) maxradius / getHeight();
+		if (xf > maxx || xf < -maxx || yf > maxy || yf < -maxy)
+			return false;
 		// Coordinate on screen (Widget coordinate)
 		xscr = CWRUtil::toQ5((xf + 0.5) * getWidth());
 		yscr = CWRUtil::toQ5((0.5 - yf) * getHeight());
 	}
+	return true;
+}
+
+void StarMapWidget::_handleStars(const StarInfo *star, bool hires) const
+{
+	CWRUtil::Q5 xscr, yscr; // Screen coordinate of the object center
+
+	if (num_stars >= STARMAP_WIDGET_MAX_STARS)
+		return;
+
+	if (!_calcScreenPosition(star, hires, xscr, yscr, MAX_RADIUS))
+		return;
 
 //	debug_if(SMW_DEBUG, "xf=%f, yf=%f\r\n", xf, yf);
 
@@ -410,97 +488,25 @@ void StarMapWidget::_callback(const StarInfo *star, bool isStar) const
 
 	colortype starColor = Color::getColorFrom24BitRGB(uint8_t(red / norm * 255.0f), uint8_t(green / norm * 255.0f), uint8_t(blue / norm * 255.0f));
 
-	starpainter.setColor(starColor, 255);
-
 	int label_x, label_y;
-	CWRUtil::Q5 outer_radius;
-	bool isMoon = false;
-
-	if (isStar || ((const SolarSystemInfo *) star)->isPlanet() || (((const SolarSystemInfo *) star)->obj == PlanetMoon::SUN && fovw >= 20.0f))
+	float size = powf(0.1f, star->magnitude * 0.2f) / fovw * 150.0f; // Brightness proportional to area, normalized by fov at 15deg
+	if (size < 0.5f)
+		size = 0.5f;
+	if (size > MAX_RADIUS)
 	{
-		if (!canvas)
-			return;
-		float size = powf(0.1f, star->magnitude * 0.2f) / fovw * 150.0f; // Brightness proportional to area, normalized by fov at 15deg
-		if (size < 0.5f)
-			size = 0.5f;
-		if (size > 8.0f)
-		{
-			size = 8.0f;
-		}
-
-		CWRUtil::Q5 sq = CWRUtil::toQ5(size);
-
-		int numstep = (size >= 1.0f) ? 12 : 4;
-		int step = 360 / numstep;
-
-		canvas->moveTo(xscr, yscr - sq);
-		for (int i = 0; i <= 360; i += step)
-		{
-			canvas->lineTo(xscr + sq * CWRUtil::sine(i), yscr + sq * CWRUtil::cosine(i));
-		}
-
-		label_x = (int) ((xscr + sq).to<int>() + 2);
-		label_y = (int) (yscr.to<int>() + 2);
-		outer_radius = sq;
+		size = MAX_RADIUS;
 	}
-	else
-	{
-		const SolarSystemInfo &ss = *((const SolarSystemInfo *) star);
-		if (ss.obj == PlanetMoon::MOON)
-		{
-			// Moon
-			CWRUtil::Q5 size = CWRUtil::toQ5(getWidth() / fovw * 0.25f);
-			MoonPhase &phase = ((SolarSystemInfo *) star)->phase;
 
-			debug_if(SMW_DEBUG, "Update moon: %d %d\r\n", xscr.to<int>(), yscr.to<int>());
+	visibleStars[num_stars].x = xscr;
+	visibleStars[num_stars].y = yscr;
+	visibleStars[num_stars].size = CWRUtil::toQ5(size);
+	visibleStars[num_stars].color = starColor;
+	visibleStars[num_stars].info = star;
 
-			isMoon = true;
-			displayMoon = true;
-			moon_x = xscr;
-			moon_y = yscr;
-			moon_size = size;
-			moon_apex = (int) (phase.illumaxis - rot);
-			moon_illumangle = (int) phase.illumangle;
+	num_stars++;
 
-			//Actual drawing is delayed
-
-			label_x = (int) ((xscr + size).to<int>() + 2);
-			label_y = (int) (yscr.to<int>() + 2);
-			outer_radius = size;
-		}
-		else
-		{
-			if (!canvas)
-				return;
-			// Sun
-			CWRUtil::Q5 size = CWRUtil::toQ5(getWidth() / fovw * 0.25f);
-
-			canvas->moveTo(xscr, yscr - size);
-			for (int i = 0; i <= 360; i += 10)
-			{
-				canvas->lineTo(xscr + ((size * CWRUtil::sine(i))), yscr - ((size * CWRUtil::cosine(i))));
-			}
-
-			if (!canvas->render())
-			{
-				renderSuccessful = false;
-				debug_if(SMW_DEBUG, "Render failed\r\n");
-			}
-
-			CWRUtil::Q5 size2 = size * 4;
-			starpainter.setColor(Color::getColorFrom24BitRGB(255, 255, 100), 60);
-			canvas->moveTo(xscr, yscr - size);
-			for (int i = 0; i <= 360; i += 20)
-			{
-				canvas->lineTo(xscr + ((size * CWRUtil::sine(i))), yscr - ((size * CWRUtil::cosine(i))));
-				canvas->lineTo(xscr + ((size2 * CWRUtil::sine(i + 10))), yscr - ((size2 * CWRUtil::cosine(i + 10))));
-			}
-
-			label_x = (int) ((xscr + size2).to<int>() + 2);
-			label_y = (int) (yscr.to<int>() + 2);
-			outer_radius = size2;
-		}
-	}
+	label_x = (int) ((xscr + CWRUtil::toQ5(size)).to<int>() + 2);
+	label_y = (int) (yscr.to<int>() + 2);
 
 	if (*star->name != '\0' && num_label < STARMAP_WIDGET_MAX_LABEL)
 	{
@@ -510,101 +516,153 @@ void StarMapWidget::_callback(const StarInfo *star, bool isStar) const
 		starlabels[num_label].y = label_y;
 		num_label++;
 	}
+}
 
-	if (!isMoon)
-		if (!canvas->render())
-		{
-			renderSuccessful = false;
-			debug_if(SMW_DEBUG, "Render failed\r\n");
-		}
+void StarMapWidget::_handleSun(const SolarSystemInfo *sun) const
+{
+	CWRUtil::Q5 xscr, yscr; // Screen coordinate of the object center
+	float sunsize = getWidth() / fovw * 0.25f;
 
-	// Draw ticks around selected star
-	if (!isMoon && selected && selected == star)
+	if (!_calcScreenPosition(sun, true, xscr, yscr, sunsize))
 	{
-		_drawticks(xscr, yscr, outer_radius);
+		displaySun = false;
+		return;
+	}
+	displaySun = true;
+
+	sunPos.x = xscr;
+	sunPos.y = yscr;
+	sunPos.size = CWRUtil::toQ5(sunsize);
+
+	int label_x = (int) ((xscr + CWRUtil::toQ5(sunsize)).to<int>() + 2);
+	int label_y = (int) (yscr.to<int>() + 2);
+
+	if (num_label < STARMAP_WIDGET_MAX_LABEL)
+	{
+		// Generate name label
+		strncpy(starlabels[num_label].label, sun->name, STARMAP_WIDGET_MAX_LABEL_LENGTH);
+		starlabels[num_label].x = label_x;
+		starlabels[num_label].y = label_y;
+		num_label++;
+	}
+}
+
+void StarMapWidget::_handleMoon(const SolarSystemInfo *moon) const
+{
+	CWRUtil::Q5 xscr, yscr; // Screen coordinate of the object center
+	float moonsize = getWidth() / fovw * 0.25f;
+
+	if (!_calcScreenPosition(moon, true, xscr, yscr, moonsize))
+	{
+		displayMoon = false;
+		return;
+	}
+	displayMoon = true;
+
+	moonPos.x = xscr;
+	moonPos.y = yscr;
+	moonPos.size = CWRUtil::toQ5(moonsize);
+	moonPos.apex = (int) (moon->phase.illumaxis - rot);
+	moonPos.illumangle = (int) moon->phase.illumangle;
+
+	int label_x = (int) ((xscr + CWRUtil::toQ5(moonsize)).to<int>() + 2);
+	int label_y = (int) (yscr.to<int>() + 2);
+
+	if (num_label < STARMAP_WIDGET_MAX_LABEL)
+	{
+		// Generate name label
+		strncpy(starlabels[num_label].label, moon->name, STARMAP_WIDGET_MAX_LABEL_LENGTH);
+		starlabels[num_label].x = label_x;
+		starlabels[num_label].y = label_y;
+		num_label++;
 	}
 }
 
 bool StarMapWidget::drawCanvasWidget(const Rect& invalidatedArea) const
 {
 	Canvas canvas(this, invalidatedArea);
-	this->canvas = &canvas;
+//	this->canvas = &canvas;
 
 	count = 0;
 	renderSuccessful = true;
 
-	float maxmagnitude = 6.5 - 5 * log10f(fovw / 20.0f); // Estimate maximum magnitude for searching
-
-	// Search for stars
-	if (dec_ctr + fovr >= 85.0f)
+	// Draw stars
+	for (int i = 0; i < num_stars; i++)
 	{
-		// FOV close to north pole, search entire pole region
-		StarCatalog::getInstance().query_all(StarMapWidget::callback, -180.0f, 180.0f, dec_ctr - fovr, 90.0f, (void *) this, maxmagnitude);
-	}
-	else if (dec_ctr - fovr <= -85.0f)
-	{
-		// FOV close to south pole, search entire pole region
-		StarCatalog::getInstance().query_all(StarMapWidget::callback, -180.0f, 180.0f, -90.0f, dec_ctr + fovr, (void *) this, maxmagnitude);
-	}
-	else
-	{
-		// FOV is contained within poles.
-
-		// Maximum RA range must be corrected
-		float maxdec = (dec_ctr > 0) ? (dec_ctr + fovr) : -(dec_ctr - fovr);
-		float delta_ra = atanf(sqrtf(1.0f + tanf(maxdec * DEGREE_F) * tanf(maxdec * DEGREE_F)) * tanf(fovr * DEGREE_F)) * RADIAN_F;
-
-		StarCatalog::getInstance().query_all(StarMapWidget::callback, remainderf(ra_ctr - delta_ra, 360.0f), remainderf(ra_ctr + delta_ra, 360.0f), dec_ctr - fovr, dec_ctr + fovr, (void *) this,
-				maxmagnitude);
-	}
-
-	// Deal with planets as if they are stars
-	for (PlanetMoon::Object obj = PlanetMoon::MERCURY; obj <= PlanetMoon::SUN; obj = (PlanetMoon::Object) (obj + 1))
-	{
-		EquatorialCoordinatesWithDist eq = PlanetMoon::calculatePosition(obj, timestamp, location);
-		planetSunMoon[(int) obj].RA = eq.ra;
-		planetSunMoon[(int) obj].DEC = eq.dec;
-		planetSunMoon[(int) obj].accurate_pos = eq;
-		if (planetSunMoon[(int) obj].magnitude <= maxmagnitude)
-			_callback(&planetSunMoon[(int) obj], false);
+		StarPos &s = visibleStars[i];
+		Rect bb((s.x - s.size).to<int>(), (s.y - s.size).to<int>(), (s.size * 2).to<int>(), (s.size * 2).to<int>());
+		if (invalidatedArea.intersect(bb))
+			_drawstar(canvas, visibleStars[i]);
 	}
 
 	// Draw the moon shadow if necessary
 	if (displayMoon)
 	{
-		_drawmoon();
+		_drawmoon(canvas);
 	}
 
-	this->canvas = NULL;
+	if (displaySun)
+	{
+		_drawsun(canvas);
+	}
+
+	_drawcross(canvas); // Draw a cross at the center of FOV
+
+//	this->canvas = NULL;
 	return renderSuccessful;
 }
 
-void StarMapWidget::_drawmoon() const
+void StarMapWidget::_drawstar(touchgfx::Canvas &canvas, StarPos &star) const
+{
+	painter.setColor(star.color, 255);
+	int numstep = (star.size.to<float>() >= 1.0f) ? 12 : 4;
+	int step = 360 / numstep;
+
+	canvas.moveTo(star.x, star.y - star.size);
+	for (int i = 0; i <= 360; i += step)
+	{
+		canvas.lineTo(star.x + star.size * CWRUtil::sine(i), star.y + star.size * CWRUtil::cosine(i));
+	}
+
+	if (!canvas.render())
+	{
+		debug_if(SMW_DEBUG, "Render failed.\r\n");
+		renderSuccessful = false;
+	}
+
+	if (selected == star.info)
+	{
+		// Moon selected
+		_drawticks(canvas, star.x, star.y, star.size);
+	}
+}
+
+void StarMapWidget::_drawmoon(touchgfx::Canvas &canvas) const
 {
 
-	starpainter.setColor(bgBox.getColor(), 230); // BG color
+	painter.setColor(bgBox.getColor(), 230); // BG color
 
 	const int di = 5;
-	CWRUtil::Q15 sina = CWRUtil::sine(moon_apex);
-	CWRUtil::Q15 cosa = CWRUtil::cosine(moon_apex);
+	CWRUtil::Q15 sina = CWRUtil::sine(moonPos.apex);
+	CWRUtil::Q15 cosa = CWRUtil::cosine(moonPos.apex);
 
-// Draw outline of half-circle
-	canvas->moveTo(moon_x + moon_size * CWRUtil::sine(moon_apex), moon_y - moon_size * CWRUtil::cosine(moon_apex));
+	// Draw outline of half-circle
+	canvas.moveTo(moonPos.x + moonPos.size * CWRUtil::sine(moonPos.apex), moonPos.y - moonPos.size * CWRUtil::cosine(moonPos.apex));
 	for (int i = 180; i <= 360; i += di)
 	{
-		canvas->lineTo(moon_x + moon_size * CWRUtil::sine(i + moon_apex), moon_y - moon_size * CWRUtil::cosine(i + moon_apex));
+		canvas.lineTo(moonPos.x + moonPos.size * CWRUtil::sine(i + moonPos.apex), moonPos.y - moonPos.size * CWRUtil::cosine(i + moonPos.apex));
 	}
 
-// Draw the dark fraction
+	// Draw the dark fraction
 	for (int i = 0; i <= 180; i += di)
 	{
-		CWRUtil::Q5 dx = (moon_size * CWRUtil::sine(i)) * CWRUtil::cosine(moon_illumangle);
-		CWRUtil::Q5 dy = moon_size * CWRUtil::cosine(i);
+		CWRUtil::Q5 dx = (moonPos.size * CWRUtil::sine(i)) * CWRUtil::cosine(moonPos.illumangle);
+		CWRUtil::Q5 dy = moonPos.size * CWRUtil::cosine(i);
 
-		canvas->lineTo(moon_x + dx * cosa + dy * sina, moon_y + dx * sina - dy * cosa);
+		canvas.lineTo(moonPos.x + dx * cosa + dy * sina, moonPos.y + dx * sina - dy * cosa);
 	}
 
-	if (!canvas->render())
+	if (!canvas.render())
 	{
 		debug_if(SMW_DEBUG, "Render failed.\r\n");
 		renderSuccessful = false;
@@ -613,20 +671,53 @@ void StarMapWidget::_drawmoon() const
 	if (selected == &planetSunMoon[(int) PlanetMoon::MOON])
 	{
 		// Moon selected
-		_drawticks(moon_x, moon_y, moon_size);
+		_drawticks(canvas, moonPos.x, moonPos.y, moonPos.size);
 	}
 }
 
-void StarMapWidget::_drawticks(CWRUtil::Q5 x0, CWRUtil::Q5 y0, CWRUtil::Q5 r) const
+void StarMapWidget::_drawsun(touchgfx::Canvas &canvas) const
+{
+	painter.setColor(Color::getColorFrom24BitRGB(255, 240, 200), 255); // BG color
+	canvas.moveTo(sunPos.x, sunPos.y - sunPos.size);
+	for (int i = 0; i <= 360; i += 10)
+	{
+		canvas.lineTo(sunPos.x + sunPos.size * CWRUtil::sine(i), sunPos.y - sunPos.size * CWRUtil::cosine(i));
+	}
+
+	if (!canvas.render())
+	{
+		renderSuccessful = false;
+		debug_if(SMW_DEBUG, "Render failed\r\n");
+	}
+
+	CWRUtil::Q5 size2 = sunPos.size * 4;
+	painter.setColor(Color::getColorFrom24BitRGB(255, 255, 100), 60);
+	canvas.moveTo(sunPos.x, sunPos.y - sunPos.size);
+	for (int i = 0; i <= 360; i += 20)
+	{
+		canvas.lineTo(sunPos.x + sunPos.size * CWRUtil::sine(i), sunPos.y - sunPos.size * CWRUtil::cosine(i));
+		canvas.lineTo(sunPos.x + size2 * CWRUtil::sine(i + 10), sunPos.y - size2 * CWRUtil::cosine(i + 10));
+	}
+
+	if (!canvas.render())
+	{
+		debug_if(SMW_DEBUG, "Render failed.\r\n");
+		renderSuccessful = false;
+	}
+
+	if (selected == &planetSunMoon[(int) PlanetMoon::SUN])
+	{
+		// Moon selected
+		_drawticks(canvas, sunPos.x, sunPos.y, size2);
+	}
+}
+
+void StarMapWidget::_drawticks(touchgfx::Canvas &canvas, CWRUtil::Q5 x0, CWRUtil::Q5 y0, CWRUtil::Q5 r) const
 {
 	const int ticks_spacing = 90; // 4 ticks in total
-	if (!canvas)
-	{
-		return;
-	}
 	int angle = tick_rotation;
 
-	starpainter.setColor(Color::getColorFrom24BitRGB(255, 200, 0), 200);
+	painter.setColor(Color::getColorFrom24BitRGB(255, 200, 0), 200);
 	CWRUtil::Q5 r1 = r + CWRUtil::toQ5(2);
 	CWRUtil::Q5 r2 = r1 + CWRUtil::toQ5(10);
 	CWRUtil::Q5 hw = CWRUtil::toQ5(0.5f); // Half of linewidth
@@ -635,14 +726,44 @@ void StarMapWidget::_drawticks(CWRUtil::Q5 x0, CWRUtil::Q5 y0, CWRUtil::Q5 r) co
 	{
 		CWRUtil::Q15 s = CWRUtil::sine(angle);
 		CWRUtil::Q15 c = CWRUtil::cosine(angle);
-		canvas->moveTo(x0 + r1 * s + hw * c, y0 - r1 * c + hw * s);
-		canvas->lineTo(x0 + r2 * s + hw * c, y0 - r2 * c + hw * s);
-		canvas->lineTo(x0 + r2 * s - hw * c, y0 - r2 * c - hw * s);
-		canvas->lineTo(x0 + r1 * s - hw * c, y0 - r1 * c - hw * s);
-		canvas->lineTo(x0 + r1 * s + hw * c, y0 - r1 * c + hw * s);
+		canvas.moveTo(x0 + r1 * s + hw * c, y0 - r1 * c + hw * s);
+		canvas.lineTo(x0 + r2 * s + hw * c, y0 - r2 * c + hw * s);
+		canvas.lineTo(x0 + r2 * s - hw * c, y0 - r2 * c - hw * s);
+		canvas.lineTo(x0 + r1 * s - hw * c, y0 - r1 * c - hw * s);
+		canvas.lineTo(x0 + r1 * s + hw * c, y0 - r1 * c + hw * s);
 	}
 
-	if (!canvas->render())
+	if (!canvas.render())
+	{
+		debug_if(SMW_DEBUG, "Render failed.\r\n");
+		renderSuccessful = false;
+	}
+}
+
+void StarMapWidget::_drawcross(touchgfx::Canvas &canvas) const
+{
+	const int ticks_spacing = 90; // 4 ticks in total
+	int angle = 0;
+
+	CWRUtil::Q5 x0 = CWRUtil::toQ5(getWidth() / 2);
+	CWRUtil::Q5 y0 = CWRUtil::toQ5(getHeight() / 2);
+
+	painter.setColor(Color::getColorFrom24BitRGB(255, 0, 0), 200);
+	CWRUtil::Q5 r = CWRUtil::toQ5(15);
+	CWRUtil::Q5 hw = CWRUtil::toQ5(1); // Half of linewidth
+
+	for (int i = 0; i < 4; i++, angle += ticks_spacing)
+	{
+		CWRUtil::Q15 s = CWRUtil::sine(angle);
+		CWRUtil::Q15 c = CWRUtil::cosine(angle);
+		canvas.moveTo(x0 + hw * c, y0 + hw * s);
+		canvas.lineTo(x0 + r * s + hw * c, y0 - r * c + hw * s);
+		canvas.lineTo(x0 + r * s - hw * c, y0 - r * c - hw * s);
+		canvas.lineTo(x0 - hw * c, y0 - hw * s);
+		canvas.lineTo(x0 + hw * c, y0 + hw * s);
+	}
+
+	if (!canvas.render())
 	{
 		debug_if(SMW_DEBUG, "Render failed.\r\n");
 		renderSuccessful = false;
@@ -889,3 +1010,4 @@ void StarMapWidget::_drawline(int16_t x1, int16_t y1, int16_t x2, int16_t y2, co
 		y += yinc2; /* Change the y as appropriate */
 	}
 }
+

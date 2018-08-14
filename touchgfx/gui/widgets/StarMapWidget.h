@@ -13,6 +13,7 @@
 #include <touchgfx/widgets/canvas/Canvas.hpp>
 #include <touchgfx/widgets/TextureMapper.hpp>
 #include <touchgfx/widgets/Box.hpp>
+#include <touchgfx/widgets/AbstractButton.hpp>
 #include <touchgfx/Color.hpp>
 #include "StarCatalog.h"
 #include "mbed.h"
@@ -36,6 +37,7 @@ public:
 			dec_ctr = -90.0;
 		else
 			dec_ctr = dec;
+		updateView();
 		invalidate();
 	}
 
@@ -54,12 +56,14 @@ public:
 		}
 		fovw = fov;
 		fovh = fov / getWidth() * getHeight();
+		updateView();
 		invalidate();
 	}
 
 	void setRotation(double r)
 	{
 		rot = r;
+		updateView();
 		invalidate();
 	}
 
@@ -85,13 +89,13 @@ public:
 
 	void setColor(touchgfx::colortype c)
 	{
-		starpainter.setColor(c);
+		painter.setColor(c);
 		invalidate();
 	}
 
 	touchgfx::colortype getColor()
 	{
-		return starpainter.getColor();
+		return painter.getColor();
 	}
 
 	virtual void handleDragEvent(const touchgfx::DragEvent& evt);
@@ -106,6 +110,18 @@ public:
 	void setLocation(const LocationCoordinates& location)
 	{
 		this->location = location;
+		updateView();
+		invalidate();
+	}
+
+	void setDrawConstell(bool drawConstell)
+	{
+		this->drawConstell = drawConstell;
+		invalidate();
+	}
+
+	void setSelectionCallback(touchgfx::GenericCallback< const StarInfo *> &cb){
+		selectionCallback = &cb;
 	}
 
 protected:
@@ -114,10 +130,11 @@ protected:
 	float fovh; // Field of view along the height of the widget
 	float rot; // Rotation of FOV
 	LocationCoordinates location;
-	mutable touchgfx::PainterRGB888 starpainter;
+	mutable touchgfx::PainterRGB888 painter;
 	touchgfx::colortype labelColor;
 	uint8_t labelAlpha;
 	touchgfx::Bitmap moon_bitmap;
+	touchgfx::GenericCallback<const StarInfo *> *selectionCallback;
 	mutable class TextureMapperEx: public touchgfx::TextureMapper
 	{
 	public:
@@ -136,20 +153,28 @@ protected:
 		}
 	} bgBox;
 
+	bool drawConstell;
+
+	void updateView();
+
 private:
 	// These are for internal use
-	mutable touchgfx::Canvas *canvas;
+//	mutable touchgfx::Canvas *canvas;
 	mutable float xc, yc, zc;
 	mutable float xp, yp, zp;
 	mutable float xq, yq;
 	mutable float fovr; // Field radius
 	mutable bool renderSuccessful;
-	mutable bool displayMoon;
-	mutable touchgfx::CWRUtil::Q5 moon_x;
-	mutable touchgfx::CWRUtil::Q5 moon_y;
-	mutable touchgfx::CWRUtil::Q5 moon_size;
-	mutable int moon_apex;
-	mutable int moon_illumangle;
+	mutable bool displayMoon, displaySun;
+	mutable struct
+	{
+		touchgfx::CWRUtil::Q5 x;
+		touchgfx::CWRUtil::Q5 y;
+		touchgfx::CWRUtil::Q5 size;
+		int apex;
+		int illumangle;
+	} moonPos, sunPos;
+
 	mutable int tick_rotation;
 	mutable StarInfo *selected;
 
@@ -160,15 +185,25 @@ private:
 	mutable Timer tim;
 	time_t timestamp;
 
-	static const unsigned int STARMAP_WIDGET_MAX_LABEL = 20;
-	static const unsigned int STARMAP_WIDGET_MAX_LABEL_LENGTH = 20;
+	static const int STARMAP_WIDGET_MAX_LABEL = 20;
+	static const int STARMAP_WIDGET_MAX_LABEL_LENGTH = 20;
+	static const int STARMAP_WIDGET_MAX_STARS = 500;
 	mutable struct
 	{
 		char label[STARMAP_WIDGET_MAX_LABEL_LENGTH];
 		int x;
 		int y;
 	} starlabels[STARMAP_WIDGET_MAX_LABEL];
-	mutable unsigned int num_label;
+	mutable int num_label;
+	mutable struct
+	StarPos{
+		touchgfx::CWRUtil::Q5 x;
+		touchgfx::CWRUtil::Q5 y;
+		touchgfx::CWRUtil::Q5 size;
+		touchgfx::colortype color;
+		const StarInfo *info;
+	} visibleStars[STARMAP_WIDGET_MAX_STARS];
+	mutable int num_stars;
 
 	mutable struct SolarSystemInfo: StarInfo
 	{
@@ -183,9 +218,17 @@ private:
 	} planetSunMoon[10];
 
 	static void callback(StarInfo*, void*);
-	void _callback(const StarInfo *, bool isStar) const;
-	void _drawmoon() const;
-	void _drawticks(touchgfx::CWRUtil::Q5 x, touchgfx::CWRUtil::Q5 y, touchgfx::CWRUtil::Q5 r) const;
+	void _handleStars(const StarInfo *, bool hires) const;
+	void _handleSun(const SolarSystemInfo *) const;
+	void _handleMoon(const SolarSystemInfo *) const;
+
+	bool _calcScreenPosition(const StarInfo *, bool isStar, touchgfx::CWRUtil::Q5 &xscr, touchgfx::CWRUtil::Q5 &yscr, float) const;
+
+	void _drawstar(touchgfx::Canvas &canvas, StarPos &) const;
+	void _drawsun(touchgfx::Canvas &canvas) const;
+	void _drawmoon(touchgfx::Canvas &canvas) const;
+	void _drawticks(touchgfx::Canvas &canvas, touchgfx::CWRUtil::Q5 x, touchgfx::CWRUtil::Q5 y, touchgfx::CWRUtil::Q5 r) const;
+	void _drawcross(touchgfx::Canvas &canvas) const;
 	void _drawconstell(const touchgfx::Rect &invalidatedArea) const;
 	void _drawline(int16_t x0, int16_t y0, int16_t x1, int16_t y1, const touchgfx::Rect &invalid, touchgfx::colortype color, uint8_t *fb) const;
 

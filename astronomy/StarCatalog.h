@@ -152,9 +152,11 @@ struct QuadTree
 	bool insert(StarInfo *newstar);
 	void query(void (*cb)(StarInfo *, void *), float ral, float rar, float decl, float decr, void *arg, float maxmag);
 	StarInfo *search(float ra, float dec, float maxdist);
+	StarInfo *findClosest(float ra, float dec, float maxdist);
 private:
 	void _query(void (*cb)(StarInfo *, void *), QTNode *p, float ral, float rar, float decl, float decr, void *arg, float maxmag);
 	StarInfo *_search(QTNode *p, float ra, float dec, float maxdist);
+	StarInfo *_find(QTNode *p, float ra, float dec, float &maxdist);
 };
 
 class StarCatalog

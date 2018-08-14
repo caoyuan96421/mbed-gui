@@ -19,10 +19,14 @@ public:
 protected:
 
 	StarMapWidget starmap;
-	touchgfx::Callback<StarMapScreenView, const AbstractButton&> buttonCallback;
+	touchgfx::Callback<StarMapScreenView, const AbstractButton&> buttonZoomCallback;
+	touchgfx::Callback<StarMapScreenView, const AbstractButton&> toggleConstellCallback;
+	touchgfx::Callback<StarMapScreenView, const StarInfo *> starSelectedCallback;
 	Timer tim;
 
-	void buttonPressed(const AbstractButton& src);
+	void buttonZoomPressed(const AbstractButton& src);
+	void toggleConstellSwitched(const AbstractButton& src);
+	void starSelected(const StarInfo *);
 };
 
 #endif // STARMAPSCREEN_VIEW_HPP

@@ -6,57 +6,22 @@
 const double lunar_speed = 0.00402557046; // deg/s
 const double solar_speed = 0.004166667; // deg/s
 
-static void _showStarMap(StarMapWidget *sm){
-	sm->setVisible(true);
-}
-
 MountScreenView::MountScreenView() :
-		update(false), buttonNWSEPressedCallback(this, &MountScreenView::buttonNWSEPressed), buttonNWSEReleasedCallback(this, &MountScreenView::buttonNWSEReleased), buttonStopCallback(this,
-				&MountScreenView::buttonStopPressed), toggleTrackCallback(this, &MountScreenView::trackToggled), toggleTrackSpeedCallback(this, &MountScreenView::trackSpeedSelected), callbackSlewSpeed(
-				this, &MountScreenView::slewSpeedClicked), callbackSlewSpeedConfirmed(this, &MountScreenView::slewSpeedSet), callbackEqCoord(this, &MountScreenView::eqCoordClicked), callbackEqCoordGoto(
-				this, &MountScreenView::eqCoordGoto), callbackMountCoord(this, &MountScreenView::mountCoordClicked), callbackMountCoordGoto(this, &MountScreenView::mountCoordGoto)
+		update(false), buttonStopCallback(this, &MountScreenView::buttonStopPressed), toggleTrackCallback(this, &MountScreenView::trackToggled), toggleTrackSpeedCallback(this,
+				&MountScreenView::trackSpeedSelected), callbackSlewSpeed(this, &MountScreenView::slewSpeedClicked), callbackSlewSpeedConfirmed(this, &MountScreenView::slewSpeedSet), callbackEqCoord(
+				this, &MountScreenView::eqCoordClicked), callbackEqCoordGoto(this, &MountScreenView::eqCoordGoto), callbackMountCoord(this, &MountScreenView::mountCoordClicked), callbackMountCoordGoto(
+				this, &MountScreenView::mountCoordGoto)
 {
 	baseview.addTo(&container);
 
-	starmap.setPosition(starmap_bb.getX() + 1, starmap_bb.getY() + 1, starmap_bb.getWidth() - 2, starmap_bb.getHeight() - 2);
+	starmap.setPosition(15, 400, 150, 300);
 	add(starmap);
 
 	starmap.setFOV(2);
 	starmap.setTouchable(false);
-	starmap.setVisible(false); // Enable when transition finishes
-
-	button_north.setPosition(232, 412, 191, 87);
-	button_north.setBitmaps(Bitmap(BITMAP_BUTTONUP_ID), Bitmap(BITMAP_BUTTONUP_PRESSED_ID), Bitmap(BITMAP_UP_ARROW_48_ID), Bitmap(BITMAP_UP_ARROW_48_ID));
-	button_north.setIconXY(71, 29);
-
-	button_south.setPosition(233, 600, 191, 87);
-	button_south.setBitmaps(Bitmap(BITMAP_BUTTONDOWN_ID), Bitmap(BITMAP_BUTTONDOWN_PRESSED_ID), Bitmap(BITMAP_DOWN_ARROW_48_ID), Bitmap(BITMAP_DOWN_ARROW_48_ID));
-	button_south.setIconXY(71, 29);
-
-	button_east.setPosition(378, 454, 87, 191);
-	button_east.setBitmaps(Bitmap(BITMAP_BUTTONRIGHT_ID), Bitmap(BITMAP_BUTTONRIGHT_PRESSED_ID), Bitmap(BITMAP_NEXT_ARROW_48_ID), Bitmap(BITMAP_NEXT_ARROW_48_ID));
-	button_east.setIconXY(29, 71);
-
-	button_west.setPosition(191, 455, 87, 191);
-	button_west.setBitmaps(Bitmap(BITMAP_BUTTONLEFT_ID), Bitmap(BITMAP_BUTTONLEFT_PRESSED_ID), Bitmap(BITMAP_BACK_ARROW_48_ID), Bitmap(BITMAP_BACK_ARROW_48_ID));
-	button_west.setIconXY(29, 71);
-
-	button_north.setAction(buttonNWSEPressedCallback);
-	button_east.setAction(buttonNWSEPressedCallback);
-	button_south.setAction(buttonNWSEPressedCallback);
-	button_west.setAction(buttonNWSEPressedCallback);
-
-	button_north.setReleaseAction(buttonNWSEReleasedCallback);
-	button_east.setReleaseAction(buttonNWSEReleasedCallback);
-	button_south.setReleaseAction(buttonNWSEReleasedCallback);
-	button_west.setReleaseAction(buttonNWSEReleasedCallback);
+	starmap.setVisible(true); // Enable when transition finishes
 
 	button_stop.setAction(buttonStopCallback);
-
-//	add(button_north);
-//	add(button_south);
-//	add(button_east);
-//	add(button_west);
 
 	toggle_track.setAction(toggleTrackCallback);
 
@@ -81,8 +46,8 @@ MountScreenView::MountScreenView() :
 void MountScreenView::setupScreen()
 {
 
-	toggle_track.forceState((presenter->getStatus() & TelescopeBackend::MOUNT_TRACKING) != 0);
-	double trackSpeed = presenter->getSpeed("track");
+	toggle_track.forceState((TelescopeBackend::getStatus() & TelescopeBackend::MOUNT_TRACKING) != 0);
+	double trackSpeed = TelescopeBackend::getSpeed("track");
 	if (presenter->isUseKingRate())
 	{
 		toggleKing.forceState(true);
@@ -100,10 +65,10 @@ void MountScreenView::setupScreen()
 		toggleSolar.forceState(true);
 	}
 
-	setSlewSpeed(presenter->getSpeed("slew"));
+	setSlewSpeed(TelescopeBackend::getSpeed("slew"));
 	update = true;
 
-	ticker.attach(callback(_showStarMap, &starmap), 0.6f);
+//	ticker.attach(callback(_showStarMap, &starmap), 0.6f);
 }
 
 void MountScreenView::tearDownScreen()
@@ -151,32 +116,11 @@ void MountScreenView::updateDisplay(const EquatorialCoordinates& eq, const Mount
 		if (presenter->isUseKingRate())
 		{
 			double kingRate = CelestialMath::kingRate(eq, presenter->getLocation(), time(NULL));
-			presenter->setSpeed("track", kingRate / sidereal_speed);
+			TelescopeBackend::setSpeed("track", kingRate / sidereal_speed);
 		}
 	}
 }
 
-void MountScreenView::buttonNWSEPressed(const AbstractButton& src)
-{
-	TelescopeBackend::Direction dir;
-	if (&src == &button_east)
-	{
-		dir = TelescopeBackend::EAST;
-	}
-	else if (&src == &button_west)
-	{
-		dir = TelescopeBackend::WEST;
-	}
-	else if (&src == &button_north)
-	{
-		dir = TelescopeBackend::NORTH;
-	}
-	else if (&src == &button_south)
-	{
-		dir = TelescopeBackend::SOUTH;
-	}
-	TelescopeBackend::startNudge(dir);
-}
 
 void MountScreenView::buttonNWSEReleased(const AbstractButton& src)
 {

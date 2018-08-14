@@ -19,15 +19,20 @@ QuadTree qt_common;
 QuadTree qt_constellation;
 
 __attribute__((section (".sdram")))
-                                   QTNode _nodefactory[STAR_CATALOG_SIZE];
+                                       QTNode _nodefactory[STAR_CATALOG_SIZE];
 
 __attribute__((section (".sdram")))
-                                   HashMap::HashMapNode _hashmapfactory[STAR_CATALOG_SIZE];
+                                       HashMap::HashMapNode _hashmapfactory[STAR_CATALOG_SIZE];
 
 static int _nodecount = 0;
 static int _hashcount = 0;
 
 HashMap starIndex;
+
+static inline float sqr(float x)
+{
+	return x * x;
+}
 
 QTNode* QTNode::malloc()
 {
@@ -43,7 +48,7 @@ StarCatalog::StarCatalog()
 
 StarInfo* StarCatalog::searchByCoordinates(float ra, float dec, float maxdist)
 {
-	return qt_constellation.search(ra, dec, maxdist);
+	return qt_constellation.findClosest(ra, dec, maxdist);
 }
 
 StarInfo* StarCatalog::searchByID(int id)
@@ -139,7 +144,7 @@ StarInfo* QuadTree::_search(QTNode* p, float ra, float dec, float maxdist)
 {
 	if (!p->star)
 		return NULL;
-	if (fabsf(p->star->DEC - dec) < maxdist && fabsf(p->star->RA - ra) < maxdist)
+	if (fabsf(remainderf(p->star->DEC - dec, 360)) < maxdist && fabsf(remainderf(p->star->RA - ra, 360)) < maxdist)
 	{
 		return p->star;
 	}
@@ -157,6 +162,43 @@ StarInfo* QuadTree::_search(QTNode* p, float ra, float dec, float maxdist)
 		}
 	}
 	return NULL; // Nothing found
+}
+
+StarInfo* QuadTree::findClosest(float ra, float dec, float maxdist)
+{
+	return _find(&head, ra, dec, maxdist);
+}
+
+StarInfo* QuadTree::_find(QTNode* p, float ra, float dec, float &maxdist)
+{
+	if (!p->star)
+		return NULL;
+	StarInfo *closest = NULL;
+	float d2 = sqr(remainderf(p->star->DEC - dec, 360)) + sqr(remainderf(p->star->RA - ra, 360));
+	float m2 = sqr(maxdist);
+	if (d2 < m2)
+	{
+		closest = p->star;
+		maxdist = sqrtf(d2);
+	}
+
+	if (!p->isleaf)
+	{
+		// Search daughters in turn
+		for (int i = 0; i < 4; i++)
+		{
+			if (p->daughters[i] && p->daughters[i]->intersects(ra - maxdist, ra + maxdist, dec - maxdist, dec + maxdist))
+			{
+				float m=maxdist;
+				StarInfo *ret = _find(p->daughters[i], ra, dec, m);
+				if (ret && m<maxdist){
+					maxdist = m;
+					closest = ret;
+				}
+			}
+		}
+	}
+	return closest;
 }
 
 void QuadTree::_query(void (*cb)(StarInfo*, void*), QTNode* p, float ral, float rar, float decl, float decr, void* arg, float maxmag)
@@ -217,7 +259,7 @@ StarInfo*& HashMap::operator [](int id)
 	int k = id % HASH_SIZE;
 	HashMapNode *p = list[k], *q = NULL;
 	while (p && p->id != id)
-		p = (q=p)->next;
+		p = (q = p)->next;
 	if (!p)
 	{
 		p = malloc();
@@ -225,7 +267,7 @@ StarInfo*& HashMap::operator [](int id)
 //		p->next = list[k];
 //		list[k] = p; // Insert at the beginning of the list
 		p->next = NULL;
-		if(q)
+		if (q)
 			q->next = p;
 		else
 			list[k] = p; // Insert at the end of the list
@@ -241,3 +283,4 @@ HashMap::HashMapNode *HashMap::malloc()
 	}
 	return &_hashmapfactory[_hashcount++];
 }
+

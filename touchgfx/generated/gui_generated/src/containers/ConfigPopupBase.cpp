@@ -11,10 +11,6 @@ ConfigPopupBase::ConfigPopupBase()
     setWidth(480);
     setHeight(750);
 
-    box3.setPosition(0, 0, 480, 750);
-    box3.setColor(touchgfx::Color::getColorFrom24BitRGB(25, 25, 25));
-    box3.setAlpha(100);
-
     box1.setPosition(45, 111, 391, 579);
     box1.setColor(touchgfx::Color::getColorFrom24BitRGB(74, 16, 54));
 
@@ -148,7 +144,6 @@ ConfigPopupBase::ConfigPopupBase()
     Unicode::snprintf(helpAreaBuffer, HELPAREA_SIZE, "%s", TypedText(T_SINGLEUSEID38).getText());
     helpArea.setWildcard(helpAreaBuffer);
 
-    add(box3);
     add(box1);
     add(box2);
     add(nameArea);

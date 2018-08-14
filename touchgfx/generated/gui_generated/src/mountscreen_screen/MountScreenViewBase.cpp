@@ -60,9 +60,6 @@ MountScreenViewBase::MountScreenViewBase()  :
     Unicode::snprintf(slewspeedBuffer, SLEWSPEED_SIZE, "%s", TypedText(T_SINGLEUSEID63).getText());
     slewspeed.setWildcard(slewspeedBuffer);
 
-    starmap_bb.setPosition(15, 400, 150, 300);
-    starmap_bb.setColor(touchgfx::Color::getColorFrom24BitRGB(31, 31, 31));
-
     button_stop.setPosition(335, 231, 130, 135);
     button_stop.setBitmaps(Bitmap(BITMAP_STOP_ID), Bitmap(BITMAP_STOP_PRESSED_ID));
 
@@ -125,7 +122,6 @@ MountScreenViewBase::MountScreenViewBase()  :
     add(toggle_track);
     add(textArea1_1_1_1);
     add(slewspeed);
-    add(starmap_bb);
     add(button_stop);
     add(toggleSidereal);
     add(textArea2);

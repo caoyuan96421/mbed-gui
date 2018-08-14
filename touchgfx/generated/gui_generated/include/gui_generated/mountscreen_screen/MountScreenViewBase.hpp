@@ -40,7 +40,6 @@ protected:
     touchgfx::ToggleButton toggle_track;
     touchgfx::TextArea textArea1_1_1_1;
     touchgfx::ClickListener< touchgfx::TextAreaWithOneWildcard > slewspeed;
-    touchgfx::Box starmap_bb;
     touchgfx::Button button_stop;
     touchgfx::ToggleButton toggleSidereal;
     touchgfx::TextArea textArea2;
