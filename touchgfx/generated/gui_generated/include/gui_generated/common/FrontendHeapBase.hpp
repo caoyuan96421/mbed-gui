@@ -29,6 +29,8 @@
 #include <gui/utilityscreen_screen/UtilityScreenPresenter.hpp>
 #include <gui/alignscreen_screen/AlignScreenView.hpp>
 #include <gui/alignscreen_screen/AlignScreenPresenter.hpp>
+#include <gui/polaralignscreen_screen/PolarAlignScreenView.hpp>
+#include <gui/polaralignscreen_screen/PolarAlignScreenPresenter.hpp>
 
 
 /**
@@ -59,7 +61,8 @@ public:
             meta::TypeList< DummyScreenView,
             meta::TypeList< UtilityScreenView,
             meta::TypeList< AlignScreenView,
-            meta::Nil > > > > > > >
+            meta::TypeList< PolarAlignScreenView,
+            meta::Nil > > > > > > > >
             > GeneratedViewTypes;
 
     /**
@@ -79,7 +82,8 @@ public:
             meta::TypeList< DummyScreenPresenter,
             meta::TypeList< UtilityScreenPresenter,
             meta::TypeList< AlignScreenPresenter,
-            meta::Nil > > > > > > >
+            meta::TypeList< PolarAlignScreenPresenter,
+            meta::Nil > > > > > > > >
             > GeneratedPresenterTypes;
 
     /**

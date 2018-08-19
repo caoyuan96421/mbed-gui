@@ -28,7 +28,7 @@ public:
 
 
     // SettingScreen
-    void gotoSettingScreenScreenNoTransition();
+    void gotoSettingScreenScreenSlideTransitionEast();
 
 
     // StarMapScreen
@@ -36,13 +36,15 @@ public:
 
 
     // UtilityScreen
-    void gotoUtilityScreenScreenNoTransition();
+    void gotoUtilityScreenScreenSlideTransitionEast();
 
 
     // AlignScreen
     void gotoAlignScreenScreenSlideTransitionEast();
 
-    void gotoAlignScreenScreenNoTransition();
+
+    // PolarAlignScreen
+    void gotoPolarAlignScreenScreenSlideTransitionEast();
 
 protected:
     touchgfx::Callback<FrontendApplicationBase> transitionCallback;
@@ -62,7 +64,7 @@ protected:
 
 
     // SettingScreen
-    void gotoSettingScreenScreenNoTransitionImpl();
+    void gotoSettingScreenScreenSlideTransitionEastImpl();
 
 
     // StarMapScreen
@@ -70,13 +72,15 @@ protected:
 
 
     // UtilityScreen
-    void gotoUtilityScreenScreenNoTransitionImpl();
+    void gotoUtilityScreenScreenSlideTransitionEastImpl();
 
 
     // AlignScreen
     void gotoAlignScreenScreenSlideTransitionEastImpl();
 
-    void gotoAlignScreenScreenNoTransitionImpl();
+
+    // PolarAlignScreen
+    void gotoPolarAlignScreenScreenSlideTransitionEastImpl();
 };
 
 #endif // FRONTENDAPPLICATIONBASE_HPP

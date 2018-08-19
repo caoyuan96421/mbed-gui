@@ -12,7 +12,7 @@
 
 #define TB_DEBUG 0
 
-UARTSerial serial(D1, D0, 76800);
+UARTSerial serial(D1, D0, 230400);
 
 // Timeout values for different commands
 static const int TIMEOUT_IMMEDIATE = 500; // Commands that should immediately return

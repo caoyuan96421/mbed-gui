@@ -67,7 +67,7 @@ void ConfigPopup::editConfig(ConfigItem* config)
 			snprintf(buf, VALUEAREA_SIZE, "%f", config->value.ddata);
 			if (config->min.ddata >= 0)
 			{
-				buttonminus.setVisible(false);
+//				buttonminus.setVisible(false); TODO
 			}
 			break;
 		case DATATYPE_INT:
@@ -75,7 +75,7 @@ void ConfigPopup::editConfig(ConfigItem* config)
 			buttondot.setVisible(false);
 			if (config->min.idata >= 0)
 			{
-				buttonminus.setVisible(false);
+//				buttonminus.setVisible(false); TODO
 			}
 			break;
 		case DATATYPE_STRING:

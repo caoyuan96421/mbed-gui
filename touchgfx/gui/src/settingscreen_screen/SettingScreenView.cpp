@@ -25,6 +25,7 @@ SettingScreenView::SettingScreenView() :
 	num_config = 0;
 
 	buttonSave.setAction(configSaveCallback);
+	configPopup1.setVisible(false);
 }
 
 SettingScreenView::~SettingScreenView()
@@ -32,10 +33,8 @@ SettingScreenView::~SettingScreenView()
 
 }
 
-void SettingScreenView::setupScreen()
+void SettingScreenView::setupScreen_delayed()
 {
-	configPopup1.setVisible(false);
-
 	// Setup menu structure
 	num_config = presenter->getConfigAll(configs, MAX_CONFIG);
 
@@ -65,6 +64,7 @@ void SettingScreenView::setupScreen()
 
 		mount_menu->addItem(*abuttons[i], configCallback);
 	}
+	mount_menu->invalidate();
 }
 
 void SettingScreenView::tearDownScreen()

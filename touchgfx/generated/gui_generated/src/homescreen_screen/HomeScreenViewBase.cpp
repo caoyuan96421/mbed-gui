@@ -101,14 +101,14 @@ void HomeScreenViewBase::buttonCallbackHandler(const touchgfx::AbstractButton& s
     {
         //Interaction2
         //When setting_view clicked change screen to SettingScreen
-        //Go to SettingScreen with no screen transition
-        application().gotoSettingScreenScreenNoTransition();
+        //Go to SettingScreen with slide screen transition towards East
+        application().gotoSettingScreenScreenSlideTransitionEast();
     }
     else if (&src == &utility_view)
     {
         //Interaction4
         //When utility_view clicked change screen to UtilityScreen
-        //Go to UtilityScreen with no screen transition
-        application().gotoUtilityScreenScreenNoTransition();
+        //Go to UtilityScreen with slide screen transition towards East
+        application().gotoUtilityScreenScreenSlideTransitionEast();
     }
 }

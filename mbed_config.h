@@ -22,7 +22,7 @@
 #define __MBED_CONFIG_DATA__
 
 //#pragma GCC push_options
-#pragma GCC optimize ("Og")
+//#pragma GCC optimize ("Og")
 // Configuration parameters
 #define MBED_CONF_PLATFORM_FORCE_NON_COPYABLE_ERROR       0                            // set by library:platform
 #define MBED_LFS_READ_SIZE                                64                           // set by library:littlefs

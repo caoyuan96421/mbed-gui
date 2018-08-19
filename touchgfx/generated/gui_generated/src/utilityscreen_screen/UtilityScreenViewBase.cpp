@@ -18,6 +18,7 @@ UtilityScreenViewBase::UtilityScreenViewBase()  :
 
     pa_view.setPosition(260, 102, 200, 200);
     pa_view.setBitmaps(Bitmap(BITMAP_BUTTON1_ID), Bitmap(BITMAP_BUTTON1_PRESSED_ID));
+    pa_view.setAction(buttonCallback);
 
     textArea1.setXY(71, 302);
     textArea1.setColor(touchgfx::Color::getColorFrom24BitRGB(176, 46, 46));
@@ -86,12 +87,15 @@ void UtilityScreenViewBase::buttonCallbackHandler(const touchgfx::AbstractButton
     {
         //Interaction1
         //When align_view clicked change screen to AlignScreen
-        //Go to AlignScreen with no screen transition
-        application().gotoAlignScreenScreenNoTransition();
+        //Go to AlignScreen with slide screen transition towards East
+        application().gotoAlignScreenScreenSlideTransitionEast();
     }
     else if (&src == &pa_view)
     {
-
+        //Interaction2
+        //When pa_view clicked change screen to PolarAlignScreen
+        //Go to PolarAlignScreen with slide screen transition towards East
+        application().gotoPolarAlignScreenScreenSlideTransitionEast();
     }
     else if (&src == &setting_view)
     {

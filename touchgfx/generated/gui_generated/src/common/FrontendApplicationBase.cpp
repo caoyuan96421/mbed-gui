@@ -23,6 +23,8 @@
 #include <gui/utilityscreen_screen/UtilityScreenPresenter.hpp>
 #include <gui/alignscreen_screen/AlignScreenView.hpp>
 #include <gui/alignscreen_screen/AlignScreenPresenter.hpp>
+#include <gui/polaralignscreen_screen/PolarAlignScreenView.hpp>
+#include <gui/polaralignscreen_screen/PolarAlignScreenPresenter.hpp>
 
 using namespace touchgfx;
 
@@ -91,15 +93,15 @@ void FrontendApplicationBase::gotoMountScreenScreenSlideTransitionWestImpl()
 
 // SettingScreen
 
-void FrontendApplicationBase::gotoSettingScreenScreenNoTransition()
+void FrontendApplicationBase::gotoSettingScreenScreenSlideTransitionEast()
 {
-    transitionCallback = touchgfx::Callback<FrontendApplicationBase>(this, &FrontendApplication::gotoSettingScreenScreenNoTransitionImpl);
+    transitionCallback = touchgfx::Callback<FrontendApplicationBase>(this, &FrontendApplication::gotoSettingScreenScreenSlideTransitionEastImpl);
     pendingScreenTransitionCallback = &transitionCallback;
 }
 
-void FrontendApplicationBase::gotoSettingScreenScreenNoTransitionImpl()
+void FrontendApplicationBase::gotoSettingScreenScreenSlideTransitionEastImpl()
 {
-    makeTransition<SettingScreenView, SettingScreenPresenter, touchgfx::NoTransition, Model >(&currentScreen, &currentPresenter, frontendHeap, &currentTransition, &model);
+    makeTransition<SettingScreenView, SettingScreenPresenter, SlideTransition<EAST>, Model >(&currentScreen, &currentPresenter, frontendHeap, &currentTransition, &model);
 }
 
 // StarMapScreen
@@ -117,15 +119,15 @@ void FrontendApplicationBase::gotoStarMapScreenScreenSlideTransitionEastImpl()
 
 // UtilityScreen
 
-void FrontendApplicationBase::gotoUtilityScreenScreenNoTransition()
+void FrontendApplicationBase::gotoUtilityScreenScreenSlideTransitionEast()
 {
-    transitionCallback = touchgfx::Callback<FrontendApplicationBase>(this, &FrontendApplication::gotoUtilityScreenScreenNoTransitionImpl);
+    transitionCallback = touchgfx::Callback<FrontendApplicationBase>(this, &FrontendApplication::gotoUtilityScreenScreenSlideTransitionEastImpl);
     pendingScreenTransitionCallback = &transitionCallback;
 }
 
-void FrontendApplicationBase::gotoUtilityScreenScreenNoTransitionImpl()
+void FrontendApplicationBase::gotoUtilityScreenScreenSlideTransitionEastImpl()
 {
-    makeTransition<UtilityScreenView, UtilityScreenPresenter, touchgfx::NoTransition, Model >(&currentScreen, &currentPresenter, frontendHeap, &currentTransition, &model);
+    makeTransition<UtilityScreenView, UtilityScreenPresenter, SlideTransition<EAST>, Model >(&currentScreen, &currentPresenter, frontendHeap, &currentTransition, &model);
 }
 
 // AlignScreen
@@ -141,15 +143,16 @@ void FrontendApplicationBase::gotoAlignScreenScreenSlideTransitionEastImpl()
     makeTransition<AlignScreenView, AlignScreenPresenter, SlideTransition<EAST>, Model >(&currentScreen, &currentPresenter, frontendHeap, &currentTransition, &model);
 }
 
+// PolarAlignScreen
 
-void FrontendApplicationBase::gotoAlignScreenScreenNoTransition()
+void FrontendApplicationBase::gotoPolarAlignScreenScreenSlideTransitionEast()
 {
-    transitionCallback = touchgfx::Callback<FrontendApplicationBase>(this, &FrontendApplication::gotoAlignScreenScreenNoTransitionImpl);
+    transitionCallback = touchgfx::Callback<FrontendApplicationBase>(this, &FrontendApplication::gotoPolarAlignScreenScreenSlideTransitionEastImpl);
     pendingScreenTransitionCallback = &transitionCallback;
 }
 
-void FrontendApplicationBase::gotoAlignScreenScreenNoTransitionImpl()
+void FrontendApplicationBase::gotoPolarAlignScreenScreenSlideTransitionEastImpl()
 {
-    makeTransition<AlignScreenView, AlignScreenPresenter, touchgfx::NoTransition, Model >(&currentScreen, &currentPresenter, frontendHeap, &currentTransition, &model);
+    makeTransition<PolarAlignScreenView, PolarAlignScreenPresenter, SlideTransition<EAST>, Model >(&currentScreen, &currentPresenter, frontendHeap, &currentTransition, &model);
 }
 
