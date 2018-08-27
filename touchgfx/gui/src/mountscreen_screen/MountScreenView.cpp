@@ -3,7 +3,8 @@
 #include "BitmapDatabase.hpp"
 #include "TelescopeBackend.h"
 
-const double lunar_speed = 0.00402557046; // deg/s
+//const double lunar_speed = 0.00402557046; // deg/s
+const double lunar_speed = 0.004079166667; // deg/s
 const double solar_speed = 0.004166667; // deg/s
 
 MountScreenView::MountScreenView() :
@@ -118,6 +119,9 @@ void MountScreenView::updateDisplay(const EquatorialCoordinates& eq, const Mount
 			double kingRate = CelestialMath::kingRate(eq, presenter->getLocation(), time(NULL));
 			TelescopeBackend::setSpeed("track", kingRate / sidereal_speed);
 		}
+
+		toggle_track.forceState((TelescopeBackend::getStatus() & TelescopeBackend::MOUNT_TRACKING) != 0);
+		toggle_track.invalidate();
 	}
 }
 

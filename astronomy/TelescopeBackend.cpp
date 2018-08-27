@@ -500,6 +500,8 @@ TelescopeBackend::mountstatus_t TelescopeBackend::getStatus()
 		return MOUNT_NUDGING;
 	else if (strcmp(buf, "nudging_tracking") == 0)
 		return MOUNT_NUDGING_TRACKING;
+	else if (strcmp(buf, "tracking_guiding") == 0)
+		return (mountstatus_t)(MOUNT_TRACKING | MOUNT_GUIDING);
 	else
 		return UNDEFINED;
 
@@ -870,7 +872,7 @@ int TelescopeBackend::getAlignmentStar(int index, AlignmentStar &star)
 	// Alignment star
 	double ref_ra, ref_dec, meas_ra, meas_dec;
 	time_t timestamp;
-	sscanf(buf, "%lf%lf%lf%lf%ld", &ref_ra, &ref_dec, &meas_ra, &meas_dec, &timestamp);
+	sscanf(buf, "%lf%lf%lf%lf%d", &ref_ra, &ref_dec, &meas_ra, &meas_dec, (int*)&timestamp);
 	star.star_ref.ra = ref_ra;
 	star.star_ref.dec = ref_dec;
 	star.star_meas.ra_delta = meas_ra;

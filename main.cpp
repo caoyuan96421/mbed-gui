@@ -75,6 +75,7 @@ void printer(MB_t *mbox)
 	}
 }
 
+#include "rtx_lib.h"
 /**
  * Printf for debugging use. Takes about 20us for each call. Can be called from any context
  */
@@ -86,7 +87,7 @@ void xprintf(const char* format, ...)
 
 	mail_t *m;
 
-	if (IS_IRQ_MODE() || IS_IRQ_MASKED())
+	if (IsIrqMode() || IsIrqMasked())
 	{
 		m = mbox.alloc(0);
 		if (!m)

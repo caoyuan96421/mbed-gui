@@ -25,7 +25,7 @@ static const float DEGREE_F = M_PI / 180.0f;
 static const double RADIAN = 180.0 / M_PI;
 static const double DEGREE = M_PI / 180.0;
 
-static int count = 0;
+static int cb_count = 0;
 
 static const int DRAG_THRESHOLD = 30;
 static const int DOUBLE_CLICK_THRESHOLD_MS = 200;
@@ -384,7 +384,7 @@ void StarMapWidget::updateView()
 void StarMapWidget::callback(StarInfo *star, void *arg)
 {
 	StarMapWidget *pw = (StarMapWidget *) arg;
-	count++;
+	cb_count++;
 	if (!pw)
 		return;
 
@@ -583,7 +583,7 @@ bool StarMapWidget::drawCanvasWidget(const Rect& invalidatedArea) const
 	Canvas canvas(this, invalidatedArea);
 //	this->canvas = &canvas;
 
-	count = 0;
+	cb_count = 0;
 	renderSuccessful = true;
 
 	// Draw stars
