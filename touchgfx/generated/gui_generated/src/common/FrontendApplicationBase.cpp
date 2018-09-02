@@ -130,6 +130,18 @@ void FrontendApplicationBase::gotoUtilityScreenScreenSlideTransitionEastImpl()
     makeTransition<UtilityScreenView, UtilityScreenPresenter, SlideTransition<EAST>, Model >(&currentScreen, &currentPresenter, frontendHeap, &currentTransition, &model);
 }
 
+
+void FrontendApplicationBase::gotoUtilityScreenScreenSlideTransitionWest()
+{
+    transitionCallback = touchgfx::Callback<FrontendApplicationBase>(this, &FrontendApplication::gotoUtilityScreenScreenSlideTransitionWestImpl);
+    pendingScreenTransitionCallback = &transitionCallback;
+}
+
+void FrontendApplicationBase::gotoUtilityScreenScreenSlideTransitionWestImpl()
+{
+    makeTransition<UtilityScreenView, UtilityScreenPresenter, SlideTransition<WEST>, Model >(&currentScreen, &currentPresenter, frontendHeap, &currentTransition, &model);
+}
+
 // AlignScreen
 
 void FrontendApplicationBase::gotoAlignScreenScreenSlideTransitionEast()

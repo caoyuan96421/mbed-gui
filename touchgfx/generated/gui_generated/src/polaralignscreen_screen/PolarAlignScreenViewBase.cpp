@@ -66,6 +66,11 @@ PolarAlignScreenViewBase::PolarAlignScreenViewBase()
     buttonAligned.setLabelColor(touchgfx::Color::getColorFrom24BitRGB(64, 236, 255));
     buttonAligned.setLabelColorPressed(touchgfx::Color::getColorFrom24BitRGB(255, 255, 255));
 
+    textArea5.setPosition(250, 609, 225, 106);
+    textArea5.setColor(touchgfx::Color::getColorFrom24BitRGB(222, 201, 201));
+    textArea5.setLinespacing(0);
+    textArea5.setTypedText(TypedText(T_SINGLEUSEID131));
+
     add(box1);
     add(scrollableContainer1);
     add(text_description);
@@ -77,4 +82,5 @@ PolarAlignScreenViewBase::PolarAlignScreenViewBase()
     add(textArea4);
     add(buttonStop);
     add(buttonAligned);
+    add(textArea5);
 }

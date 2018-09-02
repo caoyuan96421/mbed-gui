@@ -5,13 +5,22 @@
 #include <gui/utilityscreen_screen/UtilityScreenPresenter.hpp>
 #include <gui/BaseScreenAdaptor.h>
 
-class UtilityScreenView : public UtilityScreenViewBase, public BaseScreenAdaptor
+class UtilityScreenView: public UtilityScreenViewBase, public BaseScreenAdaptor
 {
 public:
-    UtilityScreenView();
-    virtual ~UtilityScreenView() {}
-    virtual void setupScreen();
-    virtual void tearDownScreen();
+	UtilityScreenView();
+	virtual ~UtilityScreenView()
+	{
+	}
+	virtual void setupScreen();
+	virtual void tearDownScreen();
+	void handleGestureEvent(const GestureEvent& evt)
+	{
+		if (evt.getType() == GestureEvent::SWIPE_HORIZONTAL && evt.getVelocity() > MIN_SWIPE_VELOCITY)
+		{
+			application().gotoHomeScreenScreenSlideTransitionWest();
+		}
+	}
 protected:
 };
 

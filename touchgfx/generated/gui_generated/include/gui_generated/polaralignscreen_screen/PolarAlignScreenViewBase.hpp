@@ -39,6 +39,7 @@ protected:
     touchgfx::TextArea textArea4;
     touchgfx::ButtonWithIcon buttonStop;
     touchgfx::ButtonWithLabel buttonAligned;
+    touchgfx::TextArea textArea5;
 
     /*
      * Wildcard Buffers

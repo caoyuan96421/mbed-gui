@@ -122,6 +122,7 @@ public:
 	static int goToMount(MountCoordinates eq);
 
 	static int getCalibration(EqCalibration &calib);
+	static int setCalibration(const EqCalibration &calib);
 	static int getNumAlignmentStars();
 	static int getAlignmentStar(int index, AlignmentStar &star);
 	static int addAlignmentStar(const AlignmentStar &star);
@@ -130,6 +131,8 @@ public:
 	static int replaceAlignmentStar(int index, const AlignmentStar &star);
 	static int replaceAlignmentStar(int index, const EquatorialCoordinates &star_ref);
 	static void clearAlignment();
+	static void forceAlignment();
+	static void updateAlignment();
 	static EquatorialCoordinates convertMountToEquatorial(const MountCoordinates &mc);
 	static MountCoordinates convertEquatorialToMount(const EquatorialCoordinates &eq);
 

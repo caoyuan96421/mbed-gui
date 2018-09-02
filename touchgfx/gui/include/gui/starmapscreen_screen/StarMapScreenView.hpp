@@ -16,6 +16,13 @@ public:
 	virtual void setupScreen();
 	virtual void tearDownScreen();
 	virtual void draw(Rect &rect);
+	void handleGestureEvent(const GestureEvent& evt)
+	{
+		if (evt.getType() == GestureEvent::SWIPE_HORIZONTAL && evt.getVelocity() > MIN_SWIPE_VELOCITY && !starmap.getRect().intersect(evt.getX(), evt.getY()))
+		{
+			application().gotoHomeScreenScreenSlideTransitionWest();
+		}
+	}
 protected:
 
 	StarMapWidget starmap;

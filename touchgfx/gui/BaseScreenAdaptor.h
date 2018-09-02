@@ -11,6 +11,8 @@
 #include <gui/include/gui/basescreen_screen/BaseScreenView.hpp>
 #include <ctime>
 
+#define MIN_SWIPE_VELOCITY 20
+
 class BaseScreenAdaptor
 {
 public:

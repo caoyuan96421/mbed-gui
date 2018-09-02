@@ -501,7 +501,7 @@ TelescopeBackend::mountstatus_t TelescopeBackend::getStatus()
 	else if (strcmp(buf, "nudging_tracking") == 0)
 		return MOUNT_NUDGING_TRACKING;
 	else if (strcmp(buf, "tracking_guiding") == 0)
-		return (mountstatus_t)(MOUNT_TRACKING | MOUNT_GUIDING);
+		return (mountstatus_t) (MOUNT_TRACKING | MOUNT_GUIDING);
 	else
 		return UNDEFINED;
 
@@ -691,6 +691,20 @@ int TelescopeBackend::getCalibration(EqCalibration& calib)
 	return -1;
 }
 
+int TelescopeBackend::setCalibration(const EqCalibration& calib)
+{
+	char buf[128];
+	snprintf(buf, sizeof(buf), "set %.8f %.8f %.8f %.8f %.8f", calib.offset.ra_off, calib.offset.dec_off, calib.pa.alt, calib.pa.azi, calib.cone);
+	ListNode *node = queryStart("align", buf, TIMEOUT_IMMEDIATE);
+	if (!node)
+	{
+		return UNDEFINED;
+	}
+	int ret = queryWaitForReturn(node, TIMEOUT_IMMEDIATE);
+	queryFinish(node);
+	return ret;
+}
+
 int TelescopeBackend::addAlignmentStar(const AlignmentStar& star)
 {
 	char buf[128];
@@ -735,6 +749,16 @@ int TelescopeBackend::replaceAlignmentStar(int index, const AlignmentStar& star)
 void TelescopeBackend::clearAlignment()
 {
 	queryNoResponse("align", "clear");
+}
+
+void TelescopeBackend::forceAlignment()
+{
+	queryNoResponse("align", "force");
+}
+
+void TelescopeBackend::updateAlignment()
+{
+	queryNoResponse("align", "update");
 }
 
 int TelescopeBackend::addAlignmentStar(const EquatorialCoordinates& star_ref)
@@ -872,7 +896,7 @@ int TelescopeBackend::getAlignmentStar(int index, AlignmentStar &star)
 	// Alignment star
 	double ref_ra, ref_dec, meas_ra, meas_dec;
 	time_t timestamp;
-	sscanf(buf, "%lf%lf%lf%lf%d", &ref_ra, &ref_dec, &meas_ra, &meas_dec, (int*)&timestamp);
+	sscanf(buf, "%lf%lf%lf%lf%d", &ref_ra, &ref_dec, &meas_ra, &meas_dec, (int*) &timestamp);
 	star.star_ref.ra = ref_ra;
 	star.star_ref.dec = ref_dec;
 	star.star_meas.ra_delta = meas_ra;

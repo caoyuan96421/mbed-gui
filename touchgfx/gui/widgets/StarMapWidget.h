@@ -101,6 +101,8 @@ public:
 	virtual void handleDragEvent(const touchgfx::DragEvent& evt);
 	virtual void handleClickEvent(const touchgfx::ClickEvent& evt);
 	virtual void handleTickEvent();
+	virtual void handleGestureEvent(const touchgfx::GestureEvent& evt){
+	}
 
 	const LocationCoordinates& getLocation() const
 	{

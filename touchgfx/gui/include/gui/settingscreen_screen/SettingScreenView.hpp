@@ -25,6 +25,13 @@ public:
 		queue.call(this, &SettingScreenView::setupScreen_delayed);
 	}
 	virtual void tearDownScreen();
+	void handleGestureEvent(const GestureEvent& evt)
+	{
+		if (evt.getType() == GestureEvent::SWIPE_HORIZONTAL && evt.getVelocity() > MIN_SWIPE_VELOCITY)
+		{
+			application().gotoHomeScreenScreenSlideTransitionWest();
+		}
+	}
 protected:
 	static const int MAX_CONFIG = 64;
 	ConfigItem configs[MAX_CONFIG];

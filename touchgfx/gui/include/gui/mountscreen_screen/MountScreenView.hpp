@@ -19,6 +19,13 @@ public:
 	virtual void setupScreen();
 	virtual void tearDownScreen();
 	virtual void updateDisplay(const EquatorialCoordinates &eq, const MountCoordinates& meq);
+	void handleGestureEvent(const GestureEvent& evt)
+	{
+		if (evt.getType() == GestureEvent::SWIPE_HORIZONTAL && evt.getVelocity() > MIN_SWIPE_VELOCITY)
+		{
+			application().gotoHomeScreenScreenSlideTransitionWest();
+		}
+	}
 protected:
 
 	StarMapWidget starmap;

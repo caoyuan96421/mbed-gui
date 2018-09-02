@@ -61,7 +61,7 @@ AlignScreenViewBase::AlignScreenViewBase()  :
     buttonAlign.setLabelColor(touchgfx::Color::getColorFrom24BitRGB(118, 141, 242));
     buttonAlign.setLabelColorPressed(touchgfx::Color::getColorFrom24BitRGB(255, 255, 255));
 
-    text_alignment.setPosition(10, 522, 225, 168);
+    text_alignment.setPosition(10, 522, 205, 203);
     text_alignment.setColor(touchgfx::Color::getColorFrom24BitRGB(255, 32, 32));
     text_alignment.setLinespacing(0);
     text_alignment.setTypedText(TypedText(T_SINGLEUSEID115));

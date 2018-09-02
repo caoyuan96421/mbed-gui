@@ -38,6 +38,8 @@ public:
     // UtilityScreen
     void gotoUtilityScreenScreenSlideTransitionEast();
 
+    void gotoUtilityScreenScreenSlideTransitionWest();
+
 
     // AlignScreen
     void gotoAlignScreenScreenSlideTransitionEast();
@@ -73,6 +75,8 @@ protected:
 
     // UtilityScreen
     void gotoUtilityScreenScreenSlideTransitionEastImpl();
+
+    void gotoUtilityScreenScreenSlideTransitionWestImpl();
 
 
     // AlignScreen

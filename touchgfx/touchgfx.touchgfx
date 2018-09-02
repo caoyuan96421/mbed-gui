@@ -1938,8 +1938,8 @@
             "Name": "text_alignment",
             "X": 10,
             "Y": 522,
-            "Width": 225,
-            "Height": 168,
+            "Width": 205,
+            "Height": 203,
             "Type": "TextArea",
             "Visible": true,
             "Draggable": false,
@@ -1996,6 +1996,19 @@
               "ScreenTransitionType": "ScreenTransitionSlide",
               "ScreenTransitionDirection": "West",
               "ActionComponent": "MountScreen",
+              "Type": "ActionGotoScreen"
+            }
+          },
+          {
+            "InteractionName": "Interaction2",
+            "HasCompletedTrigger": false,
+            "Trigger": {
+              "Type": "TriggerNone"
+            },
+            "Action": {
+              "ScreenTransitionType": "ScreenTransitionSlide",
+              "ScreenTransitionDirection": "West",
+              "ActionComponent": "UtilityScreen",
               "Type": "ActionGotoScreen"
             }
           }
@@ -2271,6 +2284,29 @@
             "Width": 170,
             "Height": 60,
             "Type": "ButtonWithLabel",
+            "Visible": true,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
+          },
+          {
+            "TextId": "SingleUseId131",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 222,
+              "Green": 201,
+              "Blue": 201
+            },
+            "Alpha": 255,
+            "AutoSize": false,
+            "LineSpacing": 0,
+            "Name": "textArea5",
+            "X": 250,
+            "Y": 609,
+            "Width": 225,
+            "Height": 106,
+            "Type": "TextArea",
             "Visible": true,
             "Draggable": false,
             "Clickable": false,
@@ -3814,6 +3850,10 @@
       },
       {
         "TextEntryId": "SingleUseId130",
+        "IsResource": false
+      },
+      {
+        "TextEntryId": "SingleUseId131",
         "IsResource": false
       }
     ],
