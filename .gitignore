@@ -12,7 +12,4 @@
 /touchgfx/target
 /touchgfx/touchgfx
 *.prefs
-.settings/language.settings.xml
-.settings/language.settings.xml
-.cproject
-.settings/language.settings.xml
+/.settings/language.settings.xml
