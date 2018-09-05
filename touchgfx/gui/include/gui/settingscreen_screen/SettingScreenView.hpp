@@ -25,12 +25,23 @@ public:
 		queue.call(this, &SettingScreenView::setupScreen_delayed);
 	}
 	virtual void tearDownScreen();
+	void handleClickEvent(const ClickEvent& evt)
+	{
+		if (evt.getType() == ClickEvent::PRESSED)
+		{
+			lastPressed.x = evt.getX();
+			lastPressed.y = evt.getY();
+		}
+		Screen::handleClickEvent(evt);
+	}
 	void handleGestureEvent(const GestureEvent& evt)
 	{
-		if (evt.getType() == GestureEvent::SWIPE_HORIZONTAL && evt.getVelocity() > MIN_SWIPE_VELOCITY)
+		if (evt.getType() == GestureEvent::SWIPE_HORIZONTAL && evt.getVelocity() > MIN_SWIPE_VELOCITY && !scrollableContainer1.getRect().intersect(lastPressed.x, lastPressed.y)
+				&& !configPopup1.isVisible())
 		{
 			application().gotoHomeScreenScreenSlideTransitionWest();
 		}
+		Screen::handleGestureEvent(evt);
 	}
 protected:
 	static const int MAX_CONFIG = 64;
@@ -56,6 +67,12 @@ protected:
 	void configButtonPressed(const ButtonItem &);
 	void configSavePressed(const AbstractButton &);
 	void configSet(ConfigItem *, bool ok);
+
+	struct
+	{
+		int x;
+		int y;
+	} lastPressed;
 };
 
 #endif // SETTINGSCREEN_VIEW_HPP

@@ -19,53 +19,28 @@ public:
 	virtual void setupScreen();
 	virtual void tearDownScreen();
 	virtual void updateDisplay(const EquatorialCoordinates &eq, const MountCoordinates& meq);
+	void handleClickEvent(const ClickEvent& evt)
+	{
+		if (evt.getType() == ClickEvent::PRESSED)
+		{
+			lastPressed.x = evt.getX();
+			lastPressed.y = evt.getY();
+		}
+		Screen::handleClickEvent(evt);
+	}
 	void handleGestureEvent(const GestureEvent& evt)
 	{
-		if (evt.getType() == GestureEvent::SWIPE_HORIZONTAL && evt.getVelocity() > MIN_SWIPE_VELOCITY)
+		if (evt.getType() == GestureEvent::SWIPE_HORIZONTAL && evt.getVelocity() > MIN_SWIPE_VELOCITY && !joyStick1.getRect().intersect(lastPressed.x, lastPressed.y) && !cpop.isVisible()
+				&& !coordpop.isVisible())
 		{
 			application().gotoHomeScreenScreenSlideTransitionWest();
 		}
+		Screen::handleGestureEvent(evt);
 	}
 protected:
 
 	StarMapWidget starmap;
 	Ticker ticker;
-
-//	class ButtonWithIconEx: public ButtonWithIcon
-//	{
-//	public:
-//		void setReleaseAction(GenericCallback<const AbstractButton&>& callback)
-//		{
-//			release_action = &callback;
-//		}
-//		virtual void handleClickEvent(const ClickEvent& event)
-//		{
-//			bool wasPressed = pressed;
-//			pressed = (event.getType() == ClickEvent::PRESSED);
-//			if ((pressed && !wasPressed) || (!pressed && wasPressed))
-//			{
-//				// Pressed state changed, so invalidate
-//				invalidate();
-//			}
-//			if (!wasPressed && pressed && action)
-//			{
-//				// This is a click. Fire callback.
-//				if (action->isValid())
-//				{
-//					action->execute(*this);
-//				}
-//			}
-//			else if (wasPressed && !pressed && release_action)
-//			{
-//				if (release_action->isValid())
-//				{
-//					release_action->execute(*this);
-//				}
-//			}
-//		}
-//	protected:
-//		GenericCallback<const AbstractButton&>* release_action;
-//	} button_north, button_south, button_east, button_west;
 
 	ConfigItem config_edit;bool update;
 
@@ -105,6 +80,12 @@ protected:
 
 	ConfigPopup cpop;
 	CoordinatePopup coordpop;
+
+	struct
+	{
+		int x;
+		int y;
+	} lastPressed;
 };
 
 #endif // MOUNTSCREEN_VIEW_HPP

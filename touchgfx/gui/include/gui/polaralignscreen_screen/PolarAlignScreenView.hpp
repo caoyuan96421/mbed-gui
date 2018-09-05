@@ -15,12 +15,22 @@ public:
 	virtual ~PolarAlignScreenView();
 	virtual void setupScreen();
 	virtual void tearDownScreen();
+	void handleClickEvent(const ClickEvent& evt)
+	{
+		if (evt.getType() == ClickEvent::PRESSED)
+		{
+			lastPressed.x = evt.getX();
+			lastPressed.y = evt.getY();
+		}
+		Screen::handleClickEvent(evt);
+	}
 	void handleGestureEvent(const GestureEvent& evt)
 	{
-		if (evt.getType() == GestureEvent::SWIPE_HORIZONTAL && evt.getVelocity() > MIN_SWIPE_VELOCITY)
+		if (evt.getType() == GestureEvent::SWIPE_HORIZONTAL && evt.getVelocity() > MIN_SWIPE_VELOCITY && !scrollableContainer1.getRect().intersect(lastPressed.x, lastPressed.y))
 		{
 			application().gotoUtilityScreenScreenSlideTransitionWest();
 		}
+		Screen::handleGestureEvent(evt);
 	}
 protected:
 
@@ -52,6 +62,12 @@ protected:
 
 	static void callback(StarInfo* s, void* arg);
 	void _callback(StarInfo* star);
+
+	struct
+	{
+		int x;
+		int y;
+	} lastPressed;
 };
 
 #endif // POLARALIGNSCREEN_VIEW_HPP
