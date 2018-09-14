@@ -11,3 +11,5 @@
 /touchgfx/simulator
 /touchgfx/target
 /touchgfx/touchgfx
+*.prefs
+/.settings/language.settings.xml
