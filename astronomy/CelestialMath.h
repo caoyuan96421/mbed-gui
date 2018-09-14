@@ -12,7 +12,7 @@
 #include <cmath>
 #include <cstdio>
 
-static const double sidereal_speed = 0.00417807462; /* deg / s */
+const double sidereal_speed = 0.00417807462; /* deg / s */
 
 struct EquatorialCoordinates
 {

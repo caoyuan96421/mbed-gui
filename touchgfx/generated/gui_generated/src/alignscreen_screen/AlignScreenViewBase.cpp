@@ -22,7 +22,7 @@ AlignScreenViewBase::AlignScreenViewBase()  :
     Back_arrow_482.setXY(14, 26);
     Back_arrow_482.setBitmap(Bitmap(BITMAP_BACK_ARROW_48_ID));
 
-    scrollableContainer1.setPosition(10, 96, 225, 255);
+    scrollableContainer1.setPosition(10, 96, 225, 191);
     scrollableContainer1.setScrollbarsColor(touchgfx::Color::getColorFrom24BitRGB(0,0,0));
 
 
@@ -30,7 +30,7 @@ AlignScreenViewBase::AlignScreenViewBase()  :
     buttonRefresh.setBitmaps(Bitmap(BITMAP_BUTTON3_ID), Bitmap(BITMAP_BUTTON3_PRESSED_ID), Bitmap(BITMAP_DARK_ICONS_REFRESH_48_ID), Bitmap(BITMAP_DARK_ICONS_REFRESH_48_ID));
     buttonRefresh.setIconXY(6, 8);
 
-    text_description.setPosition(10, 361, 220, 155);
+    text_description.setPosition(12, 313, 220, 155);
     text_description.setColor(touchgfx::Color::getColorFrom24BitRGB(255, 32, 32));
     text_description.setLinespacing(0);
     text_description.setTypedText(TypedText(T_SINGLEUSEID112));
@@ -61,18 +61,24 @@ AlignScreenViewBase::AlignScreenViewBase()  :
     buttonAlign.setLabelColor(touchgfx::Color::getColorFrom24BitRGB(118, 141, 242));
     buttonAlign.setLabelColorPressed(touchgfx::Color::getColorFrom24BitRGB(255, 255, 255));
 
-    text_alignment.setPosition(10, 522, 205, 203);
+    text_alignment.setPosition(12, 468, 205, 203);
     text_alignment.setColor(touchgfx::Color::getColorFrom24BitRGB(255, 32, 32));
     text_alignment.setLinespacing(0);
     text_alignment.setTypedText(TypedText(T_SINGLEUSEID115));
     Unicode::snprintf(text_alignmentBuffer, TEXT_ALIGNMENT_SIZE, "%s", TypedText(T_SINGLEUSEID116).getText());
     text_alignment.setWildcard(text_alignmentBuffer);
 
-    joyStick2.setXY(215, 460);
+    joyStick2.setXY(226, 461);
 
     buttonStop.setPosition(200, 20, 60, 60);
     buttonStop.setBitmaps(Bitmap(BITMAP_BUTTON3_ID), Bitmap(BITMAP_BUTTON3_PRESSED_ID), Bitmap(BITMAP_DARK_ICONS_REMOVE_48_ID), Bitmap(BITMAP_DARK_ICONS_REMOVE_48_ID));
     buttonStop.setIconXY(6, 6);
+
+    sliderSpeed.setBitmaps(Bitmap(BITMAP_SLIDERSMALL_ROUND_BACK_ID), Bitmap(BITMAP_SLIDERSMALL_ROUND_FILL_ID), Bitmap(BITMAP_DARK_SLIDER_HORIZONTAL_LARGE_INDICATORS_SLIDER_ROUND_NOB_ID));
+    sliderSpeed.setXY(-3, 654);
+    sliderSpeed.setupHorizontalSlider(7, 11, 0, 0, 161);
+    sliderSpeed.setValueRange(0, 5);
+    sliderSpeed.setValue(0);
 
     add(box1);
     add(mount_button);
@@ -88,6 +94,7 @@ AlignScreenViewBase::AlignScreenViewBase()  :
     add(text_alignment);
     add(joyStick2);
     add(buttonStop);
+    add(sliderSpeed);
 }
 
 void AlignScreenViewBase::buttonCallbackHandler(const touchgfx::AbstractButton& src)

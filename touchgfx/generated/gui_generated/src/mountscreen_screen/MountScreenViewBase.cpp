@@ -12,7 +12,7 @@ MountScreenViewBase::MountScreenViewBase()  :
     box1.setPosition(0, 0, 480, 800);
     box1.setColor(touchgfx::Color::getColorFrom24BitRGB(0, 0, 0));
 
-    eqcoords.setPosition(0, 104, 480, 47);
+    eqcoords.setPosition(0, 74, 480, 47);
     eqcoords.setColor(touchgfx::Color::getColorFrom24BitRGB(255, 56, 56));
     eqcoords.setLinespacing(0);
     eqcoords.setTypedText(TypedText(T_SINGLEUSEID41));
@@ -21,12 +21,12 @@ MountScreenViewBase::MountScreenViewBase()  :
     Unicode::snprintf(eqcoordsBuffer2, EQCOORDSBUFFER2_SIZE, "%s", TypedText(T_SINGLEUSEID43).getText());
     eqcoords.setWildcard2(eqcoordsBuffer2);
 
-    textArea1.setXY(15, 54);
+    textArea1.setXY(15, 24);
     textArea1.setColor(touchgfx::Color::getColorFrom24BitRGB(179, 87, 181));
     textArea1.setLinespacing(0);
     textArea1.setTypedText(TypedText(T_SINGLEUSEID44));
 
-    mount_coords.setPosition(204, 34, 270, 28);
+    mount_coords.setPosition(204, 24, 270, 28);
     mount_coords.setColor(touchgfx::Color::getColorFrom24BitRGB(65, 47, 130));
     mount_coords.setLinespacing(0);
     mount_coords.setTypedText(TypedText(T_SINGLEUSEID45));
@@ -35,15 +35,10 @@ MountScreenViewBase::MountScreenViewBase()  :
     Unicode::snprintf(mount_coordsBuffer2, MOUNT_COORDSBUFFER2_SIZE, "%s", TypedText(T_SINGLEUSEID47).getText());
     mount_coords.setWildcard2(mount_coordsBuffer2);
 
-    textArea1_1.setXY(221, 6);
+    textArea1_1.setXY(207, -3);
     textArea1_1.setColor(touchgfx::Color::getColorFrom24BitRGB(40, 8, 196));
     textArea1_1.setLinespacing(0);
     textArea1_1.setTypedText(TypedText(T_SINGLEUSEID48));
-
-    textArea1_1_1.setXY(15, 171);
-    textArea1_1_1.setColor(touchgfx::Color::getColorFrom24BitRGB(158, 67, 57));
-    textArea1_1_1.setLinespacing(0);
-    textArea1_1_1.setTypedText(TypedText(T_SINGLEUSEID50));
 
     toggle_track.setPosition(22, 303, 170, 60);
     toggle_track.setBitmaps(Bitmap(BITMAP_BUTTON2_ID), Bitmap(BITMAP_BUTTON2_PRESSED_ID));
@@ -53,7 +48,7 @@ MountScreenViewBase::MountScreenViewBase()  :
     textArea1_1_1_1.setLinespacing(0);
     textArea1_1_1_1.setTypedText(TypedText(T_SINGLEUSEID57));
 
-    slewspeed.setPosition(235, 167, 224, 47);
+    slewspeed.setPosition(235, 160, 224, 47);
     slewspeed.setColor(touchgfx::Color::getColorFrom24BitRGB(222, 50, 50));
     slewspeed.setLinespacing(0);
     slewspeed.setTypedText(TypedText(T_SINGLEUSEID62));
@@ -95,7 +90,7 @@ MountScreenViewBase::MountScreenViewBase()  :
     textArea2_3.setLinespacing(0);
     textArea2_3.setTypedText(TypedText(T_SINGLEUSEID75));
 
-    slewspeed_star.setPosition(423, 167, 36, 47);
+    slewspeed_star.setPosition(423, 160, 36, 47);
     slewspeed_star.setVisible(false);
     slewspeed_star.setColor(touchgfx::Color::getColorFrom24BitRGB(220, 50, 50));
     slewspeed_star.setLinespacing(0);
@@ -113,12 +108,17 @@ MountScreenViewBase::MountScreenViewBase()  :
 
     joyStick1.setXY(202, 424);
 
+    sliderSpeed.setBitmaps(Bitmap(BITMAP_SLIDERSMALL_ROUND_BACK_ID), Bitmap(BITMAP_SLIDERSMALL_ROUND_FILL_ID), Bitmap(BITMAP_DARK_SLIDER_HORIZONTAL_LARGE_INDICATORS_SLIDER_ROUND_NOB_ID));
+    sliderSpeed.setXY(15, 149);
+    sliderSpeed.setupHorizontalSlider(7, 11, 0, 0, 161);
+    sliderSpeed.setValueRange(0, 5);
+    sliderSpeed.setValue(0);
+
     add(box1);
     add(eqcoords);
     add(textArea1);
     add(mount_coords);
     add(textArea1_1);
-    add(textArea1_1_1);
     add(toggle_track);
     add(textArea1_1_1_1);
     add(slewspeed);
@@ -135,6 +135,7 @@ MountScreenViewBase::MountScreenViewBase()  :
     add(align_button);
     add(Next_arrow_482);
     add(joyStick1);
+    add(sliderSpeed);
 }
 
 void MountScreenViewBase::buttonCallbackHandler(const touchgfx::AbstractButton& src)

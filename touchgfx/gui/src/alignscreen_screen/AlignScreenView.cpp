@@ -1,10 +1,11 @@
 #include <gui/alignscreen_screen/AlignScreenView.hpp>
 #include <touchgfx/Color.hpp>
+#include <gui/mountscreen_screen/MountScreenView.hpp>
 
 AlignScreenView::AlignScreenView() :
 		buttonRefreshCallback(this, &AlignScreenView::buttonRefreshPressed), buttonAddCallback(this, &AlignScreenView::buttonAddPressed), buttonDeleteCallback(this,
 				&AlignScreenView::buttonDeletePressed), buttonGotoCallback(this, &AlignScreenView::buttonGotoPressed), buttonAlignCallback(this, &AlignScreenView::buttonAlignPressed), buttonStopCallback(
-				this, &AlignScreenView::buttonStopPressed), starSelectedCallback(this, &AlignScreenView::starSelected)
+				this, &AlignScreenView::buttonStopPressed), starSelectedCallback(this, &AlignScreenView::starSelected), callbackSliderSpeed(this, &AlignScreenView::sliderSpeedChanged)
 {
 	baseview.addTo(&container);
 
@@ -36,6 +37,20 @@ AlignScreenView::AlignScreenView() :
 	scrollableContainer2.add(container_selected);
 
 	joyStick2.setPositionChangedCallback(TelescopeBackend::handleNudge);
+
+	sliderSpeed.setValueRange(0, MountScreenView::NUM_SPEEDS-1);
+	double slewRate = TelescopeBackend::getSpeed("slew");
+
+	for (int i = 0; i < MountScreenView::NUM_SPEEDS; i++)
+	{
+		if (fabs(MountScreenView::SPEEDS[i] - slewRate) < 1e-5)
+		{
+			sliderSpeed.setValue(i);
+			sliderSpeed.invalidate();
+			break;
+		}
+	}
+	sliderSpeed.setNewValueCallback(callbackSliderSpeed);
 }
 
 void AlignScreenView::setupScreen()
@@ -371,4 +386,9 @@ void AlignScreenView::clearMenu(Container &c)
 			delete[] q->getValue();
 		delete q;
 	}
+}
+
+void AlignScreenView::sliderSpeedChanged(const Slider& s, int value)
+{
+	TelescopeBackend::setSpeed("slew", MountScreenView::SPEEDS[value]);
 }

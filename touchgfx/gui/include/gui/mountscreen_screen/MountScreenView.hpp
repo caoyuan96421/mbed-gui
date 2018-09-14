@@ -30,13 +30,17 @@ public:
 	}
 	void handleGestureEvent(const GestureEvent& evt)
 	{
-		if (evt.getType() == GestureEvent::SWIPE_HORIZONTAL && evt.getVelocity() > MIN_SWIPE_VELOCITY && !joyStick1.getRect().intersect(lastPressed.x, lastPressed.y) && !cpop.isVisible()
+		if (evt.getType() == GestureEvent::SWIPE_HORIZONTAL && evt.getVelocity() > MIN_SWIPE_VELOCITY && !joyStick1.getRect().intersect(lastPressed.x, lastPressed.y)
+				&& !sliderSpeed.getRect().intersect(lastPressed.x, lastPressed.y) && !cpop.isVisible()
 				&& !coordpop.isVisible())
 		{
 			application().gotoHomeScreenScreenSlideTransitionWest();
 		}
 		Screen::handleGestureEvent(evt);
 	}
+
+	static const int NUM_SPEEDS = 5;
+	static double SPEEDS[NUM_SPEEDS];
 protected:
 
 	StarMapWidget starmap;
@@ -56,6 +60,8 @@ protected:
 	touchgfx::Callback<MountScreenView, const TextAreaWithTwoWildcards &, const ClickEvent &> callbackMountCoord;
 	touchgfx::Callback<MountScreenView, CoordinatePopup::Coordinate, bool> callbackMountCoordGoto;
 
+	touchgfx::Callback<MountScreenView, const Slider &, int> callbackSliderSpeed;
+
 	void buttonNWSEPressed(const AbstractButton& src);
 	void buttonNWSEReleased(const AbstractButton& src);
 	void buttonStopPressed(const AbstractButton& src);
@@ -69,6 +75,8 @@ protected:
 	void slewSpeedClicked(const TextAreaWithOneWildcard &, const ClickEvent &evt);
 
 	void slewSpeedSet(ConfigItem *, bool);
+
+	void sliderSpeedChanged(const Slider &, int);
 
 	void eqCoordClicked(const TextAreaWithTwoWildcards &, const ClickEvent &evt);
 
@@ -86,6 +94,7 @@ protected:
 		int x;
 		int y;
 	} lastPressed;
+
 };
 
 #endif // MOUNTSCREEN_VIEW_HPP

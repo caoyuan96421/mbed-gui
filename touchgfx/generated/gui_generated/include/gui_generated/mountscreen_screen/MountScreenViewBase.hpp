@@ -15,6 +15,7 @@
 #include <touchgfx/widgets/ButtonWithLabel.hpp>
 #include <touchgfx/widgets/Image.hpp>
 #include <gui/containers/JoyStick.hpp>
+#include <touchgfx/containers/Slider.hpp>
 #include <touchgfx/mixins/ClickListener.hpp>
 
 class MountScreenViewBase : public touchgfx::View<MountScreenPresenter>
@@ -36,7 +37,6 @@ protected:
     touchgfx::TextArea textArea1;
     touchgfx::ClickListener< touchgfx::TextAreaWithTwoWildcards > mount_coords;
     touchgfx::TextArea textArea1_1;
-    touchgfx::TextArea textArea1_1_1;
     touchgfx::ToggleButton toggle_track;
     touchgfx::TextArea textArea1_1_1_1;
     touchgfx::ClickListener< touchgfx::TextAreaWithOneWildcard > slewspeed;
@@ -53,6 +53,7 @@ protected:
     touchgfx::ButtonWithLabel align_button;
     touchgfx::Image Next_arrow_482;
     JoyStick joyStick1;
+    touchgfx::Slider sliderSpeed;
 
     /*
      * Wildcard Buffers

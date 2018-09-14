@@ -7,11 +7,14 @@
 const double lunar_speed = 0.004079166667; // deg/s
 const double solar_speed = 0.004166667; // deg/s
 
+double MountScreenView::SPEEDS[NUM_SPEEDS] =
+{ sidereal_speed, sidereal_speed * 4, sidereal_speed * 16, 0.5, 4 };
+
 MountScreenView::MountScreenView() :
 		update(false), buttonStopCallback(this, &MountScreenView::buttonStopPressed), toggleTrackCallback(this, &MountScreenView::trackToggled), toggleTrackSpeedCallback(this,
 				&MountScreenView::trackSpeedSelected), callbackSlewSpeed(this, &MountScreenView::slewSpeedClicked), callbackSlewSpeedConfirmed(this, &MountScreenView::slewSpeedSet), callbackEqCoord(
 				this, &MountScreenView::eqCoordClicked), callbackEqCoordGoto(this, &MountScreenView::eqCoordGoto), callbackMountCoord(this, &MountScreenView::mountCoordClicked), callbackMountCoordGoto(
-				this, &MountScreenView::mountCoordGoto)
+				this, &MountScreenView::mountCoordGoto), callbackSliderSpeed(this, &MountScreenView::sliderSpeedChanged)
 {
 	baseview.addTo(&container);
 
@@ -42,6 +45,22 @@ MountScreenView::MountScreenView() :
 	add(coordpop);
 
 	joyStick1.setPositionChangedCallback(TelescopeBackend::handleNudge);
+
+	sliderSpeed.setValueRange(0, NUM_SPEEDS - 1);
+
+	double slewRate = TelescopeBackend::getSpeed("slew");
+	setSlewSpeed(slewRate);
+
+	for (int i = 0; i < NUM_SPEEDS; i++)
+	{
+		if (fabs(SPEEDS[i] - slewRate) < 1e-5)
+		{
+			sliderSpeed.setValue(i);
+			break;
+		}
+	}
+
+	sliderSpeed.setNewValueCallback(callbackSliderSpeed);
 }
 
 void MountScreenView::setupScreen()
@@ -122,9 +141,24 @@ void MountScreenView::updateDisplay(const EquatorialCoordinates& eq, const Mount
 
 		toggle_track.forceState((TelescopeBackend::getStatus() & TelescopeBackend::MOUNT_TRACKING) != 0);
 		toggle_track.invalidate();
+
+		double slewRate = TelescopeBackend::getSpeed("slew");
+		setSlewSpeed(slewRate);
+
+		for (int i = 0; i < NUM_SPEEDS; i++)
+		{
+			if (fabs(SPEEDS[i] - slewRate) < 1e-5)
+			{
+				if (sliderSpeed.getValue() != i)
+				{
+					sliderSpeed.setValue(i);
+					sliderSpeed.invalidate();
+				}
+				break;
+			}
+		}
 	}
 }
-
 
 void MountScreenView::buttonNWSEReleased(const AbstractButton& src)
 {
@@ -230,8 +264,7 @@ void MountScreenView::slewSpeedSet(ConfigItem* config, bool ok)
 	if (ok)
 	{
 		double speed = config->value.ddata;
-		presenter->setSpeed("slew", speed);
-		setSlewSpeed(presenter->getSpeed("slew"));
+		TelescopeBackend::setSpeed("slew", speed);
 	}
 	starmap.invalidate();
 	starmap.setVisible(true);
@@ -283,4 +316,10 @@ void MountScreenView::mountCoordGoto(CoordinatePopup::Coordinate c, bool ok)
 	starmap.invalidate();
 	starmap.setVisible(true);
 	starmap.invalidate();
+}
+
+void MountScreenView::sliderSpeedChanged(const Slider&s, int value)
+{
+	TelescopeBackend::setSpeed("slew", SPEEDS[value]);
+	setSlewSpeed(SPEEDS[value]);
 }

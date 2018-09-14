@@ -30,7 +30,8 @@ public:
 	void handleGestureEvent(const GestureEvent& evt)
 	{
 		if (evt.getType() == GestureEvent::SWIPE_HORIZONTAL && evt.getVelocity() > MIN_SWIPE_VELOCITY && !scrollableContainer1.getRect().intersect(lastPressed.x, lastPressed.y)
-				&& !scrollableContainer2.getRect().intersect(lastPressed.x, lastPressed.y) && !joyStick2.getRect().intersect(lastPressed.x, lastPressed.y))
+				&& !scrollableContainer2.getRect().intersect(lastPressed.x, lastPressed.y) && !joyStick2.getRect().intersect(lastPressed.x, lastPressed.y)
+				&& !sliderSpeed.getRect().intersect(lastPressed.x, lastPressed.y))
 		{
 			application().gotoUtilityScreenScreenSlideTransitionWest();
 		}
@@ -51,6 +52,7 @@ protected:
 	void buttonGotoPressed(const AbstractButton&);
 	void buttonAlignPressed(const AbstractButton&);
 	void buttonStopPressed(const AbstractButton&);
+	void sliderSpeedChanged(const Slider &, int);
 
 	static void callback(StarInfo*, void*);
 	void _callback(StarInfo *);
@@ -65,6 +67,8 @@ protected:
 	touchgfx::Callback<AlignScreenView, const AbstractButton&> buttonStopCallback;
 
 	touchgfx::Callback<AlignScreenView, const AbstractButton&> starSelectedCallback;
+
+	touchgfx::Callback<AlignScreenView, const Slider &, int> callbackSliderSpeed;
 
 	touchgfx::Container container_candidates;
 	touchgfx::Container container_selected;

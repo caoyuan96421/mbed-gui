@@ -14,6 +14,7 @@
 #include <touchgfx/widgets/ButtonWithIcon.hpp>
 #include <touchgfx/widgets/TextAreaWithWildcard.hpp>
 #include <gui/containers/JoyStick.hpp>
+#include <touchgfx/containers/Slider.hpp>
 
 class AlignScreenViewBase : public touchgfx::View<AlignScreenPresenter>
 {
@@ -43,6 +44,7 @@ protected:
     touchgfx::TextAreaWithOneWildcard text_alignment;
     JoyStick joyStick2;
     touchgfx::ButtonWithIcon buttonStop;
+    touchgfx::Slider sliderSpeed;
 
     /*
      * Wildcard Buffers
