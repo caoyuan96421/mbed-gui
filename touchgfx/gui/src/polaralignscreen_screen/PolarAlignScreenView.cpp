@@ -127,8 +127,8 @@ void PolarAlignScreenView::starSelected(const AbstractButton& src)
 				"HA: %2dh%02d'%02d\"\n"
 				"Dec: %c%2d\x00b0%02d'%02d\"\n"
 				"Altitude: %.2f\x00b0\n"
-				"Magnitude: %.2f\n", int(r / 15), int(fmod(r, 15.0) * 4), (int) round(fmod(r, 0.25) * 240), int(h / 15), int(fmod(h, 15.0) * 4), (int) round(fmod(h, 0.25) * 240),
-				eq.dec > 0 ? '+' : '-', int(d), int(fmod(d, 1.0) * 60), (int) round(fmod(d, 1.0 / 60) * 3600), az.alt, star->magnitude);
+				"Magnitude: %.2f\n", int(r / 15), int(fmod(r, 15.0) * 4), (int) floor(fmod(r, 0.25) * 240), int(h / 15), int(fmod(h, 15.0) * 4), (int) floor(fmod(h, 0.25) * 240),
+				eq.dec > 0 ? '+' : '-', int(d), int(fmod(d, 1.0) * 60), (int) floor(fmod(d, 1.0 / 60) * 3600), az.alt, star->magnitude);
 
 		Unicode::strncpy(text_descriptionBuffer, buf, TEXT_DESCRIPTION_SIZE);
 		text_description.invalidate();

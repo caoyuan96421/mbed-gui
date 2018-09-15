@@ -18,7 +18,7 @@
 
 using namespace touchgfx;
 
-#define SMW_DEBUG 1
+#define SMW_DEBUG 0
 
 static const float RADIAN_F = 180.0f / M_PI;
 static const float DEGREE_F = M_PI / 180.0f;

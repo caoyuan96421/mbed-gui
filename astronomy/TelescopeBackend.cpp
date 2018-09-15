@@ -12,7 +12,7 @@
 
 #define TB_DEBUG 0
 
-UARTSerial serial(D1, D0, 230400);
+UARTSerial serial(D1, D0, 100000);
 
 // Timeout values for different commands
 static const int TIMEOUT_IMMEDIATE = 500; // Commands that should immediately return
@@ -401,6 +401,7 @@ int TelescopeBackend::startNudge(Direction dir)
 	default:
 		return 0;
 	}
+	debug("NUDGE %s\r\n", dir_str);
 	queryNoResponse("nudge", dir_str);
 	return 0;
 }
@@ -488,7 +489,7 @@ TelescopeBackend::mountstatus_t TelescopeBackend::getStatus()
 	}
 	queryFinish(node);
 
-	debug("state: %s\r\n", buf);
+	debug_if(TB_DEBUG, "state: %s\r\n", buf);
 
 	if (strcmp(buf, "stopped") == 0)
 		return MOUNT_STOPPED;

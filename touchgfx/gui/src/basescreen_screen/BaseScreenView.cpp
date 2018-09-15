@@ -61,12 +61,12 @@ void BaseScreenView::setEqCoords(const EquatorialCoordinates& eq)
 	char buf[32];
 
 	// RA string
-	snprintf(buf, sizeof(buf), "%2dh%02d'%02d\"%c", int(r / 15), int(fmod(r, 15.0) * 4), (int) round(fmod(r, 0.25) * 240), we);
+	snprintf(buf, sizeof(buf), "%2dh%02d'%02d\"%c", int(r / 15), int(fmod(r, 15.0) * 4), (int) floor(fmod(r, 0.25) * 240), we);
 	Unicode::strncpy(ra_coordBuffer, buf, RA_COORD_SIZE);
 	ra_coord.invalidate();
 
 	// DEC string
-	snprintf(buf, sizeof(buf), "%2d\x00b0%02d'%02d\"%c", int(d), int(fmod(d, 1.0) * 60), (int) round(fmod(d, 1.0 / 60) * 3600), ns);
+	snprintf(buf, sizeof(buf), "%2d\x00b0%02d'%02d\"%c", int(d), int(fmod(d, 1.0) * 60), (int) floor(fmod(d, 1.0 / 60) * 3600), ns);
 	Unicode::strncpy(dec_coordBuffer, buf, DEC_COORD_SIZE);
 	dec_coord.invalidate();
 

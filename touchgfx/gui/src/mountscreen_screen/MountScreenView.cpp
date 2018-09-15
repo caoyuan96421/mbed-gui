@@ -51,16 +51,25 @@ MountScreenView::MountScreenView() :
 	double slewRate = TelescopeBackend::getSpeed("slew");
 	setSlewSpeed(slewRate);
 
-	for (int i = 0; i < NUM_SPEEDS; i++)
+	double minRatio = 1e10;
+	int closestIndex = 0;
+	for (int i = 0; i < MountScreenView::NUM_SPEEDS; i++)
 	{
-		if (fabs(SPEEDS[i] - slewRate) < 1e-5)
+		double ratio = MountScreenView::SPEEDS[i] / slewRate;
+		if (ratio < 1)
+			ratio = 1.0 / ratio;
+		if (ratio < minRatio)
 		{
-			sliderSpeed.setValue(i);
-			break;
+			closestIndex = i;
+			minRatio = ratio;
 		}
 	}
 
+	sliderSpeed.setValue(closestIndex);
+	sliderSpeed.invalidate();
 	sliderSpeed.setNewValueCallback(callbackSliderSpeed);
+
+	speedUpdateHardware = true;
 }
 
 void MountScreenView::setupScreen()
@@ -110,11 +119,11 @@ void MountScreenView::updateDisplay(const EquatorialCoordinates& eq, const Mount
 		char buf[32];
 
 		// RA string
-		snprintf(buf, sizeof(buf), "%2dh%02d'%02d\"%c", int(r / 15), int(fmod(r, 15.0) * 4), (int) round(fmod(r, 0.25) * 240), we);
+		snprintf(buf, sizeof(buf), "%2dh%02d'%02d\"%c", int(r / 15), int(fmod(r, 15.0) * 4), (int) floor(fmod(r, 0.25) * 240), we);
 		Unicode::strncpy(eqcoordsBuffer1, buf, EQCOORDSBUFFER1_SIZE);
 
 		// DEC string
-		snprintf(buf, sizeof(buf), "%2d\x00b0%02d'%02d\"%c", int(d), int(fmod(d, 1.0) * 60), (int) round(fmod(d, 1.0 / 60) * 3600), ns);
+		snprintf(buf, sizeof(buf), "%2d\x00b0%02d'%02d\"%c", int(d), int(fmod(d, 1.0) * 60), (int) floor(fmod(d, 1.0 / 60) * 3600), ns);
 		Unicode::strncpy(eqcoordsBuffer2, buf, EQCOORDSBUFFER2_SIZE);
 		eqcoords.invalidate();
 
@@ -124,11 +133,11 @@ void MountScreenView::updateDisplay(const EquatorialCoordinates& eq, const Mount
 		d = fabs(mc.dec_delta);
 
 		// RA string
-		snprintf(buf, sizeof(buf), "%c%2d\x00b0%02d'%02d\"", we, int(r), int(fmod(r, 1.0) * 60), (int) round(fmod(r, 1.0 / 60) * 3600));
+		snprintf(buf, sizeof(buf), "%c%2d\x00b0%02d'%02d\"", we, int(r), int(fmod(r, 1.0) * 60), (int) floor(fmod(r, 1.0 / 60) * 3600));
 		Unicode::strncpy(mount_coordsBuffer1, buf, MOUNT_COORDSBUFFER1_SIZE);
 
 		// DEC string
-		snprintf(buf, sizeof(buf), "%c%2d\x00b0%02d'%02d\"", ns, int(d), int(fmod(d, 1.0) * 60), (int) round(fmod(d, 1.0 / 60) * 3600));
+		snprintf(buf, sizeof(buf), "%c%2d\x00b0%02d'%02d\"", ns, int(d), int(fmod(d, 1.0) * 60), (int) floor(fmod(d, 1.0 / 60) * 3600));
 		Unicode::strncpy(mount_coordsBuffer2, buf, MOUNT_COORDSBUFFER2_SIZE);
 		mount_coords.invalidate();
 
@@ -145,18 +154,25 @@ void MountScreenView::updateDisplay(const EquatorialCoordinates& eq, const Mount
 		double slewRate = TelescopeBackend::getSpeed("slew");
 		setSlewSpeed(slewRate);
 
-		for (int i = 0; i < NUM_SPEEDS; i++)
+		double minRatio = 1e10;
+		int closestIndex = 0;
+		for (int i = 0; i < MountScreenView::NUM_SPEEDS; i++)
 		{
-			if (fabs(SPEEDS[i] - slewRate) < 1e-5)
+			double ratio = MountScreenView::SPEEDS[i] / slewRate;
+			if (ratio < 1)
+				ratio = 1.0 / ratio;
+			if (ratio < minRatio)
 			{
-				if (sliderSpeed.getValue() != i)
-				{
-					sliderSpeed.setValue(i);
-					sliderSpeed.invalidate();
-				}
-				break;
+				closestIndex = i;
+				minRatio = ratio;
 			}
 		}
+
+		// Update slider value without sending it to controller
+		speedUpdateHardware = false;
+		sliderSpeed.setValue(closestIndex);
+		speedUpdateHardware = true;
+		sliderSpeed.invalidate();
 	}
 }
 
@@ -320,6 +336,8 @@ void MountScreenView::mountCoordGoto(CoordinatePopup::Coordinate c, bool ok)
 
 void MountScreenView::sliderSpeedChanged(const Slider&s, int value)
 {
-	TelescopeBackend::setSpeed("slew", SPEEDS[value]);
-	setSlewSpeed(SPEEDS[value]);
+	if(speedUpdateHardware){
+		TelescopeBackend::setSpeed("slew", SPEEDS[value]);
+		setSlewSpeed(SPEEDS[value]);
+	}
 }

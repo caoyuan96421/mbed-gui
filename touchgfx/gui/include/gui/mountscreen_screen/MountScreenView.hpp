@@ -95,6 +95,8 @@ protected:
 		int y;
 	} lastPressed;
 
+	volatile bool speedUpdateHardware;
+
 };
 
 #endif // MOUNTSCREEN_VIEW_HPP

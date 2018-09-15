@@ -38,18 +38,25 @@ AlignScreenView::AlignScreenView() :
 
 	joyStick2.setPositionChangedCallback(TelescopeBackend::handleNudge);
 
-	sliderSpeed.setValueRange(0, MountScreenView::NUM_SPEEDS-1);
+	sliderSpeed.setValueRange(0, MountScreenView::NUM_SPEEDS - 1);
 	double slewRate = TelescopeBackend::getSpeed("slew");
+	double minRatio = 1e10;
+	int closestIndex = 0;
 
 	for (int i = 0; i < MountScreenView::NUM_SPEEDS; i++)
 	{
-		if (fabs(MountScreenView::SPEEDS[i] - slewRate) < 1e-5)
+		double ratio = MountScreenView::SPEEDS[i] / slewRate;
+		if (ratio < 1)
+			ratio = 1.0 / ratio;
+		if (ratio < minRatio)
 		{
-			sliderSpeed.setValue(i);
-			sliderSpeed.invalidate();
-			break;
+			closestIndex = i;
+			minRatio = ratio;
 		}
 	}
+
+	sliderSpeed.setValue(closestIndex);
+	sliderSpeed.invalidate();
 	sliderSpeed.setNewValueCallback(callbackSliderSpeed);
 }
 
@@ -189,8 +196,8 @@ void AlignScreenView::starSelected(const AbstractButton& src)
 				"Dec: %c%2d\x00b0%02d'%02d\"\n"
 				"HA: %2dh%02d'%02d\"\n"
 				"Altitude: %.2f\x00b0\n"
-				"Magnitude: %.2f\n", int(r / 15), int(fmod(r, 15.0) * 4), (int) round(fmod(r, 0.25) * 240), eq.dec > 0 ? '+' : '-', int(d), int(fmod(d, 1.0) * 60),
-				(int) round(fmod(d, 1.0 / 60) * 3600), int(h / 15), int(fmod(h, 15.0) * 4), (int) round(fmod(h, 0.25) * 240), az.alt, star->magnitude);
+				"Magnitude: %.2f\n", int(r / 15), int(fmod(r, 15.0) * 4), (int) floor(fmod(r, 0.25) * 240), eq.dec > 0 ? '+' : '-', int(d), int(fmod(d, 1.0) * 60),
+				(int) floor(fmod(d, 1.0 / 60) * 3600), int(h / 15), int(fmod(h, 15.0) * 4), (int) floor(fmod(h, 0.25) * 240), az.alt, star->magnitude);
 
 		Unicode::strncpy(text_descriptionBuffer, buf, TEXT_DESCRIPTION_SIZE);
 		text_description.invalidate();
@@ -329,7 +336,6 @@ void AlignScreenView::buttonStopPressed(const AbstractButton&)
 {
 	TelescopeBackend::emergencyStop();
 }
-
 
 void AlignScreenView::buttonAlignPressed(const AbstractButton&)
 {
